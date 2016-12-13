@@ -6,3 +6,30 @@ body {
 a {
   color: #00B7FF;
 }
+
+.first {
+  width: 30%;
+  padding: 10px;
+  background-color: oldlace;
+  border: double;
+}
+table {
+  width: 100%;
+}
+.edit {
+  padding: 5px;
+  display: block;
+  margin: 5px;
+  margin-left:100px;
+}
+.add {
+  display: block;
+}
+#addText{
+  float:left;
+  font-size: large;
+  background-color: lightblue;
+}
+.addButton {
+  margin-left: 118px;
+}
