@@ -8,6 +8,7 @@ var topics = initTopics();
 router
     .get('/', function (req, res, next) {
         res.json(topics.map(function (el) {
+            console.log(el)
             return el.getSimpleModel();
         }));
     })
@@ -51,7 +52,7 @@ function initTopics() {
     var topics = [];
     var topicsData = JSON.parse(fs.readFileSync('../data/topics.json'));
     topicsData.topics.forEach(function (element) {
-        topics.push(new Topic(element.name, element.author, element.text, element.data));
+        topics.push(new Topic(element.name, element.author, element.text, element.date));
     });
     return topics;
 }
