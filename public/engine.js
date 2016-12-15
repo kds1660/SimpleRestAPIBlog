@@ -38,7 +38,7 @@ function init() {
             table.appendTo('#wrapper');
             $('#main').DataTable();
 
-            $('tr').click(function (e) {
+            $('tbody tr').click(function (e) {
                 showText($(this).find('th').contents().get(0).nodeValue, $(this));
                 var buttons = new ButtonItem;
                 $(this).find('.saveButton').replaceWith(buttons.returnBtn(ENUM_BTN.edit));
