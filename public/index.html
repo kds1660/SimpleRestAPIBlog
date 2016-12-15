@@ -5,19 +5,49 @@
     <title>Getting REST</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script src="buttons.js"></script>
     <script src="engine.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/style.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css"/>
 
 </head>
 <body>
+
 <div id="addText">Name<br>Author<br>Text<br><br></div>
+
 <div>
     <input type="text" class="add">
     <input type="text" class="add">
-    <textarea class='add' cols="150" ></textarea>
+    <textarea class='add' cols="150"></textarea>
 </div>
 
 <div id="wrapper"></div>
+
+<div id="tableTmpl" style="display: none;">
+    <table id="main">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Author</th>
+            <th>Date</th>
+            <th>Edit</th>
+            <th>Remove</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<div id="editTmpl" style="display: none;">
+    <div>
+        <input type='text' class='edit'>
+        <input type='text' class='edit'>
+        <textarea class='edit' cols='100' rows='20'></textarea>
+    </div>
+</div>
+
 </body>
+
+
 </html>
