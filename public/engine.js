@@ -40,6 +40,8 @@ function init() {
 
             $('tr').click(function (e) {
                 showText($(this).find('th').contents().get(0).nodeValue, $(this));
+                var buttons = new ButtonItem;
+                $(this).find('.saveButton').replaceWith(buttons.returnBtn(ENUM_BTN.edit));
             });
         })
         .fail(function (xhr, status, errorThrown) {
@@ -111,7 +113,7 @@ function addTemplate(tmpl,$that) {
 $(document).ready(function () {
     var buttons = new ButtonItem;
     var add = buttons.returnBtn(ENUM_BTN.add)
-        .insertAfter('textarea');
+        .insertAfter('textarea.add');
     init();
     addTemplate();
 });
