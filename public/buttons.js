@@ -22,6 +22,8 @@ function ButtonItem() {
         init();
     });
 
+    exitBtn = $('<input class="editButton" type="button" value="Logout">');
+
     editBtn = $('<input class="editButton" type="button" value="Edit">');
     editBtn.click(function (e) {
         e.stopPropagation();
@@ -48,6 +50,18 @@ function ButtonItem() {
         })
     });
 
+    loginBtn = $('<input class="loginButton" type="button" value="login">');
+    loginBtn.click( function (e) {
+        var loginUser = {
+            name: $(this).parent().find('.login').get(0).value,
+            password: $(this).parent().find('.login').get(1).value
+        };
+        login(loginUser);
+        $('.login').each(function () {
+            $(this).val('');
+        })
+    });
+
     this.returnBtn = function (button) {
         if (button === 'add') {
             return addBtn
@@ -58,6 +72,12 @@ function ButtonItem() {
             return this.saveBtn
         } else if (button === 'edit') {
             return editBtn
+        }
+        else if (button === 'login') {
+            return loginBtn;
+        }
+        else if (button === 'exit') {
+            return exitBtn;
         }
     };
 }

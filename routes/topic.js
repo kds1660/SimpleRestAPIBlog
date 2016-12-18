@@ -7,8 +7,8 @@ var topics = initTopics();
 
 router
     .get('/', function (req, res, next) {
+        console.log('not login');
         res.json(topics.map(function (el) {
-            console.log(el)
             return el.getSimpleModel();
         }));
     })
@@ -17,6 +17,7 @@ router
             return elem.name == req.params.name;
         });
         if(topic) {
+            console.log(topic)
             res.json(topic);
         } else {
             var err = new Error('Not Found');

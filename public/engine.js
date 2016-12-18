@@ -1,4 +1,4 @@
-var ENUM_BTN = {add:'add',delete:'del', edit:'edit',save:'save'};
+var ENUM_BTN = {add:'add',delete:'del', edit:'edit',save:'save',login:'login',exit:'exit'};
 function init() {
     $.ajax({
         url: "/api/topic",
@@ -24,19 +24,29 @@ function init() {
                     var th = $('<th>');
                     var buttons = new ButtonItem;
                     var editBtn = buttons.returnBtn(ENUM_BTN.edit);
-                    editBtn.appendTo(th);
+                    if ($('#logged').text().substring(8)&&json[index]['author']===$('#logged').text().substring(8)) {editBtn.appendTo(th);}
                     th.appendTo(tr);
                     var th = $('<th>');
                     var buttons = new ButtonItem;
                     var delBtn = buttons.returnBtn(ENUM_BTN.delete);
-                    delBtn.appendTo(th);
+                if ($('#logged').text().substring(8)&&json[index]['author']===$('#logged').text().substring(8)) {delBtn.appendTo(th);}
                     th.appendTo(tr);
                 }
             );
 
             $('#wrapper').text('');
             table.appendTo('#wrapper');
-            $('#main').DataTable();
+            var oTable=$('#main');
+            oTable.DataTable({
+            });
+            oTable.find('td').hover( function() {
+                console.log('hi');
+                var iCol = $('td', this.parentNode).index(this) % 5;
+                console.log(iCol);
+                $('td:nth-child('+(iCol+1)+')', oTable.$('tr')).addClass( 'highlight' );
+            }, function() {
+                oTable.$('td.highlight').removeClass('highlight');
+            } );
 
             $('tbody tr').click(function (e) {
                 showText($(this).find('th').contents().get(0).nodeValue, $(this));
@@ -97,6 +107,33 @@ function editTopic(url, data) {
     })
 }
 
+function login(data) {
+    var result=$.ajax({
+        url: "/api/login/",
+        type: "POST",
+        data: data,
+        dataType: "json"
+    })
+    result.done(function () {
+        init();
+        $('span').remove();
+        $('.login').remove();
+        $('<div id="logged"></div>').insertBefore ('.loginButton');
+        $('#logged').text('Logged  '+JSON.parse(result.responseText).name)
+
+        var buttons= new ButtonItem;
+        var button = buttons.returnBtn(ENUM_BTN.exit)
+        console.log(button)
+        $('.loginButton').replaceWith(button);
+
+    })
+    result.fail(function (xhr, status, errorThrown) {
+        $('span').remove();
+        var span=$('<span>Incorect login</span>');
+            $(span).insertBefore ('.loginButton')
+        })
+}
+
 function addTemplate(tmpl,$that) {
     if (tmpl==='table') {
         var $copy = $('#tableTmpl').children().clone();
@@ -112,8 +149,8 @@ function addTemplate(tmpl,$that) {
 
 $(document).ready(function () {
     var buttons = new ButtonItem;
-    var add = buttons.returnBtn(ENUM_BTN.add)
-        .insertAfter('textarea.add');
+    var add = buttons.returnBtn(ENUM_BTN.login)
+        .insertAfter('#login');
     init();
     addTemplate();
 });

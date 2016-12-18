@@ -13,16 +13,18 @@ a {
   background-color: oldlace;
   border: double;
 }
-table {
-  width: 100%;
-}
+
 .edit {
   padding: 5px;
   display: block;
   margin: 5px;
   margin-left:100px;
 }
-.add {
+.login {
+  display: block;
+}
+
+span {
   display: block;
 }
 #addText{
@@ -39,4 +41,18 @@ input[type=button] {
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
+  border-radius: 5px;
+}
+
+table.dataTable tbody tr:hover  {
+  background-color: yellow;
+}
+
+#logged {
+  font-size: large;
+}
+
+span {
+  font-size: large;
+  color: red;
 }
