@@ -1,4 +1,4 @@
-function Topic(name, author, text, date) {
+function Topic(name, author, img, text, date) {
     if(!name) throw new Error("Name missed");
     // if(!author) throw new Error("author missed");
     // if(!text) throw new Error("text missed");
@@ -6,6 +6,7 @@ function Topic(name, author, text, date) {
 
     this.name = name;
     this.author = author;
+    this.img=img;
     this.text = text;
     this.date = date;
 }

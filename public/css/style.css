@@ -60,4 +60,6 @@ span {
   padding-bottom: 12px;
   text-align: justify;
 }
-
+#preview{
+  float: left;
+}

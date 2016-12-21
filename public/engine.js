@@ -46,7 +46,9 @@ function init() {
 
             $('#wrapper').text('');
             table.appendTo('#wrapper');
-            $('#main').DataTable({});
+            $('#main').DataTable({
+                "processing": true
+            });
 
 
            /* $('tbody tr').click(function (e) {
@@ -76,6 +78,7 @@ function returnText(url) {
     result.done(function () {
         console.log('done')
         $('textarea.edit, #textDiv').text(JSON.parse(result.responseText).text);
+        $('#preview, #previewImg').attr('src',JSON.parse(result.responseText).img);
     })
 }
 
@@ -88,11 +91,18 @@ function deleteTopic(url) {
 }
 
 function editTopic(url, data) {
-    $.ajax({
+   $.ajax({
         url: "/api/topic/" + url,
         type: "PUT",
         data: data,
-        dataType: "json"
+       success:function()  {
+               $('.wrapper').text('');
+               init();
+               $('.ui-button').click();
+       },
+       error:function (xhr) {
+           alert(xhr.status)
+       }
     })
 }
 
@@ -147,6 +157,8 @@ function addTemplate(tmpl, $that) {
         var add = buttons.returnBtn(ENUM_BTN.add);
         add.appendTo($copy);
         $copy.children().get(1).value = $('#logged').text().substring(8);
+        $copy.find('textarea.edit').text('');
+        $copy.find('#previewImg').attr('src', '');
         $copy.find('.author').eq(0).attr('readonly', true);
     }
     else if (tmpl === 'view') {

@@ -13,14 +13,14 @@ function ButtonItem() {
         var newTopic = {
             name: $(this).parent().find('.name').get(0).value,
             author: $(this).parent().find('.author').get(0).value,
+            img:$(this).parent().find('#previewImg').get(0).src,
             text: $(this).parent().find('.text').get(0).value,
             date: new Date(),
             oldTopic: $(this).parent().find('#oldTopic').get(0).value
         };
+        console.log(newTopic)
         editTopic($(this).parent().find('.name').get(0).value, newTopic);
-        $('.wrapper').text('')
-        init();
-        $('.ui-button').click()
+
     });
 
     logoutBtn = $('<input class="exitButton create" type="button" value="Logout">');
@@ -60,6 +60,7 @@ function ButtonItem() {
         var newTopic = {
             name: $(this).parent().find('.name').get(0).value,
             author: $(this).parent().find('.author').get(0).value,
+            img:$(this).parent().find('#previewImg').get(0).src,
             text: $(this).parent().find('.text').get(0).value,
             date: new Date(),
         };
