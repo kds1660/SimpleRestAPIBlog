@@ -33,26 +33,31 @@ span {
   background-color: lightblue;
 }
 
-input[type=button] {
-  background-color: #4CAF50; /* Green */
-  border: none;
-  color: white;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
+input[type=button].action {
+
   border-radius: 5px;
+  margin-right: 5px;
+  margin-left: 5px;
+  !important;
 }
 
+
 table.dataTable tbody tr:hover  {
-  background-color: yellow;
+  background-color: aliceblue;
 }
 
 #logged {
   font-size: large;
+  margin:5px;
 }
 
 span {
   font-size: large;
   color: red;
 }
+#textDiv {
+  font-size: 18px;
+  padding-bottom: 12px;
+  text-align: justify;
+}
+

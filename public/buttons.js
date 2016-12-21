@@ -1,75 +1,115 @@
 function ButtonItem() {
-    delBtn = $('<input class="delButton" type="button" value="Delete">');
+    delBtn = $('<input class="delButton action" type="button" value="Delete">');
     delBtn.click(function (e) {
         deleteTopic($(this).closest('tr').find('th').contents().get(0).nodeValue);
         $(this).closest('tr').remove();
         $('.toggleDiv').remove();
     });
 
-    saveBtn = $('<input class="saveButton" type="button" value="Save">');
+    saveBtn = $('<input class="saveButton action" type="button" value="Save">');
     saveBtn.click(function (e) {
         e.stopPropagation();
 
         var newTopic = {
-            name: $(this).closest('tbody').find('.edit').get(0).value,
-            author: $(this).closest('tbody').find('.edit').get(1).value,
-            text: $(this).closest('tbody').find('.edit').get(2).value,
+            name: $(this).parent().find('.name').get(0).value,
+            author: $(this).parent().find('.author').get(0).value,
+            text: $(this).parent().find('.text').get(0).value,
             date: new Date(),
-            oldTopic: $(this).closest('tr').find('.name').text()
+            oldTopic: $(this).parent().find('#oldTopic').get(0).value
         };
-        editTopic($(this).parent().contents().get(0).nodeValue, newTopic);
+        editTopic($(this).parent().find('.name').get(0).value, newTopic);
         $('.wrapper').text('')
         init();
+        $('.ui-button').click()
     });
 
-    exitBtn = $('<input class="editButton" type="button" value="Logout">');
+    logoutBtn = $('<input class="exitButton create" type="button" value="Logout">');
+    logoutBtn.click(function (e) {
+        $('#logged,.exitButton,.addTopicBtn').remove();
 
-    editBtn = $('<input class="editButton" type="button" value="Edit">');
+        addTemplate('login').insertBefore('#wrapper');
+        var add = loginBtn
+            .insertBefore('#wrapper');
+        init();
+    });
+
+    editBtn = $('<input class="editButton action" type="button" value="Edit">');
     editBtn.click(function (e) {
         e.stopPropagation();
-        $('.toggleDiv').remove();
-        var parent = $(this).closest('tr');
-        var toggle = $('<tr class="toggleDiv"><th colspan="5"></th></tr>>');
-        $(parent).after(toggle);
-        toggle.find('th').append(addTemplate('edit',$(this)))
-        $(this).replaceWith(saveBtn);
+        $(addTemplate('edit', $(this)).dialog({modal: true, minWidth: 1500}));
+
+        $('.image').change(function() {
+            var file = $(this)[0].files[0];
+            var preview=$(this).prev();
+            var reader=new FileReader();
+            reader.onload=function (e) {
+                preview.attr('src',e.target.result);
+            }
+            if (file&&file.type.match('image.*')) {
+                reader.readAsDataURL(file)
+            } else {
+                preview.scr=''
+            }
+
+
+        });
     });
 
-    addBtn = $('<input class="addButton" type="button" value="add">');
-    addBtn.click( function (e) {
+    addBtn = $('<input class="addButton action" type="button" value="add">');
+    addBtn.click(function (e) {
         var newTopic = {
-            name: $(this).parent().find('.add').get(0).value,
-            author: $(this).parent().find('.add').get(1).value,
-            text: $(this).parent().find('.add').get(2).value,
+            name: $(this).parent().find('.name').get(0).value,
+            author: $(this).parent().find('.author').get(0).value,
+            text: $(this).parent().find('.text').get(0).value,
             date: new Date(),
         };
-        editTopic($(this).parent().find('.add').get(0).value, newTopic);
+        editTopic($(this).parent().find('.name').get(0).value, newTopic);
         init();
-        $('.add').each(function () {
-            $(this).val('');
-        })
+        $('.ui-button').click();
     });
 
-    loginBtn = $('<input class="loginButton" type="button" value="login">');
-    loginBtn.click( function (e) {
+    addTopicBtn = $('<input class="addTopicBtn action" type="button" value="Add topic">');
+    addTopicBtn.click(function () {
+        $(addTemplate('add', $(this)).dialog({modal: true, minWidth: 1500}));
+        $('.image').change(function() {
+            var file = $(this)[0].files[0];
+            var preview=$(this).prev();
+            var reader=new FileReader();
+            reader.onload=function (e) {
+                preview.attr('src',e.target.result);
+            }
+            if (file&&file.type.match('image.*')) {
+                reader.readAsDataURL(file)
+            } else {
+                preview.scr=''
+            }
+
+
+        });
+    });
+
+    loginBtn = $('<input class="loginButton share" type="button" value="login">');
+    loginBtn.click(function (e) {
         var loginUser = {
-            name: $(this).parent().find('.login').get(0).value,
-            password: $(this).parent().find('.login').get(1).value
+            name: $('.login').get(0).value,
+            password: $('.login').get(1).value
         };
         login(loginUser);
-        $('.login').each(function () {
-            $(this).val('');
-        })
     });
+
+    viewBtn = $('<input class="viewButton action" type="button" value="View">');
+    viewBtn.click(function (e) {
+        e.stopPropagation();
+        $(addTemplate('view', $(this)).dialog({modal: true, minWidth: $(document).width()-100}));
+    })
 
     this.returnBtn = function (button) {
         if (button === 'add') {
             return addBtn
         } else if (button === 'del') {
             return delBtn
-        }
-        else if (button === 'save') {
-            return this.saveBtn
+        } else if (button === 'save') {
+            return saveBtn
         } else if (button === 'edit') {
             return editBtn
         }
@@ -77,7 +117,13 @@ function ButtonItem() {
             return loginBtn;
         }
         else if (button === 'exit') {
-            return exitBtn;
+            return logoutBtn;
+        }
+        else if (button === 'view') {
+            return viewBtn;
+        }
+        else if (button === 'addTopic') {
+            return addTopicBtn;
         }
     };
 }

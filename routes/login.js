@@ -3,14 +3,14 @@ var router = express.Router();
 var fs = require('fs');
 
 var users=initUsers();
-
 router
     .post('/', function (req, res, next) {
+        console.log(req.body)
         var user = users.find(function (elem) {
             return (elem.name == req.body.name&&elem.password == req.body.password);
         });
+
         if(user) {
-            console.log(user)
             res.json(user);
         } else {
             var err = new Error('Not Found');
@@ -23,7 +23,7 @@ router
 
 function initUsers() {
     var users = [];
-    var usersData = JSON.parse(fs.readFileSync('../data/users.json'));
+    var usersData = JSON.parse(fs.readFileSync('./data/users.json'));
     usersData.users.forEach(function (element) {
         users.push({name:element.name,password:element.password});
     });
