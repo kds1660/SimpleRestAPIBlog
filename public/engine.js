@@ -138,6 +138,8 @@ function login(data) {
         var addButton = buttons.returnBtn(ENUM_BTN.addTopic);
         addButton.insertAfter($('.exitButton'));
 
+        $('.share').get(0).remove();
+
     })
     result.fail(function (xhr, status, errorThrown) {
         $('span').remove();
@@ -160,6 +162,7 @@ function addTemplate(tmpl, $that) {
         returnText($that.parent().parent().find('.name').text());
 
     } else if (tmpl === 'login') {
+        $('#loginTmpl').find('.share').remove();
         var $copy = $('#loginTmpl').children().clone();
     } else if (tmpl === 'reg') {
         $('#loginTmpl').find('.share').remove();
