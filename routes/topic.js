@@ -33,7 +33,7 @@ router
         });
 
         topics.push(new Topic(body.name, body.author, body.img, body.text, body.date));
-
+        writeTopic();
         res.send(200);
     })
     .delete('/:name', function (req, res, next) {
@@ -42,6 +42,7 @@ router
         topics = topics.filter(function (el) {
             return el.name !== name
         });
+        writeTopic();
         res.send(200);
     });
 
@@ -52,6 +53,13 @@ function initTopics() {
         topics.push(new Topic(element.name, element.author, element.img, element.text, element.date));
     });
     return topics;
+}
+function writeTopic() {
+    var obj={topics:[]};
+    for(var i=0;i<topics.length;i++) {
+        obj.topics.push(topics[i]);
+    }
+    fs.writeFile('./data/topics.json',JSON.stringify(obj,null,4));
 }
 
 module.exports = router;

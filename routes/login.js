@@ -25,6 +25,7 @@ router
     });
     if(!user) {
         users.push({name:req.body.name, password:req.body.password});
+        writeUser();
         res.send(200);
     } else {
         var err = new Error('User exists');
@@ -42,6 +43,14 @@ function initUsers() {
         users.push({name:element.name,password:element.password});
     });
     return users;
+}
+
+function writeUser() {
+    var obj={users:[]};
+    for(var i=0;i<users.length;i++) {
+        obj.users.push(users[i]);
+    }
+    fs.writeFile('./data/users.json',JSON.stringify(obj,null,4));
 }
 
 module.exports = router;

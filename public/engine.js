@@ -15,7 +15,7 @@ function init() {
     $.ajax({
         url: "/api/topic",
         type: "GET",
-        dataType: "json",
+        dataType: "json"
     })
         .done(function (json) {
             var table = addTemplate('table');
@@ -71,9 +71,8 @@ function returnText(url) {
         url: "/api/topic/" + url,
         type: "GET",
         dataType: "json"
-    })
+    });
     result.done(function () {
-        console.log('done')
         $('textarea.text, #textDiv').text(JSON.parse(result.responseText).text);
         $('#preview, #previewImg').attr('src',JSON.parse(result.responseText).img);
     })
@@ -125,7 +124,7 @@ function login(data) {
         type: "POST",
         data: data,
         dataType: "json"
-    })
+    });
     result.done(function () {
         init();
         $('span').remove();
@@ -134,7 +133,7 @@ function login(data) {
         var button = buttons.returnBtn(ENUM_BTN.exit);
         $('.loginButton').replaceWith(button);
         $('<div id="logged"></div>').insertBefore('.exitButton');
-        $('#logged').text('Logged  ' + JSON.parse(result.responseText).name)
+        $('#logged').text('Logged  ' + JSON.parse(result.responseText).name);
         var addButton = buttons.returnBtn(ENUM_BTN.addTopic);
         addButton.insertAfter($('.exitButton'));
 
@@ -150,7 +149,7 @@ function login(data) {
 function prepareTemplate(template) {
     if (template.attr('id')) template.attr('id',template.attr('id').slice(0,-3))
     template.children().each(function () {
-    if ($(this).attr('id'))    $(this).attr('id',$(this).attr('id').slice(0,-3))
+    if ($(this).attr('id'))    $(this).attr('id',$(this).attr('id').slice(0,-3));
         if ($(this).attr('class'))    $(this).attr('class',$(this).attr('class').slice(0,-3))
     })
 }

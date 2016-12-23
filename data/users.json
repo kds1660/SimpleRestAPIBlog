@@ -1,12 +1,12 @@
 {
-  "users": [
-    {
-      "name": "kds",
-      "password": "1606"
-    },
-    {
-      "name": "jQuery",
-      "password": "jQuery"
-    }
-  ]
+    "users": [
+        {
+            "name": "kds",
+            "password": "1606"
+        },
+        {
+            "name": "Joshua",
+            "password": "Joshua"
+        }
+    ]
 }

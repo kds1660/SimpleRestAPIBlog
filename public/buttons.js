@@ -1,6 +1,6 @@
 function ButtonItem() {
     delBtn = $('<input class="delButton action" type="button" value="Delete">');
-    delBtn.click(function (e) {
+    delBtn.click(function () {
         deleteTopic($(this).closest('tr').find('th').contents().get(0).nodeValue);
         $(this).closest('tr').remove();
         $('.toggleDiv').remove();
@@ -18,7 +18,6 @@ function ButtonItem() {
             date: new Date(),
             oldTopic: $(this).parent().find('#oldTopic').get(0).value
         };
-        console.log(newTopic)
         editTopic($(this).parent().find('.name').get(0).value, newTopic);
 
     });
@@ -54,7 +53,7 @@ function ButtonItem() {
             var reader=new FileReader();
             reader.onload=function (e) {
                 preview.attr('src',e.target.result);
-            }
+            };
             if (file&&file.type.match('image.*')) {
                 reader.readAsDataURL(file)
             } else {
@@ -72,7 +71,7 @@ function ButtonItem() {
             author: $(this).parent().find('.author').get(0).value,
             img:$(this).parent().find('#previewImg').get(0).src,
             text: $(this).parent().find('.text').get(0).value,
-            date: new Date(),
+            date: new Date()
         };
         editTopic($(this).parent().find('.name').get(0).value, newTopic);
 
@@ -95,7 +94,7 @@ function ButtonItem() {
             var reader=new FileReader();
             reader.onload=function (e) {
                 preview.attr('src',e.target.result);
-            }
+            };
             if (file&&file.type.match('image.*')) {
                 reader.readAsDataURL(file)
             } else {
@@ -150,7 +149,6 @@ function ButtonItem() {
         };
         if (newUser.name===''||newUser.password==='') {
             var span = $('<span>Enter password and user</span>');
-            console.log(span)
             $(span).insertBefore($(this));
         } else {  addUser(newUser,$(this))}
 
