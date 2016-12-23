@@ -23,6 +23,7 @@ router
             next(err);
         }
     })
+
     .put('/:name/', function (req, res, next) {
         console.log('put start')
         var body = req.body;

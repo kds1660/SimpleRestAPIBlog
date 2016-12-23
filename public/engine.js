@@ -6,8 +6,11 @@ var ENUM_BTN = {
     login: 'login',
     exit: 'exit',
     view: 'view',
-    addTopic: 'addTopic'
+    addTopic: 'addTopic',
+    register:'reg',
+    addUser:'addUser'
 };
+
 function init() {
     $.ajax({
         url: "/api/topic",
@@ -35,6 +38,7 @@ function init() {
                     var editBtn = buttons.returnBtn(ENUM_BTN.edit);
                     var delBtn = buttons.returnBtn(ENUM_BTN.delete);
                     var viewBtn = buttons.returnBtn(ENUM_BTN.view);
+
                     if ($('#logged').text().substring(8) && json[index]['author'] === $('#logged').text().substring(8)) {
                         editBtn.appendTo(th);
                         delBtn.appendTo(th);
@@ -49,13 +53,6 @@ function init() {
             $('#main').DataTable({
                 "processing": true
             });
-
-
-           /* $('tbody tr').click(function (e) {
-                showText($(this).find('th').contents().get(0).nodeValue, $(this));
-                var buttons = new ButtonItem;
-                $(this).find('.saveButton').replaceWith(buttons.returnBtn(ENUM_BTN.edit));
-            });*/
         })
         .fail(function (xhr, status, errorThrown) {
             alert("Sorry, there was a problem!");
@@ -106,6 +103,22 @@ function editTopic(url, data) {
     })
 }
 
+function addUser(data,$that) {
+    $.ajax({
+        url: "/api/login/",
+        type: "PUT",
+        data: data,
+        success:function()  {
+            $('.ui-button').click();
+        },
+        error:function (xhr) {
+            console.log($that);
+            var span = $('<span>User exist</span>');
+            $(span).insertBefore($that);
+        }
+    })
+}
+
 function login(data) {
     var result = $.ajax({
         url: "/api/login/",
@@ -118,20 +131,18 @@ function login(data) {
         $('span').remove();
         $('div#login').get(0).remove();
         var buttons = new ButtonItem;
-        var button = buttons.returnBtn(ENUM_BTN.exit)
-        console.log(result.responseText)
+        var button = buttons.returnBtn(ENUM_BTN.exit);
         $('.loginButton').replaceWith(button);
         $('<div id="logged"></div>').insertBefore('.exitButton');
         $('#logged').text('Logged  ' + JSON.parse(result.responseText).name)
-        var addButton = buttons.returnBtn(ENUM_BTN.addTopic)
-        console.log(buttons.returnBtn(ENUM_BTN.addTopic))
+        var addButton = buttons.returnBtn(ENUM_BTN.addTopic);
         addButton.insertAfter($('.exitButton'));
 
     })
     result.fail(function (xhr, status, errorThrown) {
         $('span').remove();
         var span = $('<span>Incorect login/password, try again or register</span>');
-        $(span).insertBefore('.loginButton')
+        $(span).insertBefore('.loginButton');
     })
 }
 
@@ -150,7 +161,14 @@ function addTemplate(tmpl, $that) {
 
     } else if (tmpl === 'login') {
         var $copy = $('#loginTmpl').children().clone();
-    }
+    } else if (tmpl === 'reg') {
+        $('#loginTmpl').find('.share').remove();
+    var $copy = $('#loginTmpl').children().clone();
+        var buttons = new ButtonItem;
+        var add = buttons.returnBtn(ENUM_BTN.addUser);
+        add.appendTo($copy);
+
+}
     else if (tmpl === 'add') {
         var $copy = $('#editTmpl').children().clone();
         var buttons = new ButtonItem;
@@ -188,5 +206,7 @@ $(document).ready(function () {
     addTemplate('login').insertBefore('#wrapper');
     var add = buttons.returnBtn(ENUM_BTN.login)
         .insertAfter('div#login');
+    var reg = buttons.returnBtn(ENUM_BTN.register)
+        .insertAfter(add);
 
 });

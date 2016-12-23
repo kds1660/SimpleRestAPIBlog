@@ -30,13 +30,23 @@ function ButtonItem() {
         addTemplate('login').insertBefore('#wrapper');
         var add = loginBtn
             .insertBefore('#wrapper');
+        var reg=registerBtn
+            .insertAfter(add);
         init();
     });
 
     editBtn = $('<input class="editButton action" type="button" value="Edit">');
     editBtn.click(function (e) {
         e.stopPropagation();
-        $(addTemplate('edit', $(this)).dialog({modal: true, minWidth: 1500}));
+        $(addTemplate('edit', $(this)).dialog({
+            modal: true,
+            minWidth: 1500,
+            closeText : '',
+            close: function (ev, ui) {
+            $(this).dialog("destroy");
+            $(this).remove();
+        }
+        }));
 
         $('.image').change(function() {
             var file = $(this)[0].files[0];
@@ -71,7 +81,15 @@ function ButtonItem() {
 
     addTopicBtn = $('<input class="addTopicBtn action" type="button" value="Add topic">');
     addTopicBtn.click(function () {
-        $(addTemplate('add', $(this)).dialog({modal: true, minWidth: 1500}));
+        $(addTemplate('add', $(this)).dialog({
+            modal: true,
+            minWidth: 1500,
+            closeText : '',
+            close: function (ev, ui) {
+                $(this).dialog("destroy");
+                $(this).remove();
+            }
+        }));
         $('.image').change(function() {
             var file = $(this)[0].files[0];
             var preview=$(this).prev();
@@ -91,6 +109,7 @@ function ButtonItem() {
 
     loginBtn = $('<input class="loginButton share" type="button" value="login">');
     loginBtn.click(function (e) {
+        $('.registerButton').remove();
         var loginUser = {
             name: $('.login').get(0).value,
             password: $('.login').get(1).value
@@ -101,8 +120,43 @@ function ButtonItem() {
     viewBtn = $('<input class="viewButton action" type="button" value="View">');
     viewBtn.click(function (e) {
         e.stopPropagation();
-        $(addTemplate('view', $(this)).dialog({modal: true, minWidth: $(document).width()-100}));
-    })
+        $(addTemplate('view', $(this)).dialog({
+            modal: true,
+            minWidth: $(document).width()-100,
+            closeText : '',
+            close: function (ev, ui) {
+                $(this).dialog("destroy");
+                $(this).remove();
+            }
+        }));
+    });
+
+    registerBtn = $('<input class="registerButton share" type="button" value="Register">');
+    registerBtn.click(function (e) {
+        $(addTemplate('reg').dialog({
+            modal: true,
+            minWidth: 1500,
+            closeText : '',
+            close: function (ev, ui) {
+                $(this).dialog("destroy");
+                $(this).remove();
+            }
+        }));
+    });
+    addUserBtn = $('<input class="registerButton share" type="button" value="Register">');
+    addUserBtn.click(function (e) {
+        $(this).parent().find('span').remove();
+        var newUser = {
+            name: $(this).parent().find('.login').get(0).value,
+            password: $(this).parent().find('.login').get(1).value,
+        };
+        if (newUser.name===''||newUser.password==='') {
+            var span = $('<span>Enter password and user</span>');
+            console.log(span)
+            $(span).insertBefore($(this));
+        } else {  addUser(newUser,$(this))}
+
+    });
 
     this.returnBtn = function (button) {
         if (button === 'add') {
@@ -125,6 +179,12 @@ function ButtonItem() {
         }
         else if (button === 'addTopic') {
             return addTopicBtn;
+        }
+        else if (button === 'reg') {
+            return registerBtn;
+        }
+        else if (button === 'addUser') {
+            return addUserBtn;
         }
     };
 }

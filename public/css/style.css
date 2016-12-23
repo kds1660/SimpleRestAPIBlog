@@ -1,65 +1,68 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    padding: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
-  color: #00B7FF;
+    color: #00B7FF;
 }
 
 .first {
-  width: 30%;
-  padding: 10px;
-  background-color: oldlace;
-  border: double;
+    width: 30%;
+    padding: 10px;
+    background-color: oldlace;
+    border: double;
 }
 
 .edit {
-  padding: 5px;
-  display: block;
-  margin: 5px;
-  margin-left:100px;
+    padding: 5px;
+    display: block;
+    margin: 5px;
+    margin-left: 100px;
 }
+
 .login {
-  display: block;
+    display: block;
 }
 
 span {
-  display: block;
+    display: block;
 }
-#addText{
-  float:left;
-  font-size: large;
-  background-color: lightblue;
+
+#addText {
+    float: left;
+    font-size: large;
+    background-color: lightblue;
 }
 
 input[type=button].action {
-
-  border-radius: 5px;
-  margin-right: 5px;
-  margin-left: 5px;
-  !important;
+    border-radius: 5px;
+    margin-right: 5px;
+    margin-left: 5px;
+!important;
 }
 
-
-table.dataTable tbody tr:hover  {
-  background-color: aliceblue;
+table.dataTable tbody tr:hover {
+    background-color: aliceblue;
 }
 
 #logged {
-  font-size: large;
-  margin:5px;
+    font-size: large;
+    margin: 5px;
 }
 
 span {
-  font-size: large;
-  color: red;
+    font-size: large;
+    color: red;
 }
+
 #textDiv {
-  font-size: 18px;
-  padding-bottom: 12px;
-  text-align: justify;
+    font-size: 18px;
+    padding-bottom: 12px;
+    text-align: justify;
 }
-#preview{
-  float: left;
+
+#preview {
+    float: left;
+    margin-right: 15px;
 }

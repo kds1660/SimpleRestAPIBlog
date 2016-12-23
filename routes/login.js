@@ -19,6 +19,20 @@ router
         }
 
     })
+.put('/', function (req, res, next) {
+    var user = users.find(function (elem) {
+        return (elem.name == req.body.name);
+    });
+    if(!user) {
+        users.push({name:req.body.name, password:req.body.password});
+        res.send(200);
+    } else {
+        var err = new Error('User exists');
+        err.status = 404;
+        next(err);
+    }
+
+})
 
 
 function initUsers() {
