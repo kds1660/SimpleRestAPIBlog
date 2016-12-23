@@ -97,8 +97,8 @@ function editTopic(url, data) {
                init();
                $('.ui-button').click();
        },
-       error:function (xhr) {
-           alert(xhr.status)
+       error:function (xhr,status,err) {
+           alert(err);
        }
     })
 }
@@ -129,7 +129,7 @@ function login(data) {
     result.done(function () {
         init();
         $('span').remove();
-        $('div#login').get(0).remove();
+        $('div#login').remove();
         var buttons = new ButtonItem;
         var button = buttons.returnBtn(ENUM_BTN.exit);
         $('.loginButton').replaceWith(button);
@@ -147,12 +147,20 @@ function login(data) {
         $(span).insertBefore('.loginButton');
     })
 }
-
+function prepareTemplate(template) {
+    if (template.attr('id')) template.attr('id',template.attr('id').slice(0,-3))
+    template.children().each(function () {
+    if ($(this).attr('id'))    $(this).attr('id',$(this).attr('id').slice(0,-3))
+        if ($(this).attr('class'))    $(this).attr('class',$(this).attr('class').slice(0,-3))
+    })
+}
 function addTemplate(tmpl, $that) {
     if (tmpl === 'table') {
         var $copy = $('#tableTmpl').children().clone();
+        prepareTemplate($copy);
     } else if (tmpl === 'edit' && $that) {
         var $copy = $('#editTmpl').children().clone();
+        prepareTemplate($copy);
         var buttons = new ButtonItem;
         var save = buttons.returnBtn(ENUM_BTN.save);
         save.appendTo($copy);
@@ -162,12 +170,13 @@ function addTemplate(tmpl, $that) {
         returnText($that.parent().parent().find('.name').text());
 
     } else if (tmpl === 'login') {
-        $('#loginTmpl').find('.share').remove();
+
         var $copy = $('#loginTmpl').children().clone();
+        prepareTemplate($copy);
+
     } else if (tmpl === 'reg') {
-        $('#loginTmpl').find('.share').remove();
-        $('#loginTmpl').find('span').remove();
     var $copy = $('#loginTmpl').children().clone();
+        prepareTemplate($copy);
         var buttons = new ButtonItem;
         var add = buttons.returnBtn(ENUM_BTN.addUser);
         add.appendTo($copy);
@@ -175,12 +184,11 @@ function addTemplate(tmpl, $that) {
 }
     else if (tmpl === 'add') {
         var $copy = $('#editTmpl').children().clone();
+        prepareTemplate($copy);
         var buttons = new ButtonItem;
         var add = buttons.returnBtn(ENUM_BTN.add);
         add.appendTo($copy);
         $copy.children().get(1).value = $('#logged').text().substring(8);
-        $copy.find('textarea.edit').text('');
-        $copy.find('#previewImg').attr('src', '');
         $copy.find('.author').eq(0).attr('readonly', true);
     }
     else if (tmpl === 'view') {
@@ -195,6 +203,7 @@ function addTemplate(tmpl, $that) {
             second: 'numeric'
         };
         var $copy = $('#viewTmpl').children().clone();
+        prepareTemplate($copy);
         $copy.find('h2').text($that.closest('tr').find('.name').text());
         $copy.find('#authorP').text('Written by '+$that.closest('tr').find('.author').text());
         $copy.find('#dateP').text(new Date($that.closest('tr').find('.date').text()).toLocaleString("en-US", options));
