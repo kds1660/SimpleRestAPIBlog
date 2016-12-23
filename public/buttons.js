@@ -75,8 +75,7 @@ function ButtonItem() {
             date: new Date(),
         };
         editTopic($(this).parent().find('.name').get(0).value, newTopic);
-        init();
-        $('.ui-button').click();
+
     });
 
     addTopicBtn = $('<input class="addTopicBtn action" type="button" value="Add topic">');

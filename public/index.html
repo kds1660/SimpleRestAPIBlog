@@ -21,7 +21,7 @@
 
 <div id="wrapper"></div>
 <div id="tableTmpl" style="display: none;">
-    <table id="main">
+    <table id="mainTmp">
         <thead>
         <tr>
             <th>Name</th>
@@ -37,28 +37,28 @@
 
 <div id="editTmpl" style="display: none;">
     <div>
-        <input type='text' class='edit name' placeholder="Topic name">
-        <input type='text' class='edit author' placeholder="Author">
-        <img id="previewImg" height="200"/>
-        <input class='image' type="file" name="pic[]" accept="image/*">
-        <textarea class='edit text' cols='100' rows='20' placeholder="Text there"></textarea>
-        <input type='text' id="oldTopic" style="display: none;">
+        <input type='text' class='edit nameTmp' placeholder="Topic name">
+        <input type='text' class='edit authorTmp' placeholder="Author">
+        <img id="previewImgTmp" height="200"/>
+        <input class='imageTmp' type="file" name="pic[]" accept="image/*">
+        <textarea class='edit textTmp' cols='100' rows='20' placeholder="Text there"></textarea>
+        <input type='text' id="oldTopicTmp" style="display: none;">
     </div>
 </div>
 
 <div id="loginTmpl" style="display: none;">
-    <div id="login">
-        <input type="text" class="login">
-        <input type="password" class="login"></div>
+    <div id="loginTmp">
+        <input type="text" class="loginTmp">
+        <input type="password" class="loginTmp"></div>
 </div>
 
 <div id="viewTmpl" style="display: none;">
-    <div id="viewDiv">
-        <h2 id="textH"></h2>
-        <p id="authorP"></p>
-        <p id="dateP"></p>
-        <img id="preview" height="200"/>
-        <div id="textDiv">
+    <div id="viewDivTmp">
+        <h2 id="textHTmp"></h2>
+        <p id="authorPTmp"></p>
+        <p id="datePTmp"></p>
+        <img id="previewTmp" height="200"/>
+        <div id="textDivTmp">
         </div>
     </div>
 </div>
