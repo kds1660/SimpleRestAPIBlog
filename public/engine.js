@@ -163,6 +163,7 @@ function addTemplate(tmpl, $that) {
         var $copy = $('#loginTmpl').children().clone();
     } else if (tmpl === 'reg') {
         $('#loginTmpl').find('.share').remove();
+        $('#loginTmpl').find('span').remove();
     var $copy = $('#loginTmpl').children().clone();
         var buttons = new ButtonItem;
         var add = buttons.returnBtn(ENUM_BTN.addUser);

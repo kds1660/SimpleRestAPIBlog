@@ -109,7 +109,6 @@ function ButtonItem() {
 
     loginBtn = $('<input class="loginButton share" type="button" value="login">');
     loginBtn.click(function (e) {
-        $('.registerButton').remove();
         var loginUser = {
             name: $('.login').get(0).value,
             password: $('.login').get(1).value
