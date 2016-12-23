@@ -74,7 +74,7 @@ function returnText(url) {
     })
     result.done(function () {
         console.log('done')
-        $('textarea.edit, #textDiv').text(JSON.parse(result.responseText).text);
+        $('textarea.text, #textDiv').text(JSON.parse(result.responseText).text);
         $('#preview, #previewImg').attr('src',JSON.parse(result.responseText).img);
     })
 }
