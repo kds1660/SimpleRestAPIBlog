@@ -74,7 +74,7 @@ function returnText(url) {
     result.done(function () {
         $('textarea.text, #textDiv').html(JSON.parse(result.responseText).text);
         $('#preview, #previewImg').attr('src', JSON.parse(result.responseText).img);
-        tinyMCE.activeEditor.setContent(JSON.parse(result.responseText).text);
+        if (tinyMCE.activeEditor) tinyMCE.activeEditor.setContent(JSON.parse(result.responseText).text);
     })
 }
 
