@@ -4,22 +4,28 @@
     <meta charset="UTF-8">
     <title>Getting REST</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.13/js/dataTables.jqueryui.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.13/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
     <script src="buttons.js"></script>
     <script src="engine.js"></script>
 
     <link rel="stylesheet" type="text/css" href="/css/style.css"/>
-    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/cupertino/jquery-ui.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+
 
 </head>
 <body>
 
+<div class="alert alert-danger collapse" role="alert">
+</div>
+<div class="alert alert-success collapse" role="alert">
+</div>
+
 <div id="wrapper"></div>
+
 <div id="tableTmpl" style="display: none;">
     <table id="mainTmp">
         <thead>
@@ -35,36 +41,81 @@
     </table>
 </div>
 
-<div id="editTmpl" style="display: none;">
-    <div>
-        <input type='text' class='edit nameTmp' placeholder="Topic name">
-        <input type='text' class='edit authorTmp' placeholder="Author">
-        <img id="previewImgTmp" height="200"/>
-        <input class='imageTmp' type="file" name="pic[]" accept="image/*">
-        <textarea class='edit textTmp' cols='100' rows='20' placeholder="Text there"></textarea>
-        <input type='text' id="oldTopicTmp" style="display: none;">
-    </div>
-</div>
+<script id="mustache_edit" type="text/template">
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times</span></button>
+                    <h2>{{text}}</h2>
+                </div>
+                <div class="modal-body">
+                    <input type='text' class='edit name' placeholder="Topic name" value="{{topic}}">
+                    <input type='text' class='edit author' placeholder="Author" value="{{author}}">
+                    <img id="previewImg" height="200"/>
+                    <input class='image' type="file" name="pic[]" accept="image/*">
+                    <textarea class='edit text' placeholder="Text there"></textarea>
+                    <input type='text' id="oldTopic" style="display: none;" value="{{oldTopic}}">
+                </div>
+                <div class="modal-footer">
+                    <div class="alert alert-danger collapse" role="alert">
+                    </div>
+                </div>
 
-<div id="loginTmpl" style="display: none;">
-    <div id="loginTmp">
-        <input type="text" class="loginTmp">
-        <input type="password" class="loginTmp"></div>
-</div>
-
-<div id="viewTmpl" style="display: none;">
-    <div id="viewDivTmp">
-        <h2 id="textHTmp"></h2>
-        <p id="authorPTmp"></p>
-        <p id="datePTmp"></p>
-        <img id="previewTmp" height="200"/>
-        <div id="textDivTmp">
+            </div>
         </div>
     </div>
-</div>
-</body>
-<body>
+</script>
 
+<script id="mustache_login" type="text/template">
+    <div id="login">
+        <input type="text" class="login">
+        <input type="password" class="login"></div>
+</script>
+
+<script id="mustache_user" type="text/template">
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times</span></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="login">
+                    <input type="password" class="login"></div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="mustache_view" type="text/template">
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times</span></button>
+                </div>
+                <div class="modal-body">
+                    <h2 id="textH">{{topic}}</h2>
+                    <p id="authorP">{{author}}</p>
+                    <p id="dateP">{{date}}</p>
+                    <img id="preview" height="200"/>
+                    <div id="textDiv">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
 
 </body>
 </html>

@@ -7,8 +7,8 @@ var ENUM_BTN = {
     exit: 'exit',
     view: 'view',
     addTopic: 'addTopic',
-    register:'reg',
-    addUser:'addUser'
+    register: 'reg',
+    addUser: 'addUser'
 };
 
 function init() {
@@ -65,7 +65,6 @@ function init() {
 }
 
 
-
 function returnText(url) {
     var result = $.ajax({
         url: "/api/topic/" + url,
@@ -73,8 +72,9 @@ function returnText(url) {
         dataType: "json"
     });
     result.done(function () {
-        $('textarea.text, #textDiv').text(JSON.parse(result.responseText).text);
-        $('#preview, #previewImg').attr('src',JSON.parse(result.responseText).img);
+        $('textarea.text, #textDiv').html(JSON.parse(result.responseText).text);
+        $('#preview, #previewImg').attr('src', JSON.parse(result.responseText).img);
+        tinyMCE.activeEditor.setContent(JSON.parse(result.responseText).text);
     })
 }
 
@@ -87,30 +87,41 @@ function deleteTopic(url) {
 }
 
 function editTopic(url, data) {
-   $.ajax({
+    $.ajax({
         url: "/api/topic/" + url,
         type: "PUT",
         data: data,
-       success:function()  {
-               $('.wrapper').text('');
-               init();
-               $('.ui-button').click();
-       },
-       error:function (xhr,status,err) {
-           alert(err);
-       }
+        success: function () {
+            console.log('OK')
+            $('.wrapper').text('');
+            init();
+            $("#myModal").removeClass("in");
+            $(".modal-backdrop").remove();
+            $("#myModal").hide();
+        },
+        error: function (xhr, status, err) {
+            alert(err);
+        }
     })
 }
 
-function addUser(data,$that) {
+function addUser(data, $that) {
     $.ajax({
         url: "/api/login/",
         type: "PUT",
         data: data,
-        success:function()  {
+        success: function () {
             $('.ui-button').click();
+            $("#myModal").removeClass("in");
+            $(".modal-backdrop").remove();
+            $("#myModal").hide();
+            $('.alert-success').html('User registered, try login');
+            $('.alert-success').show();
+            setTimeout(function () {
+                $('.alert-success').hide();
+            }, 1500);
         },
-        error:function (xhr) {
+        error: function (xhr) {
             console.log($that);
             var span = $('<span>User exist</span>');
             $(span).insertBefore($that);
@@ -127,7 +138,6 @@ function login(data) {
     });
     result.done(function () {
         init();
-        $('span').remove();
         $('div#login').remove();
         var buttons = new ButtonItem;
         var button = buttons.returnBtn(ENUM_BTN.exit);
@@ -137,58 +147,76 @@ function login(data) {
         var addButton = buttons.returnBtn(ENUM_BTN.addTopic);
         addButton.insertAfter($('.exitButton'));
 
-        $('.share').get(0).remove();
+        $('.registerButton').get(0).remove();
 
     })
     result.fail(function (xhr, status, errorThrown) {
-        $('span').remove();
-        var span = $('<span>Incorect login/password, try again or register</span>');
-        $(span).insertBefore('.loginButton');
+        $('.alert-danger').html('Invalid User name or password');
+        $('.alert-danger').show();
+        setTimeout(function () {
+            $('.alert-danger').hide();
+        }, 1500);
     })
 }
 function prepareTemplate(template) {
-    if (template.attr('id')) template.attr('id',template.attr('id').slice(0,-3))
-    template.children().each(function () {
-    if ($(this).attr('id'))    $(this).attr('id',$(this).attr('id').slice(0,-3));
-        if ($(this).attr('class'))    $(this).attr('class',$(this).attr('class').slice(0,-3))
+    if (template.attr('id')) template.attr('id', template.attr('id').slice(0, -3))
+    template.find('*').each(function () {
+        if ($(this).attr('id')) $(this).attr('id', $(this).attr('id').slice(0, -3));
+        if ($(this).attr('class')) $(this).attr('class', $(this).attr('class').slice(0, -3))
     })
 }
 function addTemplate(tmpl, $that) {
+    $('#myModal').remove();
     if (tmpl === 'table') {
         var $copy = $('#tableTmpl').children().clone();
         prepareTemplate($copy);
     } else if (tmpl === 'edit' && $that) {
-        var $copy = $('#editTmpl').children().clone();
-        prepareTemplate($copy);
+
+        var data = {
+            topic: $that.closest('tr').find('.name').text(),
+            author: $that.closest('tr').find('.author').text(),
+            date: new Date($that.closest('tr').find('.date').text()).toLocaleString("en-US", options),
+            oldTopic: $that.closest('tr').find('.name').text(),
+            text: 'Edit Topic'
+        }
+        template = $('#mustache_edit').html();
+        var $copy = Mustache.to_html(template, data);
+        $copy = $($copy);
         var buttons = new ButtonItem;
         var save = buttons.returnBtn(ENUM_BTN.save);
-        save.appendTo($copy);
-        $copy.children().get(0).value = $that.closest('tr').find('.name').text();
-        $copy.children().get(1).value = $that.closest('tr').find('.author').text();
-        $copy.children().get(5).value = $that.closest('tr').find('.name').text();
+        save.appendTo($copy.find('.modal-footer'));
         returnText($that.parent().parent().find('.name').text());
+        $copy.find('.author').attr('disabled', 'disabled');
 
     } else if (tmpl === 'login') {
-
-        var $copy = $('#loginTmpl').children().clone();
-        prepareTemplate($copy);
+        template = $('#mustache_login').html();
+        var $copy = Mustache.to_html(template);
 
     } else if (tmpl === 'reg') {
-    var $copy = $('#loginTmpl').children().clone();
-        prepareTemplate($copy);
+        template = $('#mustache_user').html();
+        var $copy = Mustache.to_html(template);
+        $copy = $($copy);
         var buttons = new ButtonItem;
         var add = buttons.returnBtn(ENUM_BTN.addUser);
-        add.appendTo($copy);
+        add.appendTo($copy.find('.modal-footer'));
 
-}
+    }
     else if (tmpl === 'add') {
-        var $copy = $('#editTmpl').children().clone();
-        prepareTemplate($copy);
+        var data = {
+            topic: '',
+            author: $that.closest('tr').find('.author').text(),
+            date: new Date($that.closest('tr').find('.date').text()).toLocaleString("en-US", options),
+            text: 'Add new topic'
+        }
+        template = $('#mustache_edit').html();
+        var $copy = Mustache.to_html(template, data);
+        $copy = $($copy);
+
         var buttons = new ButtonItem;
         var add = buttons.returnBtn(ENUM_BTN.add);
-        add.appendTo($copy);
-        $copy.children().get(1).value = $('#logged').text().substring(8);
-        $copy.find('.author').eq(0).attr('readonly', true);
+        add.appendTo($copy.find('.modal-footer'));
+        $copy.find('.author').get(0).value = $('#logged').text().substring(8);
+        $copy.find('.author').attr('disabled', 'disabled');
     }
     else if (tmpl === 'view') {
         var options = {
@@ -201,14 +229,20 @@ function addTemplate(tmpl, $that) {
             minute: 'numeric',
             second: 'numeric'
         };
-        var $copy = $('#viewTmpl').children().clone();
-        prepareTemplate($copy);
-        $copy.find('h2').text($that.closest('tr').find('.name').text());
-        $copy.find('#authorP').text('Written by '+$that.closest('tr').find('.author').text());
-        $copy.find('#dateP').text(new Date($that.closest('tr').find('.date').text()).toLocaleString("en-US", options));
+        /* var $copy = $('#viewTmpl').children().clone();
+         prepareTemplate($copy);*/
+        var data = {
+            topic: $that.closest('tr').find('.name').text(),
+            author: 'Written by ' + $that.closest('tr').find('.author').text(),
+            Date: new Date($that.closest('tr').find('.date').text()).toLocaleString("en-US", options)
+        };
+
+        template = $('#mustache_view').html();
+        var $copy = Mustache.to_html(template, data);
+        $copy = $($copy);
         returnText($that.closest('tr').find('.name').text());
     }
-    return $copy
+    return $($copy)
 }
 
 
@@ -220,5 +254,4 @@ $(document).ready(function () {
         .insertAfter('div#login');
     var reg = buttons.returnBtn(ENUM_BTN.register)
         .insertAfter(add);
-
 });
