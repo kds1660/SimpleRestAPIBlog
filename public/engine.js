@@ -143,7 +143,7 @@ function login(data) {
         var button = buttons.returnBtn(ENUM_BTN.exit);
         $('.loginButton').replaceWith(button);
         $('<div id="logged"></div>').insertBefore('.exitButton');
-        $('#logged').text('Logged  ' + JSON.parse(result.responseText).name);
+        $('#logged').text('Logged  ' + JSON.parse(result.responseText)[0].username);
         var addButton = buttons.returnBtn(ENUM_BTN.addTopic);
         addButton.insertAfter($('.exitButton'));
 

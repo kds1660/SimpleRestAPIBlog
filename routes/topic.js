@@ -1,65 +1,114 @@
 var express = require('express');
-var Topic = require('./../model/topicModel');
+var mongoose = require('mongoose');
 var router = express.Router();
 var fs = require('fs');
 
-var topics = initTopics();
+var TopicSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        unique: true,
+        required: true
+    },
+    author: {
+        type: String,
+        required: true
+    },
+    img: {
+        type: String,
+        required: false
+    },
+    text: {
+        type: String,
+        required: true
+    },
+    date: {
+        type: Date,
+        required: true
+    }
+});
+var Topic = mongoose.model('Topic', TopicSchema);
+var topicsData = JSON.parse(fs.readFileSync('./data/topics.json'));
+topicsData.topics.forEach(function (element) {
+    var topic= new Topic({name:element.name,author:element.author,img:element.img,text:element.text,date:element.date});
+    topic.save(function(err) {
+        if (err) console.log(err);
+        console.log('Topic saved successfully!');
+    });
+});
+
 router
     .get('/', function (req, res, next) {
-        res.json(topics.map(function (el) {
-            return el.getSimpleModel();
-        }));
+        Topic.find({}, function(err, topic) {
+            if (err) throw err;
+            if(topic.length) {
+                res.json(topic.map(function (el) {
+                 return {name: el.name,
+                     author: el.author,
+                     date: el.date};
+                 }));
+            } else {
+                err = new Error('Not Found');
+                err.status = 404;
+                next(err);
+            }
+        });
     })
     .get('/:name/', function (req, res, next) {
-        var topic = topics.find(function (elem) {
-            return elem.name == req.params.name;
+        Topic.find({name:req.params.name}, function(err, topic) {
+            if (err) throw err;
+            if(topic.length) {
+                res.json(topic[0]);
+            }
+            else {
+                err = new Error('Not Found');
+                err.status = 404;
+                next(err);
+            }
         });
-        if(topic) {
-            console.log(topic)
-            res.json(topic);
-        } else {
-            var err = new Error('Not Found');
-            err.status = 404;
-            next(err);
-        }
     })
 
     .put('/:name/', function (req, res, next) {
-        console.log('put start')
         var body = req.body;
-        var name=body.oldTopic;
-        topics = topics.filter(function (el) {
-            return el.name !== name
-        });
+        var oldname=body.oldTopic;
 
-        topics.push(new Topic(body.name, body.author, body.img, body.text, body.date));
-        writeTopic();
-        res.send(200);
+        if(oldname) {
+            Topic.findOneAndUpdate({ name: oldname },
+                { name: body.name,
+                    author:body.author,
+                    img:body.img,
+                    text:body.text,
+                    date:body.date
+                }, function(err) {
+                if (err) {
+                    console.log('error')
+                    err = new Error('Unnown error update');
+                    err.status = 404;
+                    next(err);
+                }else res.send(200);
+            });
+        }else {
+            newTopic=Topic({name: body.name,
+                author:body.author,
+                img:body.img,
+                text:body.text,
+                date:body.date})
+            newTopic.save(function(err) {
+                if (err) {
+                    console.log('error')
+                    err = new Error('Topic exists');
+                    err.status = 409;
+                    next(err);
+                }else res.send(200);
+            });
+        }
     })
+
     .delete('/:name', function (req, res, next) {
         var name = req.params.name;
-        if(name == undefined || name.length == 0) throw new Error("Name should be request parameter");
-        topics = topics.filter(function (el) {
-            return el.name !== name
+        Topic.remove({ name: name }, function(err) {
+            if (err) throw err;
+            res.send(200);
         });
-        writeTopic();
-        res.send(200);
     });
-
-function initTopics() {
-    var topics = [];
-    var topicsData = JSON.parse(fs.readFileSync('./data/topics.json'));
-    topicsData.topics.forEach(function (element) {
-        topics.push(new Topic(element.name, element.author, element.img, element.text, element.date));
-    });
-    return topics;
-}
-function writeTopic() {
-    var obj={topics:[]};
-    for(var i=0;i<topics.length;i++) {
-        obj.topics.push(topics[i]);
-    }
-    fs.writeFile('./data/topics.json',JSON.stringify(obj,null,4));
-}
 
 module.exports = router;
