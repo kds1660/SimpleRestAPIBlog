@@ -52,6 +52,7 @@ function init() {
                         th.addClass(key);
                         th.text(json[index][key]);
                         if (key==='comments')  th.text(json[index][key]+' comments');
+                        if (key==='date')  th.text(new Date(json[index][key]).toLocaleString("en-US", options));
                         th.appendTo(tr);
                     }
 
