@@ -200,6 +200,7 @@ function viewComments(url) {
     result.done(function (json) {
         $.each(json, function (index) {
            var comment= addTemplate('commentsView',"", json[index],true);
+
             if ($('#logged').text().substring(8)===json[index].author) {
                 var buttons = new ButtonItem;
                 var delBtn = buttons.returnBtn(ENUM_BTN.deleteComment);
@@ -309,6 +310,7 @@ function addTemplate(tmpl, $that,data,notRemove) {
         var comments=buttons.returnBtn(ENUM_BTN.viewComments);
         comments.appendTo($copy.find('.modal-footer'));
         returnText($that.closest('tr').find('.name').text());
+
     }else if (tmpl === 'commentsView') {
         data.date= new Date(data.date.toLocaleString("en-US", options))
         template = $('#mustache_comment').html();

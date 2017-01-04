@@ -94,6 +94,7 @@ function ButtonItem() {
             forced_root_block: ''
         });
 
+
         $('.image').change(function () {
             var file = $(this)[0].files[0];
             var preview = $(this).prev();
@@ -169,14 +170,26 @@ function ButtonItem() {
     editComment = $('<input class="editBtn btn-danger" type="button" value="Edit">');
     editComment.click(function (e) {
         $(this).parent().find('.panel-body').eq(0).attr('contentEditable','true');
+        $(this).parent().find('.panel-body').eq(0).attr('id','editable');
         $(this).parent().find('.panel-body').eq(0).focus();
+
         var buttons = new ButtonItem;
         var saveBtn=buttons.returnBtn(ENUM_BTN.saveComment);
+        tinymce.init({
+            width: "100%",
+            height: "100%",
+            selector: '#editable',
+            force_br_newlines: false,
+            force_p_newlines: false,
+            forced_root_block: ''
+        });
         $(e.target).replaceWith(saveBtn);
+
 
     });
     saveComment = $('<input class="editBtn btn-primary" type="button" value="Save">');
     saveComment.click(function (e) {
+
         $(this).parent().find('.panel-body').eq(0).attr('contentEditable','false');
         var buttons = new ButtonItem;
         var editBtn=buttons.returnBtn(ENUM_BTN.editComment);
@@ -184,8 +197,10 @@ function ButtonItem() {
         console.log($(this).parent().find('.panel-body').text());
         saveComments($(this).parent().find('#mongoId').text(),{
             name:$('#textH').text(),
-            text:$(this).parent().find('.panel-body').text()
+            text:tinyMCE.activeEditor.getContent({format: 'raw'})
         });
+        tinymce.remove();
+
         $(e.target).replaceWith(editBtn);
     });
 
