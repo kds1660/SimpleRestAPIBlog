@@ -128,6 +128,8 @@ function ButtonItem() {
         $('#myModal').modal('show');
     });
 
+
+
     registerBtn = $('<input class="registerButton btn btn-success" type="button" value="Register">');
     registerBtn.click(function (e) {
         var modalText = addTemplate('reg', $(this));
@@ -152,7 +154,42 @@ function ButtonItem() {
 
     });
 
-    this.returnBtn = function (button) {
+    viewCommentsBtn = $('<input class="viewButton btn btn-primary" type="button" value="View comments">');
+    viewCommentsBtn.click(function (e) {
+        $('.panel-default').remove();
+        viewComments($(this).closest('.modal-content').find('h2').text());
+    });
+
+    deleteComment = $('<input class="dellBtn btn-danger" type="button" value="Delete">');
+    deleteComment.click(function (e) {
+        deleteComm($(this).parent().find('#mongoId').text(),{name:$('#textH').text()});
+        $(this).parent().remove();
+    });
+
+    editComment = $('<input class="editBtn btn-danger" type="button" value="Edit">');
+    editComment.click(function (e) {
+        $(this).parent().find('.panel-body').eq(0).attr('contentEditable','true');
+        $(this).parent().find('.panel-body').eq(0).focus();
+        var buttons = new ButtonItem;
+        var saveBtn=buttons.returnBtn(ENUM_BTN.saveComment);
+        $(e.target).replaceWith(saveBtn);
+
+    });
+    saveComment = $('<input class="editBtn btn-primary" type="button" value="Save">');
+    saveComment.click(function (e) {
+        $(this).parent().find('.panel-body').eq(0).attr('contentEditable','false');
+        var buttons = new ButtonItem;
+        var editBtn=buttons.returnBtn(ENUM_BTN.editComment);
+
+        console.log($(this).parent().find('.panel-body').text());
+        saveComments($(this).parent().find('#mongoId').text(),{
+            name:$('#textH').text(),
+            text:$(this).parent().find('.panel-body').text()
+        });
+        $(e.target).replaceWith(editBtn);
+    });
+
+    this.returnBtn = function (button) {//TODO rewrite this!
         if (button === 'add') {
             return addBtn
         } else if (button === 'del') {
@@ -176,6 +213,21 @@ function ButtonItem() {
         }
         else if (button === 'reg') {
             return registerBtn;
+        }
+        else if (button === 'comments') {
+            return viewCommentsBtn;
+        }
+        else if (button === 'editComments') {
+            return editComment;
+        }
+        else if (button === 'delComments') {
+            return deleteComment;
+        }
+        else if (button === 'delComments') {
+            return deleteComment;
+        }
+        else if (button === 'saveComment') {
+            return saveComment;
         }
         else if (button === 'addUser') {
             return addUserBtn;

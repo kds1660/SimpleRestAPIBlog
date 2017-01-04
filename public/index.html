@@ -33,6 +33,7 @@
             <th>Name</th>
             <th>Author</th>
             <th>Date</th>
+            <th>Comments</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -88,7 +89,6 @@
                     <input type="text" class="login">
                     <input type="password" class="login"></div>
                 <div class="modal-footer">
-
                 </div>
             </div>
         </div>
@@ -101,7 +101,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    <button type="button" class="close" onclick="initAndModal()" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times</span></button>
                 </div>
                 <div class="modal-body">
@@ -112,8 +112,25 @@
                     <div id="textDiv">
                     </div>
                 </div>
+                <div class="modal-footer">
+                    <div class="alert alert-danger collapse" role="alert">
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
+</script>
+
+<script id="mustache_comment" type="text/template">
+    <div class="panel panel-default">
+        <div id='mongoId' style="display: none;" >{{_id}}</div>
+        <div class="panel-heading text-left">
+            Writing by {{author}} at   {{date}}
+        </div>
+        <div class="panel-body text-left">{{text}}</div>
+        <div class="footer text-left">
+        </div>
+
     </div>
 </script>
 

@@ -8,8 +8,29 @@ var ENUM_BTN = {
     view: 'view',
     addTopic: 'addTopic',
     register: 'reg',
-    addUser: 'addUser'
+    addUser: 'addUser',
+    viewComments:'comments',
+    deleteComment:'delComments',
+    editComment:'editComments',
+    saveComment:'saveComment'
 };
+var options = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    weekday: 'long',
+    timezone: 'UTC',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric'
+};
+
+function initAndModal() {
+   init();
+    $("#myModal").removeClass("in");
+    $(".modal-backdrop").remove();
+    $("#myModal").hide();
+}
 
 function init() {
     $.ajax({
@@ -30,6 +51,7 @@ function init() {
                         var th = $('<th>');
                         th.addClass(key);
                         th.text(json[index][key]);
+                        if (key==='comments')  th.text(json[index][key]+' comments');
                         th.appendTo(tr);
                     }
 
@@ -86,13 +108,22 @@ function deleteTopic(url) {
     })
 }
 
+function deleteComm(url,data) {
+    $.ajax({
+        url: "/api/comments/"+url,
+        type: "DELETE",
+        dataType: "json",
+        data:data,
+    })
+}
+
 function editTopic(url, data) {
     $.ajax({
         url: "/api/topic/" + url,
         type: "PUT",
         data: data,
         success: function () {
-            console.log('OK')
+            console.log('OK');
             $('.wrapper').text('');
             init();
             $("#myModal").removeClass("in");
@@ -149,7 +180,7 @@ function login(data) {
 
         $('.registerButton').get(0).remove();
 
-    })
+    });
     result.fail(function (xhr, status, errorThrown) {
         $('.alert-danger').html('Invalid User name or password');
         $('.alert-danger').show();
@@ -158,15 +189,54 @@ function login(data) {
         }, 1500);
     })
 }
+
+function viewComments(url) {
+    var result = $.ajax({
+        url: "/api/comments/"+url,
+        type: "GET",
+        dataType: "json"
+    });
+    result.done(function (json) {
+        $.each(json, function (index) {
+           var comment= addTemplate('commentsView',"", json[index],true);
+            if ($('#logged').text().substring(8)===json[index].author) {
+                var buttons = new ButtonItem;
+                var delBtn = buttons.returnBtn(ENUM_BTN.deleteComment);
+                var editBtn=buttons.returnBtn(ENUM_BTN.editComment);
+                editBtn.appendTo(comment);
+                delBtn.appendTo(comment);
+            }
+         comment.appendTo(".modal-footer");
+            console.log();
+            $('html, body, .modal').animate({ scrollTop: $('.panel-default').eq(0).offset().top }, 'slow');
+
+
+        })
+
+        })
+}
+
+function saveComments(url,data) {
+    var result = $.ajax({
+        url: "/api/comments/"+url,
+        type: "PUT",
+        data:data,
+        dataType: "json"
+    });
+    result.done(function (json) {
+
+    })
+}
+
 function prepareTemplate(template) {
-    if (template.attr('id')) template.attr('id', template.attr('id').slice(0, -3))
+    if (template.attr('id')) template.attr('id', template.attr('id').slice(0, -3));
     template.find('*').each(function () {
         if ($(this).attr('id')) $(this).attr('id', $(this).attr('id').slice(0, -3));
         if ($(this).attr('class')) $(this).attr('class', $(this).attr('class').slice(0, -3))
     })
 }
-function addTemplate(tmpl, $that) {
-    $('#myModal').remove();
+function addTemplate(tmpl, $that,data,notRemove) {
+    if (!notRemove) $('#myModal').remove();
     if (tmpl === 'table') {
         var $copy = $('#tableTmpl').children().clone();
         prepareTemplate($copy);
@@ -195,9 +265,12 @@ function addTemplate(tmpl, $that) {
     } else if (tmpl === 'reg') {
         template = $('#mustache_user').html();
         var $copy = Mustache.to_html(template);
+
         $copy = $($copy);
+
         var buttons = new ButtonItem;
         var add = buttons.returnBtn(ENUM_BTN.addUser);
+        console.log(add)
         add.appendTo($copy.find('.modal-footer'));
 
     }
@@ -207,7 +280,7 @@ function addTemplate(tmpl, $that) {
             author: $that.closest('tr').find('.author').text(),
             date: new Date($that.closest('tr').find('.date').text()).toLocaleString("en-US", options),
             text: 'Add new topic'
-        }
+        };
         template = $('#mustache_edit').html();
         var $copy = Mustache.to_html(template, data);
         $copy = $($copy);
@@ -219,28 +292,27 @@ function addTemplate(tmpl, $that) {
         $copy.find('.author').attr('disabled', 'disabled');
     }
     else if (tmpl === 'view') {
-        var options = {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            weekday: 'long',
-            timezone: 'UTC',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric'
-        };
-        /* var $copy = $('#viewTmpl').children().clone();
-         prepareTemplate($copy);*/
+
+
         var data = {
             topic: $that.closest('tr').find('.name').text(),
             author: 'Written by ' + $that.closest('tr').find('.author').text(),
-            Date: new Date($that.closest('tr').find('.date').text()).toLocaleString("en-US", options)
+            date: new Date($that.closest('tr').find('.date').text()).toLocaleString("en-US", options)
         };
+        console.log(data)
 
         template = $('#mustache_view').html();
         var $copy = Mustache.to_html(template, data);
         $copy = $($copy);
+        var buttons = new ButtonItem;
+        var comments=buttons.returnBtn(ENUM_BTN.viewComments);
+        comments.appendTo($copy.find('.modal-footer'));
         returnText($that.closest('tr').find('.name').text());
+    }else if (tmpl === 'commentsView') {
+        data.date= new Date(data.date.toLocaleString("en-US", options))
+        template = $('#mustache_comment').html();
+        var $copy = Mustache.to_html(template, data);
+        $copy = $($copy);
     }
     return $($copy)
 }
@@ -254,4 +326,5 @@ $(document).ready(function () {
         .insertAfter('div#login');
     var reg = buttons.returnBtn(ENUM_BTN.register)
         .insertAfter(add);
+
 });
