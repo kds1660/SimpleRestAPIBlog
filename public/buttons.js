@@ -126,6 +126,9 @@ function ButtonItem() {
         e.stopPropagation();
         var modalText = addTemplate('view', $(this));
         $(modalText).appendTo('#wrapper');
+        $('#myModal').on('hide.bs.modal',function () {
+            initAndModal();
+        });
         $('#myModal').modal('show');
     });
 
@@ -157,8 +160,46 @@ function ButtonItem() {
 
     viewCommentsBtn = $('<input class="viewButton btn btn-primary" type="button" value="View comments">');
     viewCommentsBtn.click(function (e) {
+        console.log($('.panel-default').length)
+        if ( $('.panel-default').length ) {
+            $('.panel-default').remove();
+            tinymce.remove();
+            $('#addCommment').remove();
+            $('.saveNCommBtn').remove();
+        } else {
+            viewComments($(this).closest('.modal-content').find('h2').eq(0).text());
+        }
+    });
+
+    addCommentsBtn = $('<input class="viewButton btn btn-primary" type="button" value="Add comment">');
+    addCommentsBtn.click(function (e) {
+
         $('.panel-default').remove();
-        viewComments($(this).closest('.modal-content').find('h2').text());
+        $('<div id="addCommment">').appendTo(".modal-footer");
+        saveNewComment.appendTo(".modal-footer");
+        tinymce.init({
+            width: "100%",
+            height: "100%",
+            selector: '#addCommment',
+            force_br_newlines: false,
+            force_p_newlines: false,
+            forced_root_block: ''
+        });
+
+     //   console.log($(this).closest('.modal-content').find('h2').text());
+    });
+
+    saveNewComment = $('<input class="saveNCommBtn btn-danger" type="button" value="Save">');
+    saveNewComment.click(function (e) {
+
+        saveComments($(this).closest('.modal-content').find('h2').eq(0).text(),{
+            new:'new',
+            name:$('#logged').text().substring(8),
+            text:tinyMCE.activeEditor.getContent({format: 'raw'})
+        });
+        tinymce.remove();
+        $('#addCommment').remove();
+        $(this).remove();
     });
 
     deleteComment = $('<input class="dellBtn btn-danger" type="button" value="Delete">');
@@ -169,21 +210,23 @@ function ButtonItem() {
 
     editComment = $('<input class="editBtn btn-danger" type="button" value="Edit">');
     editComment.click(function (e) {
-        $(this).parent().find('.panel-body').eq(0).attr('contentEditable','true');
-        $(this).parent().find('.panel-body').eq(0).attr('id','editable');
-        $(this).parent().find('.panel-body').eq(0).focus();
+        if (!tinymce.activeEditor) {
+            $(this).parent().find('.panel-body').eq(0).attr('id','editable');
+            $(this).parent().find('.panel-body').eq(0).focus();
 
-        var buttons = new ButtonItem;
-        var saveBtn=buttons.returnBtn(ENUM_BTN.saveComment);
-        tinymce.init({
-            width: "100%",
-            height: "100%",
-            selector: '#editable',
-            force_br_newlines: false,
-            force_p_newlines: false,
-            forced_root_block: ''
-        });
-        $(e.target).replaceWith(saveBtn);
+            var buttons = new ButtonItem;
+            var saveBtn=buttons.returnBtn(ENUM_BTN.saveComment);
+            tinymce.init({
+                width: "100%",
+                height: "100%",
+                selector: '#editable',
+                force_br_newlines: false,
+                force_p_newlines: false,
+                forced_root_block: ''
+            });
+            $(e.target).replaceWith(saveBtn);
+
+        }
 
 
     });
@@ -194,14 +237,15 @@ function ButtonItem() {
         var buttons = new ButtonItem;
         var editBtn=buttons.returnBtn(ENUM_BTN.editComment);
 
-        console.log($(this).parent().find('.panel-body').text());
         saveComments($(this).parent().find('#mongoId').text(),{
             name:$('#textH').text(),
             text:tinyMCE.activeEditor.getContent({format: 'raw'})
         });
         tinymce.remove();
-
+        $(this).parent().parent().find('.viewButton').click();    //trouble with buttons to many comments, second active first sometimes
         $(e.target).replaceWith(editBtn);
+
+      /*  $('.viewButton').click();*/
     });
 
     this.returnBtn = function (button) {//TODO rewrite this!
@@ -247,5 +291,9 @@ function ButtonItem() {
         else if (button === 'addUser') {
             return addUserBtn;
         }
+        else if (button === 'addComments') {
+            return addCommentsBtn;
+        }
+
     };
 }

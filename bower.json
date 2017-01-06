@@ -1,0 +1,24 @@
+{
+  "name": "kds1",
+  "description": "blog",
+  "main": "app.js",
+  "authors": [
+    "me"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/kds1660/SimpleRestAPIBlog",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "datatables": "^1.10.13",
+    "mustache.js": "mustache#^2.3.0",
+    "tinymce": "^4.5.2"
+  }
+}

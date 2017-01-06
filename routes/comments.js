@@ -1,15 +1,10 @@
 var express = require('express');
-var mongoose = require('mongoose');
-var topic = require('./topic');
-mongoose.Promise = global.Promise;
 var router = express.Router();
-var fs = require('fs');
+var Topic= require('.././modules/topicService').topic;
 
-var Topic = mongoose.model('Topic');
 router
 
     .get('/:name/', function (req, res, next) {
-console.log('comm')
         Topic.find({name: req.params.name}, function (err, topic) {
             if (err) throw err;
             if (topic.length) {
@@ -22,6 +17,7 @@ console.log('comm')
             }
         });
     })
+
     .delete('/:name', function (req, res, next) {
         var id = req.params.name;
         name=req.body.name;
@@ -30,15 +26,23 @@ console.log('comm')
             if (!err) res.send(200);
         });
     })
+
     .put('/:name/', function (req, res, next) {
         var id = req.params.name;
         name=req.body.name;
         text=req.body.text;
-        Topic.update({name:name,'comments._id':id},{$set:{'comments.$.text':text}},
-            function (err, topic) {
-                if (!err) res.send(200);
-            });
+        if (!req.body.new) {
+            Topic.update({name:name,'comments._id':id},{$set:{'comments.$.text':text,'comments.$.date':new Date()}},
+                function (err, topic) {
+                    console.log(err)
+                    if (!err) res.send(200);
+                });
+        } else if (req.body.new){
+            Topic.update({name:req.params.name},{$push:{comments:{author:name,text:text,date:new Date()}}},
+                function (err, topic) {
+                    if (!err) res.send(200);
+                });
+        }
     });
-
 
 module.exports = router;

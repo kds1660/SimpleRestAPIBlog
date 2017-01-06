@@ -10,6 +10,7 @@ var ENUM_BTN = {
     register: 'reg',
     addUser: 'addUser',
     viewComments:'comments',
+    addComments:'addComments',
     deleteComment:'delComments',
     editComment:'editComments',
     saveComment:'saveComment'
@@ -27,9 +28,10 @@ var options = {
 
 function initAndModal() {
    init();
-    $("#myModal").removeClass("in");
+    $("#myModal").removeClass("in")
+   .hide();
     $(".modal-backdrop").remove();
-    $("#myModal").hide();
+
 }
 
 function init() {
@@ -74,7 +76,6 @@ function init() {
             $('#wrapper').text('');
             table.appendTo('#wrapper');
             $('#main').DataTable({
-                "processing": true
             });
         })
         .fail(function (xhr, status, errorThrown) {
@@ -86,7 +87,6 @@ function init() {
         .always(function (xhr, status) {
         });
 }
-
 
 function returnText(url) {
     var result = $.ajax({
@@ -114,7 +114,7 @@ function deleteComm(url,data) {
         url: "/api/comments/"+url,
         type: "DELETE",
         dataType: "json",
-        data:data,
+        data:data
     })
 }
 
@@ -127,9 +127,9 @@ function editTopic(url, data) {
             console.log('OK');
             $('.wrapper').text('');
             init();
-            $("#myModal").removeClass("in");
+            $("#myModal").removeClass("in")
+                .hide();
             $(".modal-backdrop").remove();
-            $("#myModal").hide();
         },
         error: function (xhr, status, err) {
             alert(err);
@@ -144,11 +144,12 @@ function addUser(data, $that) {
         data: data,
         success: function () {
             $('.ui-button').click();
-            $("#myModal").removeClass("in");
+            $("#myModal").removeClass("in")
+            .hide();
             $(".modal-backdrop").remove();
-            $("#myModal").hide();
-            $('.alert-success').html('User registered, try login');
-            $('.alert-success').show();
+
+            $('.alert-success').html('User registered, try login')
+           .show();
             setTimeout(function () {
                 $('.alert-success').hide();
             }, 1500);
@@ -183,8 +184,8 @@ function login(data) {
 
     });
     result.fail(function (xhr, status, errorThrown) {
-        $('.alert-danger').html('Invalid User name or password');
-        $('.alert-danger').show();
+        $('.alert-danger').html('Invalid User name or password')
+        .show();
         setTimeout(function () {
             $('.alert-danger').hide();
         }, 1500);
@@ -209,10 +210,7 @@ function viewComments(url) {
                 delBtn.appendTo(comment);
             }
          comment.appendTo(".modal-footer");
-            console.log();
-            $('html, body, .modal').animate({ scrollTop: $('.panel-default').eq(0).offset().top }, 'slow');
-
-
+          //  $('html, body, .modal').animate({ scrollTop: $('.panel-default').eq(0).offset().top }, 'slow');
         })
 
         })
@@ -225,10 +223,9 @@ function saveComments(url,data) {
         data:data,
         dataType: "json"
     });
-    result.done(function (json) {
-
-    })
 }
+
+
 
 function prepareTemplate(template) {
     if (template.attr('id')) template.attr('id', template.attr('id').slice(0, -3));
@@ -250,7 +247,7 @@ function addTemplate(tmpl, $that,data,notRemove) {
             date: new Date($that.closest('tr').find('.date').text()).toLocaleString("en-US", options),
             oldTopic: $that.closest('tr').find('.name').text(),
             text: 'Edit Topic'
-        }
+        };
         template = $('#mustache_edit').html();
         var $copy = Mustache.to_html(template, data);
         $copy = $($copy);
@@ -272,7 +269,7 @@ function addTemplate(tmpl, $that,data,notRemove) {
 
         var buttons = new ButtonItem;
         var add = buttons.returnBtn(ENUM_BTN.addUser);
-        console.log(add)
+        console.log(add);
         add.appendTo($copy.find('.modal-footer'));
 
     }
@@ -301,18 +298,24 @@ function addTemplate(tmpl, $that,data,notRemove) {
             author: 'Written by ' + $that.closest('tr').find('.author').text(),
             date: new Date($that.closest('tr').find('.date').text()).toLocaleString("en-US", options)
         };
-        console.log(data)
+        console.log(data);
 
         template = $('#mustache_view').html();
         var $copy = Mustache.to_html(template, data);
         $copy = $($copy);
         var buttons = new ButtonItem;
         var comments=buttons.returnBtn(ENUM_BTN.viewComments);
+        var commentsAdd=buttons.returnBtn(ENUM_BTN.addComments);
+        if ($('#logged').text()) {
+            commentsAdd.appendTo($copy.find('.modal-footer'));
+        }
+
         comments.appendTo($copy.find('.modal-footer'));
+
         returnText($that.closest('tr').find('.name').text());
 
     }else if (tmpl === 'commentsView') {
-        data.date= new Date(data.date.toLocaleString("en-US", options))
+        data.date= new Date(data.date.toLocaleString("en-US", options));
         template = $('#mustache_comment').html();
         var $copy = Mustache.to_html(template, data);
         $copy = $($copy);
@@ -329,5 +332,9 @@ $(document).ready(function () {
         .insertAfter('div#login');
     var reg = buttons.returnBtn(ENUM_BTN.register)
         .insertAfter(add);
+    $('#myModal').on('hide.bs.modal',function () {
+        console.log('closed');
+        initAndModal();
+    })
 
 });

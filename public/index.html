@@ -2,19 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Getting REST</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.13/datatables.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.js"></script>
-    <script src="/js/bootstrap.js"></script>
-    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <title>Blog</title>
+    <script src="/bower_components/jquery/dist/jquery.js"></script>
+    <script src="/bower_components/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="/bower_components/datatables/media/js/dataTables.bootstrap4.js"></script>
+    <script src="/bower_components/mustache.js/mustache.js"></script>
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="/bower_components/tinymce/tinymce.js"></script>
     <script src="buttons.js"></script>
     <script src="engine.js"></script>
 
     <link rel="stylesheet" type="text/css" href="/css/style.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap.css"/>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
-
+    <link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/bower_components/datatables/media/css/jquery.dataTables.css">
 
 </head>
 <body>
@@ -84,10 +84,11 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times</span></button>
+                    <h2>Register new user</h2>
                 </div>
                 <div class="modal-body">
-                    <input type="text" class="login">
-                    <input type="password" class="login"></div>
+                    <input type="text" class="login" placeholder="Login">
+                    <input type="password" class="login" placeholder="Password"></div>
                 <div class="modal-footer">
                 </div>
             </div>
