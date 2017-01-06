@@ -1,18 +1,18 @@
 var ENUM_BTN = {
     add: 'add',
-    delete: 'del',
-    edit: 'edit',
-    save: 'save',
-    login: 'login',
-    exit: 'exit',
-    view: 'view',
-    addTopic: 'addTopic',
-    register: 'reg',
-    addUser: 'addUser',
-    viewComments:'comments',
-    addComments:'addComments',
-    deleteComment:'delComments',
-    editComment:'editComments',
+    delete: 'delBtn',
+    edit: 'editBtn',
+    save: 'saveBtn',
+    login: 'loginBtn',
+    exit: 'logoutBtn',
+    view: 'viewBtn',
+    addTopic: 'addTopicBtn',
+    register: 'registerBtn',
+    addUser: 'addUserBtn',
+    viewComments:'viewCommentsBtn',
+    addComments:'addCommentsBtn',
+    deleteComment:'deleteComment',
+    editComment:'editComment',
     saveComment:'saveComment'
 };
 var options = {
@@ -234,13 +234,15 @@ function prepareTemplate(template) {
         if ($(this).attr('class')) $(this).attr('class', $(this).attr('class').slice(0, -3))
     })
 }
+
 function addTemplate(tmpl, $that,data,notRemove) {
     if (!notRemove) $('#myModal').remove();
+
     if (tmpl === 'table') {
         var $copy = $('#tableTmpl').children().clone();
         prepareTemplate($copy);
-    } else if (tmpl === 'edit' && $that) {
 
+    } else if (tmpl === 'edit' && $that) {
         var data = {
             topic: $that.closest('tr').find('.name').text(),
             author: $that.closest('tr').find('.author').text(),
@@ -248,6 +250,7 @@ function addTemplate(tmpl, $that,data,notRemove) {
             oldTopic: $that.closest('tr').find('.name').text(),
             text: 'Edit Topic'
         };
+
         template = $('#mustache_edit').html();
         var $copy = Mustache.to_html(template, data);
         $copy = $($copy);
@@ -264,15 +267,13 @@ function addTemplate(tmpl, $that,data,notRemove) {
     } else if (tmpl === 'reg') {
         template = $('#mustache_user').html();
         var $copy = Mustache.to_html(template);
-
         $copy = $($copy);
-
         var buttons = new ButtonItem;
         var add = buttons.returnBtn(ENUM_BTN.addUser);
         console.log(add);
         add.appendTo($copy.find('.modal-footer'));
-
     }
+
     else if (tmpl === 'add') {
         var data = {
             topic: '',
@@ -280,25 +281,23 @@ function addTemplate(tmpl, $that,data,notRemove) {
             date: new Date($that.closest('tr').find('.date').text()).toLocaleString("en-US", options),
             text: 'Add new topic'
         };
+
         template = $('#mustache_edit').html();
         var $copy = Mustache.to_html(template, data);
         $copy = $($copy);
-
         var buttons = new ButtonItem;
         var add = buttons.returnBtn(ENUM_BTN.add);
         add.appendTo($copy.find('.modal-footer'));
         $copy.find('.author').get(0).value = $('#logged').text().substring(8);
         $copy.find('.author').attr('disabled', 'disabled');
     }
+
     else if (tmpl === 'view') {
-
-
         var data = {
             topic: $that.closest('tr').find('.name').text(),
             author: 'Written by ' + $that.closest('tr').find('.author').text(),
             date: new Date($that.closest('tr').find('.date').text()).toLocaleString("en-US", options)
         };
-        console.log(data);
 
         template = $('#mustache_view').html();
         var $copy = Mustache.to_html(template, data);
@@ -309,9 +308,7 @@ function addTemplate(tmpl, $that,data,notRemove) {
         if ($('#logged').text()) {
             commentsAdd.appendTo($copy.find('.modal-footer'));
         }
-
         comments.appendTo($copy.find('.modal-footer'));
-
         returnText($that.closest('tr').find('.name').text());
 
     }else if (tmpl === 'commentsView') {
@@ -332,9 +329,4 @@ $(document).ready(function () {
         .insertAfter('div#login');
     var reg = buttons.returnBtn(ENUM_BTN.register)
         .insertAfter(add);
-    $('#myModal').on('hide.bs.modal',function () {
-        console.log('closed');
-        initAndModal();
-    })
-
 });
