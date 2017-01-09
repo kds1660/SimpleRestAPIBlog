@@ -70,10 +70,15 @@ table.dataTable tbody tr:hover {
     height: 100%;
 }
 
-.alert {
+body > .alert {
     position: absolute;
     width: 100%;
     z-index: 1000;
     top: 0px;
+}
+
+#myModal .alert {
+    width: 100%;
+    text-align: left;
 }
 

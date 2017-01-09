@@ -63,6 +63,8 @@
                 <div class="modal-footer">
                     <div class="alert alert-danger collapse" role="alert">
                     </div>
+                    <div class="alert alert-success collapse" role="alert">
+                    </div>
                 </div>
 
             </div>
@@ -74,6 +76,7 @@
     <div id="login">
         <input type="text" class="login">
         <input type="password" class="login"></div>
+    </div>
 </script>
 
 <script id="mustache_user" type="text/template">
@@ -90,6 +93,8 @@
                     <input type="text" class="login" placeholder="Login">
                     <input type="password" class="login" placeholder="Password"></div>
                 <div class="modal-footer">
+                    <div class="alert alert-danger collapse" role="alert"></div>
+                    <div class="alert alert-success collapse" role="alert"></div>
                 </div>
             </div>
         </div>
@@ -114,8 +119,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <div class="alert alert-danger collapse" role="alert">
-                    </div>
+                    <div class="alert alert-danger collapse" role="alert" tabindex="-1"></div>
+                    <div class="alert alert-success collapse" role="alert" tabindex="-1">
                 </div>
             </div>
         </div>
@@ -131,7 +136,6 @@
         <div class="panel-body text-left">{{{text}}}</div>
         <div class="footer text-left">
         </div>
-
     </div>
 </script>
 

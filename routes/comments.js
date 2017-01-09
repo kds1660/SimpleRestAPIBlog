@@ -31,6 +31,7 @@ router
         var id = req.params.name;
         name=req.body.name;
         text=req.body.text;
+        console.log(text)
         if (!req.body.new) {
             Topic.update({name:name,'comments._id':id},{$set:{'comments.$.text':text,'comments.$.date':new Date()}},
                 function (err, topic) {
@@ -40,7 +41,7 @@ router
         } else if (req.body.new){
             Topic.update({name:req.params.name},{$push:{comments:{author:name,text:text,date:new Date()}}},
                 function (err, topic) {
-                    if (!err) res.send(200);
+                    if (!err) res.sendStatus(200);
                 });
         }
     });

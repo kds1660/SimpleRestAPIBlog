@@ -5,6 +5,7 @@ function ButtonItem() {
         $(this).closest('tr').remove();
         $('.toggleDiv').remove();
     });
+    this.delBtn = delBtn;
 
     saveBtn = $('<input class="saveButton btn btn-info" type="button" value="Save">');
     saveBtn.click(function (e) {
@@ -19,6 +20,7 @@ function ButtonItem() {
         };
         editTopic($(this).parent().parent().find('.name').get(0).value, newTopic);
     });
+    this.saveBtn = saveBtn;
 
     logoutBtn = $('<input class="exitButton btn btn-danger" type="button" value="Logout">');
     logoutBtn.click(function (e) {
@@ -30,6 +32,7 @@ function ButtonItem() {
             .insertAfter(add);
         init();
     });
+    this.logoutBtn = logoutBtn;
 
     editBtn = $('<input class="editButton btn btn-info" type="button" value="Edit">');
     editBtn.click(function (e) {
@@ -61,6 +64,7 @@ function ButtonItem() {
             }
         });
     });
+    this.editBtn = editBtn;
 
     addBtn = $('<input class="addButton btn btn-info" type="button" value="add">');
     addBtn.click(function (e) {
@@ -73,6 +77,7 @@ function ButtonItem() {
         };
         editTopic($(this).parent().parent().find('.name').get(0).value, newTopic);
     });
+    this.addBtn = addBtn;
 
     addTopicBtn = $('<input class="addTopicBtn btn btn-info" type="button" value="Add topic">');
     addTopicBtn.click(function () {
@@ -87,7 +92,6 @@ function ButtonItem() {
             force_p_newlines: false,
             forced_root_block: ''
         });
-
 
         $('.image').change(function () {
             var file = $(this)[0].files[0];
@@ -104,6 +108,7 @@ function ButtonItem() {
             }
         });
     });
+    this.addTopicBtn = addTopicBtn;
 
     loginBtn = $('<input class="loginButton btn btn-success" type="button" value="login">');
     loginBtn.click(function (e) {
@@ -113,18 +118,19 @@ function ButtonItem() {
         };
         login(loginUser);
     });
+    this.loginBtn = loginBtn;
 
     viewBtn = $('<input class="viewButton btn btn-info" type="button" value="View">');
     viewBtn.click(function (e) {
         e.stopPropagation();
         var modalText = addTemplate('view', $(this));
         $(modalText).appendTo('#wrapper');
-        $('#myModal').on('hide.bs.modal',function () {
+        $('#myModal').on('hide.bs.modal', function () {
             initAndModal();
         });
         $('#myModal').modal('show');
     });
-
+    this.viewBtn = viewBtn;
 
 
     registerBtn = $('<input class="registerButton btn btn-success" type="button" value="Register">');
@@ -134,6 +140,7 @@ function ButtonItem() {
         $('#myModal').modal('show');
 
     });
+    this.registerBtn = registerBtn;
 
     addUserBtn = $('<input class="registerButton btn" type="button" value="Register">');
     addUserBtn.click(function (e) {
@@ -144,13 +151,14 @@ function ButtonItem() {
         };
 
         if (newUser.name === '' || newUser.password === '') {
-            var span = $('<span>Enter password and user</span>');
-            $(span).insertBefore($(this));
+            showAllert(false, 'Enter password and user', '.modal-footer');
+
         } else {
             addUser(newUser, $(this));
         }
 
     });
+    this.addUserBtn = addUserBtn;
 
     viewCommentsBtn = $('<input class="viewButton btn btn-primary" type="button" value="View comments">');
     viewCommentsBtn.click(function (e) {
@@ -158,7 +166,7 @@ function ButtonItem() {
         $('#addCommment').remove();
         $('.saveNCommBtn').remove();
 
-        if ( $('.panel-default').length ) {
+        if ($('.panel-default').length) {
             $('.panel-default').remove();
             tinymce.remove();
             $('#addCommment').remove();
@@ -167,11 +175,14 @@ function ButtonItem() {
             viewComments($(this).closest('.modal-content').find('h2').eq(0).text());
         }
     });
+    this.viewCommentsBtn = viewCommentsBtn;
 
     addCommentsBtn = $('<input class="viewButton btn btn-primary" type="button" value="Add comment">');
     addCommentsBtn.click(function (e) {
         $('.panel-default').remove();
         $('<div id="addCommment">').appendTo(".modal-footer");
+        var buttons = new ButtonItem;
+        var saveBtn = buttons.returnBtn(ENUM_BTN.saveComment);
         saveNewComment.appendTo(".modal-footer");
         tinymce.init({
             width: "100%",
@@ -182,33 +193,36 @@ function ButtonItem() {
             forced_root_block: ''
         });
     });
+    this.addCommentsBtn = addCommentsBtn;
 
     saveNewComment = $('<input class="saveNCommBtn btn-danger" type="button" value="Save">');
     saveNewComment.click(function (e) {
-        saveComments($(this).closest('.modal-content').find('h2').eq(0).text(),{
-            new:'new',
-            name:$('#logged').text().substring(8),
-            text:tinyMCE.activeEditor.getContent({format: 'raw'})
+        saveComments($(this).closest('.modal-content').find('h2').eq(0).text(), {
+            new: 'new',
+            name: $('#logged').text().substring(8),
+            text: tinyMCE.activeEditor.getContent({format: 'raw'})
         });
         tinymce.remove();
         $('#addCommment').remove();
         $(this).remove();
     });
+    this.saveNewComment = saveNewComment;
 
     deleteComment = $('<input class="dellBtn btn-danger" type="button" value="Delete">');
     deleteComment.click(function (e) {
-        deleteComm($(this).parent().find('#mongoId').text(),{name:$('#textH').text()});
+        deleteComm($(this).parent().find('#mongoId').text(), {name: $('#textH').text()});
         $(this).parent().remove();
     });
+    this.deleteComment = deleteComment;
 
     editComment = $('<input class="editBtn btn-danger" type="button" value="Edit">');
     editComment.click(function (e) {
 
         if (!tinymce.activeEditor) {
-            $(this).parent().find('.panel-body').eq(0).attr('id','editable');
+            $(this).parent().find('.panel-body').eq(0).attr('id', 'editable');
             $(this).parent().find('.panel-body').eq(0).focus();
             var buttons = new ButtonItem;
-            var saveBtn=buttons.returnBtn(ENUM_BTN.saveComment);
+            var saveBtn = buttons.returnBtn(ENUM_BTN.saveComment);
             tinymce.init({
                 width: "100%",
                 height: "100%",
@@ -220,23 +234,25 @@ function ButtonItem() {
             $(e.target).replaceWith(saveBtn);
         }
     });
+    this.editComment = editComment;
 
     saveComment = $('<input class="editBtn btn-primary" type="button" value="Save">');
     saveComment.click(function (e) {
-        $(this).parent().find('.panel-body').eq(0).attr('contentEditable','false');
+        $(this).parent().find('.panel-body').eq(0).attr('contentEditable', 'false');
         var buttons = new ButtonItem;
-        var editBtn=buttons.returnBtn(ENUM_BTN.editComment);
+        var editBtn = buttons.returnBtn(ENUM_BTN.editComment);
 
-        saveComments($(this).parent().find('#mongoId').text(),{
-            name:$('#textH').text(),
-            text:tinyMCE.activeEditor.getContent({format: 'raw'})
+        saveComments($(this).parent().find('#mongoId').text(), {
+            name: $('#textH').text(),
+            text: tinyMCE.activeEditor.getContent({format: 'raw'})
         });
         tinymce.remove();
         $(this).parent().parent().find('.viewButton').click();
         $(e.target).replaceWith(editBtn);
     });
+    this.saveComment = saveComment;
 
     this.returnBtn = function (button) {
-        return eval(button);
+        return this[button];
     };
 }

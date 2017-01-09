@@ -1,5 +1,5 @@
 var ENUM_BTN = {
-    add: 'add',
+    add: 'saveBtn',
     delete: 'delBtn',
     edit: 'editBtn',
     save: 'saveBtn',
@@ -9,12 +9,38 @@ var ENUM_BTN = {
     addTopic: 'addTopicBtn',
     register: 'registerBtn',
     addUser: 'addUserBtn',
-    viewComments:'viewCommentsBtn',
-    addComments:'addCommentsBtn',
-    deleteComment:'deleteComment',
-    editComment:'editComment',
-    saveComment:'saveComment'
+    viewComments: 'viewCommentsBtn',
+    addComments: 'addCommentsBtn',
+    deleteComment: 'deleteComment',
+    editComment: 'editComment',
+    saveComment: 'saveComment'
 };
+
+function showAllert(success, message, selector) {
+    if (success) {
+        selector = $(selector);
+        selector = selector.find('.alert-success');
+        if (selector.length === 0) selector = $('.alert-success');
+        selector.html(message)
+            .show()
+            .focus();
+        setTimeout(function () {
+            $(selector).hide();
+        }, 1500);
+    } else {
+        selector = $(selector);
+        console.log(selector)
+        selector = selector.find('.alert-danger');
+        if (selector.length === 0) selector = $('.alert-danger');
+        selector.html(message)
+            .show()
+            .focus();
+        setTimeout(function () {
+            $(selector).hide();
+        }, 1500);
+    }
+}
+
 var options = {
     year: 'numeric',
     month: 'long',
@@ -27,9 +53,9 @@ var options = {
 };
 
 function initAndModal() {
-   init();
+    init();
     $("#myModal").removeClass("in")
-   .hide();
+        .hide();
     $(".modal-backdrop").remove();
 
 }
@@ -53,8 +79,8 @@ function init() {
                         var th = $('<th>');
                         th.addClass(key);
                         th.text(json[index][key]);
-                        if (key==='comments')  th.text(json[index][key]+' comments');
-                        if (key==='date')  th.text(new Date(json[index][key]).toLocaleString("en-US", options));
+                        if (key === 'comments') th.text(json[index][key] + ' comments');
+                        if (key === 'date') th.text(new Date(json[index][key]).toLocaleString("en-US", options));
                         th.appendTo(tr);
                     }
 
@@ -75,8 +101,7 @@ function init() {
 
             $('#wrapper').text('');
             table.appendTo('#wrapper');
-            $('#main').DataTable({
-            });
+            $('#main').DataTable({});
         })
         .fail(function (xhr, status, errorThrown) {
             alert("Sorry, there was a problem!");
@@ -105,16 +130,26 @@ function deleteTopic(url) {
     $.ajax({
         url: "/api/topic/" + url,
         type: "DELETE",
-        dataType: "json"
+        success: function () {
+            showAllert(true, 'Topic deleted');
+        },
+        error: function (xhr, status, err) {
+            showAllert(false, 'Something wrong ' + err);
+        }
     })
 }
 
-function deleteComm(url,data) {
+function deleteComm(url, data) {
     $.ajax({
-        url: "/api/comments/"+url,
+        url: "/api/comments/" + url,
         type: "DELETE",
-        dataType: "json",
-        data:data
+        data: data,
+        success: function () {
+            showAllert(true, 'Comment deleted', '.modal-footer');
+        },
+        error: function (xhr, status, err) {
+            showAllert(false, 'Something wrong ' + err);
+        }
     })
 }
 
@@ -124,7 +159,7 @@ function editTopic(url, data) {
         type: "PUT",
         data: data,
         success: function () {
-            console.log('OK');
+            showAllert(true, 'Topic saved');
             $('.wrapper').text('');
             init();
             $("#myModal").removeClass("in")
@@ -132,7 +167,7 @@ function editTopic(url, data) {
             $(".modal-backdrop").remove();
         },
         error: function (xhr, status, err) {
-            alert(err);
+            showAllert(true, 'Something wrong ' + err);
         }
     })
 }
@@ -145,19 +180,12 @@ function addUser(data, $that) {
         success: function () {
             $('.ui-button').click();
             $("#myModal").removeClass("in")
-            .hide();
+                .hide();
             $(".modal-backdrop").remove();
-
-            $('.alert-success').html('User registered, try login')
-           .show();
-            setTimeout(function () {
-                $('.alert-success').hide();
-            }, 1500);
+            showAllert(true, 'User registered, try login');
         },
         error: function (xhr) {
-            console.log($that);
-            var span = $('<span>User exist</span>');
-            $(span).insertBefore($that);
+            showAllert(false, 'User already exist!', '.modal-footer');
         }
     })
 }
@@ -184,47 +212,48 @@ function login(data) {
 
     });
     result.fail(function (xhr, status, errorThrown) {
-        $('.alert-danger').html('Invalid User name or password')
-        .show();
-        setTimeout(function () {
-            $('.alert-danger').hide();
-        }, 1500);
+        showAllert(false, 'Invalid User name or password');
     })
 }
 
 function viewComments(url) {
     var result = $.ajax({
-        url: "/api/comments/"+url,
+        url: "/api/comments/" + url,
         type: "GET",
         dataType: "json"
     });
     result.done(function (json) {
         $.each(json, function (index) {
-           var comment= addTemplate('commentsView',"", json[index],true);
+            var comment = addTemplate('commentsView', "", json[index], true);
 
-            if ($('#logged').text().substring(8)===json[index].author) {
+            if ($('#logged').text().substring(8) === json[index].author) {
                 var buttons = new ButtonItem;
                 var delBtn = buttons.returnBtn(ENUM_BTN.deleteComment);
-                var editBtn=buttons.returnBtn(ENUM_BTN.editComment);
+                var editBtn = buttons.returnBtn(ENUM_BTN.editComment);
                 editBtn.appendTo(comment);
                 delBtn.appendTo(comment);
             }
-         comment.appendTo(".modal-footer");
-          //  $('html, body, .modal').animate({ scrollTop: $('.panel-default').eq(0).offset().top }, 'slow');
+            comment.appendTo(".modal-footer");
         })
 
-        })
+    })
 }
 
-function saveComments(url,data) {
+function saveComments(url, data) {
     var result = $.ajax({
-        url: "/api/comments/"+url,
+        url: "/api/comments/" + url,
         type: "PUT",
-        data:data,
-        dataType: "json"
+        data: data,
+        success: function (json) {
+            console.log(json)
+            showAllert(true, 'Comment added', '.modal-footer');
+        },
+        error: function (req, err) {
+            console.log(err);
+            showAllert(false, 'Comment not added', '.modal-footer');
+        }
     });
 }
-
 
 
 function prepareTemplate(template) {
@@ -235,7 +264,7 @@ function prepareTemplate(template) {
     })
 }
 
-function addTemplate(tmpl, $that,data,notRemove) {
+function addTemplate(tmpl, $that, data, notRemove) {
     if (!notRemove) $('#myModal').remove();
 
     if (tmpl === 'table') {
@@ -287,6 +316,7 @@ function addTemplate(tmpl, $that,data,notRemove) {
         $copy = $($copy);
         var buttons = new ButtonItem;
         var add = buttons.returnBtn(ENUM_BTN.add);
+        console.log(add)
         add.appendTo($copy.find('.modal-footer'));
         $copy.find('.author').get(0).value = $('#logged').text().substring(8);
         $copy.find('.author').attr('disabled', 'disabled');
@@ -303,23 +333,22 @@ function addTemplate(tmpl, $that,data,notRemove) {
         var $copy = Mustache.to_html(template, data);
         $copy = $($copy);
         var buttons = new ButtonItem;
-        var comments=buttons.returnBtn(ENUM_BTN.viewComments);
-        var commentsAdd=buttons.returnBtn(ENUM_BTN.addComments);
+        var comments = buttons.returnBtn(ENUM_BTN.viewComments);
+        var commentsAdd = buttons.returnBtn(ENUM_BTN.addComments);
         if ($('#logged').text()) {
             commentsAdd.appendTo($copy.find('.modal-footer'));
         }
         comments.appendTo($copy.find('.modal-footer'));
         returnText($that.closest('tr').find('.name').text());
 
-    }else if (tmpl === 'commentsView') {
-        data.date= new Date(data.date.toLocaleString("en-US", options));
+    } else if (tmpl === 'commentsView') {
+        data.date = new Date(data.date.toLocaleString("en-US", options));
         template = $('#mustache_comment').html();
         var $copy = Mustache.to_html(template, data);
         $copy = $($copy);
     }
     return $($copy)
 }
-
 
 $(document).ready(function () {
     var buttons = new ButtonItem;
