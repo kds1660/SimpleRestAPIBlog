@@ -26,6 +26,7 @@ The project is designed to create articles hadware subjects with the possibility
 * express - web application framework
 * mongoose - to working with MongoDb database
 * body-parser - for working with requests
+* log4js - logger for server
 
 **BOWER**
 - 
