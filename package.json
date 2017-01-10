@@ -5,15 +5,16 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall" : "bower install",
+    "postinstall": "bower install",
     "start": "node app.js"
   },
   "author": "me",
   "license": "ISC",
   "dependencies": {
     "body-parser": "~1.15.2",
+    "bower": "",
     "express": "^4.14.0",
-    "mongoose": "^4.7.5",
-    "bower" : ""
+    "log4js": "^1.1.0",
+    "mongoose": "^4.7.5"
   }
 }

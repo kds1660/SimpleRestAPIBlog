@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var Topic= require('.././modules/topicService').topic;
+var logger = require('.././modules/logger').logger;
+var log4js = require('.././modules/logger').log4js;
+router.use(log4js.connectLogger(logger, { level: log4js.levels.DEBUG, format: 'format :method :url :status'}));
 
 router
 
@@ -8,6 +11,7 @@ router
         Topic.find({}, function (err, topic) {
             if (err) throw err;
             if (topic.length) {
+                logger.info('Topics list GET OK');
                 res.json(topic.map(function (el) {
                     return {
                         name: el.name,
@@ -19,6 +23,7 @@ router
             } else {
                 err = new Error('Not Found');
                 err.status = 404;
+                logger.error(err);
                 next(err);
             }
         });
@@ -28,11 +33,13 @@ router
         Topic.find({name: req.params.name}, function (err, topic) {
             if (err) throw err;
             if (topic.length) {
+                logger.info('Topic get OK '+req.params.name);
                 res.json(topic[0]);
             }
             else {
                 err = new Error('Not Found');
                 err.status = 404;
+                logger.error(err);
                 next(err);
             }
         });
@@ -52,11 +59,14 @@ router
                     date: body.date
                 }, function (err) {
                     if (err) {
-                        console.log('error');
                         err = new Error('Unnown error update');
                         err.status = 404;
+                        logger.error(err);
                         next(err);
-                    } else res.send(200);
+                    } else {
+                        res.sendStatus(200);
+                        logger.info('Topic update OK '+body.name);
+                    }
                 });
         } else {
             newTopic = Topic({
@@ -68,26 +78,30 @@ router
             });
             newTopic.save(function (err) {
                 if (err) {
-                    console.log('error');
                     err = new Error('Topic exists');
                     err.status = 409;
+                    logger.error(err);
                     next(err);
-                } else res.send(200);
+                } else {
+                    res.sendStatus(200);
+                    logger.info('Topic add OK '+body.name);
+                }
             });
         }
     })
 
     .delete('/:name', function (req, res, next) {
-        console.log('delete top');
         var name = req.params.name;
         Topic.remove({name: name}, function (err) {
-            if (err) throw err;
-            res.send(200);
-        });
-    })
+            if (err) {
+                throw err;
+                logger.error(err);
+            } else {
+                res.sendStatus(200);
+                logger.info('Topic delete OK '+name);
+            }
 
-    .get('comments', function (req, res, next) {
-     console.log('topic!')
+        });
     });
 
 module.exports = router;

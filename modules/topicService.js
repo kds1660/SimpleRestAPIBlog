@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 var fs = require('fs');
+var logger = require('./logger').logger;
 
 var CommentSchema =  new mongoose.Schema({
     author: {
@@ -66,8 +67,8 @@ topicsData.topics.forEach(function (element) {
         comments:element.comments
     });
     topic.save(function (err) {
-        if (err) console.log(err);
-        console.log('Topic saved successfully!');
+        if (err) logger.error(err);
+        logger.info('Topic saved successfully '+topic.name);
     });
 });
 
@@ -77,8 +78,8 @@ var usersData = JSON.parse(fs.readFileSync('./data/users.json'));
 usersData.users.forEach(function (element) {
     var user = new User({username: element.name, password: element.password});
     user.save(function (err) {
-        if (err) console.log(err);
-        console.log('User saved successfully!');
+        if (err) logger.error(err);
+        logger.info('User saved successfully '+ user.username);
     });
 });
 module.exports = {topic:Topic,user:User};

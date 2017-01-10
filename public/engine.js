@@ -29,12 +29,12 @@ function showAllert(success, message, selector) {
         }, 1500);
     } else {
         selector = $(selector);
-        console.log(selector)
         selector = selector.find('.alert-danger');
         if (selector.length === 0) selector = $('.alert-danger');
         selector.html(message)
             .show()
             .focus();
+
         setTimeout(function () {
             $(selector).hide();
         }, 1500);
@@ -134,7 +134,7 @@ function deleteTopic(url) {
             showAllert(true, 'Topic deleted');
         },
         error: function (xhr, status, err) {
-            showAllert(false, 'Something wrong ' + err);
+            showAllert(false, 'Something wrong ' + err,'.modal-footer');
         }
     })
 }
@@ -167,7 +167,7 @@ function editTopic(url, data) {
             $(".modal-backdrop").remove();
         },
         error: function (xhr, status, err) {
-            showAllert(true, 'Something wrong ' + err);
+            showAllert(false, 'Something wrong ' + err,'.modal-footer');
         }
     })
 }

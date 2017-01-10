@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var Topic= require('.././modules/topicService').topic;
+var logger = require('.././modules/logger').logger;
+var log4js = require('.././modules/logger').log4js;
+router.use(log4js.connectLogger(logger, { level: log4js.levels.DEBUG, format: 'format :method :url :status'}));
 
 router
 
@@ -9,10 +12,12 @@ router
             if (err) throw err;
             if (topic.length) {
                 res.json(topic[0].comments);
+                logger.info('Topic recieve OK');
             }
             else {
                 err = new Error('Not Found');
                 err.status = 404;
+                logger.error(err);
                 next(err);
             }
         });
@@ -23,7 +28,10 @@ router
         name=req.body.name;
         Topic.update({name:name},{$pull:{comments:{_id:id}}},
             function (err, topic) {
-            if (!err) res.send(200);
+            if (!err) {
+                res.sendStatus(200);
+                logger.info('Topic delete OK');
+            } else   logger.error(err);
         });
     })
 
@@ -35,13 +43,18 @@ router
         if (!req.body.new) {
             Topic.update({name:name,'comments._id':id},{$set:{'comments.$.text':text,'comments.$.date':new Date()}},
                 function (err, topic) {
-                    console.log(err)
-                    if (!err) res.send(200);
+                    if (!err) {
+                        res.sendStatus(200);
+                        logger.info('Topic edit OK');
+                    } else   logger.error(err);
                 });
         } else if (req.body.new){
             Topic.update({name:req.params.name},{$push:{comments:{author:name,text:text,date:new Date()}}},
                 function (err, topic) {
-                    if (!err) res.sendStatus(200);
+                    if (!err) {
+                        res.sendStatus(200);
+                        logger.info('Topic add OK');
+                    } else   logger.error(err);
                 });
         }
     });

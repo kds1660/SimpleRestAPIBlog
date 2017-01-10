@@ -2,18 +2,19 @@ var mongoose    = require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/MyDb');
 var db = mongoose.connection;
+var logger = require('./logger').logger;
 
 db.on('error', function (err) {
-    console.log('connection error:', err.message);
+    logger.fatal('connection error:', err.message);
 });
 db.once('open', function callback () {
-    console.log("Connected to DB!");
+    logger.debug('Connect with DB');
 });
 
 mongoose.connection.collections['users'].drop( function(err) {
-    console.log('User dropped');
+    logger.info('User dropped');
 });
 mongoose.connection.collections['topics'].drop( function(err) {
-    console.log('Topics dropped');
+    logger.info('Topics dropped');
 });
 module.exports = mongoose;
