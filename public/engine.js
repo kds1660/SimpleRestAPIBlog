@@ -251,8 +251,8 @@ function saveComments(url, data) {
         type: "PUT",
         data: data,
         success: function (json) {
-            console.log(json)
-            showAllert(true, 'Comment added', '.modal-footer');
+           if (json==='Created')  showAllert(true, 'Comment added', '.modal-footer')
+           else if (json==='OK')  showAllert(true, 'Comment edited', '.modal-footer');
         },
         error: function (req, err) {
             showAllert(false, 'Comment not added', '.modal-footer');

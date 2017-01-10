@@ -53,7 +53,7 @@ router
             Topic.update({name:req.params.name},{$push:{comments:{author:name,text:text,date:new Date()}}},
                 function (err, topic) {
                     if (!err) {
-                        res.sendStatus(200);
+                        res.sendStatus(201);
                         logger.info('Comment add OK');
                     } else   logger.error(err);
                 });
