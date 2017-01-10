@@ -249,7 +249,6 @@ function saveComments(url, data) {
             showAllert(true, 'Comment added', '.modal-footer');
         },
         error: function (req, err) {
-            console.log(err);
             showAllert(false, 'Comment not added', '.modal-footer');
         }
     });

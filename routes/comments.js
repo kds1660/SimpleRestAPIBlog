@@ -12,7 +12,7 @@ router
             if (err) throw err;
             if (topic.length) {
                 res.json(topic[0].comments);
-                logger.info('Topic recieve OK');
+                logger.info('Comments recieve OK');
             }
             else {
                 err = new Error('Not Found');
@@ -30,12 +30,13 @@ router
             function (err, topic) {
             if (!err) {
                 res.sendStatus(200);
-                logger.info('Topic delete OK');
+                logger.info('Comment delete OK');
             } else   logger.error(err);
         });
     })
 
     .put('/:name/', function (req, res, next) {
+
         var id = req.params.name;
         name=req.body.name;
         text=req.body.text;
@@ -45,7 +46,7 @@ router
                 function (err, topic) {
                     if (!err) {
                         res.sendStatus(200);
-                        logger.info('Topic edit OK');
+                        logger.info('Comment edit OK');
                     } else   logger.error(err);
                 });
         } else if (req.body.new){
@@ -53,7 +54,7 @@ router
                 function (err, topic) {
                     if (!err) {
                         res.sendStatus(200);
-                        logger.info('Topic add OK');
+                        logger.info('Comment add OK');
                     } else   logger.error(err);
                 });
         }

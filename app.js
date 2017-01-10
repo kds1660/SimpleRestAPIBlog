@@ -16,6 +16,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'bootstrap')));
 app.use('/api/topic', topic);
 app.use('/api/login', login);
+app.use('/api/comments', comments);
 
 app.listen(3000);
 
