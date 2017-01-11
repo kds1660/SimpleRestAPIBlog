@@ -54,6 +54,9 @@ var UserSchema = new mongoose.Schema({
         required: true
     }
 });
+UserSchema.methods.validPassword = function( pwd ) {
+    return ( this.password === pwd );
+};
 
 var Topic = mongoose.model('Topic', TopicSchema);
 var topicsData = JSON.parse(fs.readFileSync('./data/topics.json'));

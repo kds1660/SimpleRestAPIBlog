@@ -24,13 +24,7 @@ function ButtonItem() {
 
     logoutBtn = $('<input class="exitButton btn btn-danger" type="button" value="Logout">');
     logoutBtn.click(function (e) {
-        $('#logged,.exitButton,.addTopicBtn').remove();
-        addTemplate('login').insertBefore('#wrapper');
-        var add = loginBtn
-            .insertBefore('#wrapper');
-        var reg = registerBtn
-            .insertAfter(add);
-        init();
+        logout();
     });
     this.logoutBtn = logoutBtn;
 
@@ -113,7 +107,7 @@ function ButtonItem() {
     loginBtn = $('<input class="loginButton btn btn-success" type="button" value="login">');
     loginBtn.click(function (e) {
         var loginUser = {
-            name: $('.login').get(0).value,
+            username: $('.login').get(0).value,
             password: $('.login').get(1).value
         };
         login(loginUser);

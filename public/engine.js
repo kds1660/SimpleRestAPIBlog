@@ -210,15 +210,34 @@ function login(data) {
         var button = buttons.returnBtn(ENUM_BTN.exit);
         $('.loginButton').replaceWith(button);
         $('<div id="logged"></div>').insertBefore('.exitButton');
-        $('#logged').text('Logged  ' + JSON.parse(result.responseText)[0].username);
+        $('#logged').text('Logged  ' + JSON.parse(result.responseText).username);
         var addButton = buttons.returnBtn(ENUM_BTN.addTopic);
         addButton.insertAfter($('.exitButton'));
 
         $('.registerButton').get(0).remove();
-
     });
     result.fail(function (xhr, status, errorThrown) {
         showAllert(false, 'Invalid User name or password');
+    })
+}
+
+function logout() {
+    var result = $.ajax({
+        url: "/api/login/logout",
+        type: "GET",
+    });
+    result.done(function () {
+        $('#logged,.exitButton,.addTopicBtn').remove();
+        addTemplate('login').insertBefore('#wrapper');
+        var buttons = new ButtonItem;
+        var add = buttons.returnBtn(ENUM_BTN.login)
+            .insertBefore('#wrapper');
+        var reg = buttons.returnBtn(ENUM_BTN.register)
+            .insertAfter(add);
+        init();
+    });
+    result.fail(function (xhr, status, errorThrown) {
+        showAllert(false, 'Something wrong');
     })
 }
 
@@ -228,19 +247,25 @@ function viewComments(url) {
         type: "GET",
         dataType: "json"
     });
-    result.done(function (json) {
-        $.each(json, function (index) {
-            var comment = addTemplate('commentsView', "", json[index], true);
+    result.done(function (json) {//islogged.responseText.username
+        var islogged = $.ajax({
+            url: "/api/login/logged",
+            type: "GET"
+        });
+        islogged.done(function () {
+            $.each(json, function (index) {
+                var comment = addTemplate('commentsView', "", json[index], true);
+                if (islogged.responseText === json[index].author) {
+                    var buttons = new ButtonItem;
+                    var delBtn = buttons.returnBtn(ENUM_BTN.deleteComment);
+                    var editBtn = buttons.returnBtn(ENUM_BTN.editComment);
+                    editBtn.appendTo(comment);
+                    delBtn.appendTo(comment);
+                }
+                comment.appendTo(".modal-footer");
+            })
+        });
 
-            if ($('#logged').text().substring(8) === json[index].author) {
-                var buttons = new ButtonItem;
-                var delBtn = buttons.returnBtn(ENUM_BTN.deleteComment);
-                var editBtn = buttons.returnBtn(ENUM_BTN.editComment);
-                editBtn.appendTo(comment);
-                delBtn.appendTo(comment);
-            }
-            comment.appendTo(".modal-footer");
-        })
 
     })
 }
@@ -304,7 +329,6 @@ function addTemplate(tmpl, $that, data, notRemove) {
         $copy = $($copy);
         var buttons = new ButtonItem;
         var add = buttons.returnBtn(ENUM_BTN.addUser);
-        console.log(add);
         add.appendTo($copy.find('.modal-footer'));
     }
 
@@ -321,7 +345,6 @@ function addTemplate(tmpl, $that, data, notRemove) {
         $copy = $($copy);
         var buttons = new ButtonItem;
         var add = buttons.returnBtn(ENUM_BTN.add);
-        console.log(add)
         add.appendTo($copy.find('.modal-footer'));
         $copy.find('.author').get(0).value = $('#logged').text().substring(8);
         $copy.find('.author').attr('disabled', 'disabled');

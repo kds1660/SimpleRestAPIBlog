@@ -27,6 +27,8 @@ The project is designed to create articles hadware subjects with the possibility
 * mongoose - to working with MongoDb database
 * body-parser - for working with requests
 * log4js - logger for server
+* PassportJs - used for autentificate user
+* express-session - for passport autentification with session id
 
 **BOWER**
 - 
