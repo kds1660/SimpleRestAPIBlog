@@ -71,48 +71,55 @@ function init() {
             addTemplate('edit');
             var tbody = table.find('tbody');
 
-            $.each(json, function (index) {
-                    var tr = $('<tr>')
-                        .appendTo(tbody);
+            var islogged = $.ajax({
+                url: "/api/login/logged",
+                type: "GET"
+            });
+            islogged.done(function () {
+                $.each(json, function (index) {
+                        var tr = $('<tr>')
+                            .appendTo(tbody);
 
-                    for (var key in json[index]) {
-                        var th = $('<th>');
-                        th.addClass(key);
-                        th.text(json[index][key]);
-                        if (key === 'comments') th.text(json[index][key] + ' comments');
-                        if (key === 'date') th.text(new Date(json[index][key]).toLocaleString("en-US", options));
+                        for (var key in json[index]) {
+                            var th = $('<th>');
+                            th.addClass(key);
+                            th.text(json[index][key]);
+                            if (key === 'comments') th.text(json[index][key] + ' comments');
+                            if (key === 'date') th.text(new Date(json[index][key]).toLocaleString("en-US", options));
+                            th.appendTo(tr);
+                        }
+
+                        var th = $('<th style="width:300px;">');
+                        var buttons = new ButtonItem;
+                        var editBtn = buttons.returnBtn(ENUM_BTN.edit);
+                        var delBtn = buttons.returnBtn(ENUM_BTN.delete);
+                        var viewBtn = buttons.returnBtn(ENUM_BTN.view);
+                        editBtn.hide();
+                        delBtn.hide();
+                        viewBtn.hide();
+
+                            if (islogged.responseText !== json[index]['author']) {
+                                editBtn.remove();
+                                delBtn.remove();
+                            } else {
+                                editBtn.show();
+                                delBtn.show();
+                            }
+                            viewBtn.show();
+
+                        editBtn.appendTo(th);
+                        delBtn.appendTo(th);
+                        viewBtn.appendTo(th);
                         th.appendTo(tr);
                     }
+                );
+                $('#wrapper').text('');
+                table.appendTo('#wrapper');
+                $('#main').DataTable({});
+            })
 
-                    var th = $('<th style="width:300px;">');
-                    var buttons = new ButtonItem;
-                    var editBtn = buttons.returnBtn(ENUM_BTN.edit);
-                    var delBtn = buttons.returnBtn(ENUM_BTN.delete);
-                    var viewBtn = buttons.returnBtn(ENUM_BTN.view);
-                    editBtn.hide();
-                    delBtn.hide();
-                    viewBtn.hide();
-                    checkLogin(function (text) {
-                        if (text !== json[index]['author']) {
-                            editBtn.remove();
-                            delBtn.remove();
-                        } else {
-                            editBtn.show();
-                            delBtn.show();
-                        }
-                        viewBtn.show();
 
-                    });
-                    editBtn.appendTo(th);
-                    delBtn.appendTo(th);
-                    viewBtn.appendTo(th);
-                    th.appendTo(tr);
-                }
-            );
 
-            $('#wrapper').text('');
-            table.appendTo('#wrapper');
-            $('#main').DataTable({});
         })
         .fail(function (xhr, status, errorThrown) {
             alert("Sorry, there was a problem!");
