@@ -84,17 +84,24 @@ function init() {
                         th.appendTo(tr);
                     }
 
-                    var th = $('<th>');
+                    var th = $('<th style="width:300px;">');
                     var buttons = new ButtonItem;
                     var editBtn = buttons.returnBtn(ENUM_BTN.edit);
                     var delBtn = buttons.returnBtn(ENUM_BTN.delete);
                     var viewBtn = buttons.returnBtn(ENUM_BTN.view);
-
+                    editBtn.hide();
+                    delBtn.hide();
+                    viewBtn.hide();
                     checkLogin(function (text) {
                         if (text !== json[index]['author']) {
                             editBtn.remove();
                             delBtn.remove();
+                        } else {
+                            editBtn.show();
+                            delBtn.show();
                         }
+                        viewBtn.show();
+
                     });
                     editBtn.appendTo(th);
                     delBtn.appendTo(th);
@@ -393,7 +400,9 @@ $(document).ready(function () {
         .insertAfter('div#login');
     var reg = buttons.returnBtn(ENUM_BTN.register)
         .insertAfter(add);
-
+    $('.login').hide();
+    add.hide();
+    reg.hide();
     checkLogin(function (text) {
         if (text !== '0') {
             init();
@@ -406,6 +415,10 @@ $(document).ready(function () {
             var addButton = buttons.returnBtn(ENUM_BTN.addTopic);
             addButton.insertAfter($('.exitButton'));
             $('.registerButton').get(0).remove();
+        } else {
+            $('.login').show();
+            add.show();
+            reg.show();
         }
     })
 });
