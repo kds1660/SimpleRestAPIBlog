@@ -17,6 +17,7 @@ var ENUM_BTN = {
 };
 
 function showAllert(success, message, selector) {
+
     if (success) {
         selector = $(selector);
         selector = selector.find('.alert-success');
@@ -57,7 +58,6 @@ function initAndModal() {
     $("#myModal").removeClass("in")
         .hide();
     $(".modal-backdrop").remove();
-
 }
 
 function init() {
@@ -90,10 +90,14 @@ function init() {
                     var delBtn = buttons.returnBtn(ENUM_BTN.delete);
                     var viewBtn = buttons.returnBtn(ENUM_BTN.view);
 
-                    if ($('#logged').text().substring(8) && json[index]['author'] === $('#logged').text().substring(8)) {
-                        editBtn.appendTo(th);
-                        delBtn.appendTo(th);
-                    }
+                    checkLogin(function (text) {
+                        if (text !== json[index]['author']) {
+                            editBtn.remove();
+                            delBtn.remove();
+                        }
+                    });
+                    editBtn.appendTo(th);
+                    delBtn.appendTo(th);
                     viewBtn.appendTo(th);
                     th.appendTo(tr);
                 }
@@ -123,12 +127,9 @@ function returnText(url) {
         $('textarea.text, #textDiv').html(JSON.parse(result.responseText).text);
         $('#preview, #previewImg').attr('src', JSON.parse(result.responseText).img);
         //fix strange situation
-       setTimeout(function () {
-           if (tinyMCE.activeEditor) tinyMCE.activeEditor.setContent(JSON.parse(result.responseText).text);
-       },100);
-
-
-
+        setTimeout(function () {
+            if (tinyMCE.activeEditor) tinyMCE.activeEditor.setContent(JSON.parse(result.responseText).text);
+        }, 100);
     })
 }
 
@@ -140,7 +141,7 @@ function deleteTopic(url) {
             showAllert(true, 'Topic deleted');
         },
         error: function (xhr, status, err) {
-            showAllert(false, 'Something wrong ' + err,'.modal-footer');
+            showAllert(false, 'Something wrong ' + err, '.modal-footer');
         }
     })
 }
@@ -173,7 +174,7 @@ function editTopic(url, data) {
             $(".modal-backdrop").remove();
         },
         error: function (xhr, status, err) {
-            showAllert(false, 'Something wrong ' + err,'.modal-footer');
+            showAllert(false, 'Something wrong ' + err, '.modal-footer');
         }
     })
 }
@@ -247,15 +248,11 @@ function viewComments(url) {
         type: "GET",
         dataType: "json"
     });
-    result.done(function (json) {//islogged.responseText.username
-        var islogged = $.ajax({
-            url: "/api/login/logged",
-            type: "GET"
-        });
-        islogged.done(function () {
+    result.done(function (json) {
+        checkLogin(function (text) {
             $.each(json, function (index) {
                 var comment = addTemplate('commentsView', "", json[index], true);
-                if (islogged.responseText === json[index].author) {
+                if (text === json[index].author) {
                     var buttons = new ButtonItem;
                     var delBtn = buttons.returnBtn(ENUM_BTN.deleteComment);
                     var editBtn = buttons.returnBtn(ENUM_BTN.editComment);
@@ -264,9 +261,7 @@ function viewComments(url) {
                 }
                 comment.appendTo(".modal-footer");
             })
-        });
-
-
+        })
     })
 }
 
@@ -276,8 +271,8 @@ function saveComments(url, data) {
         type: "PUT",
         data: data,
         success: function (json) {
-           if (json==='Created')  showAllert(true, 'Comment added', '.modal-footer')
-           else if (json==='OK')  showAllert(true, 'Comment edited', '.modal-footer');
+            if (json === 'Created') showAllert(true, 'Comment added', '.modal-footer')
+            else if (json === 'OK') showAllert(true, 'Comment edited', '.modal-footer');
         },
         error: function (req, err) {
             showAllert(false, 'Comment not added', '.modal-footer');
@@ -346,7 +341,10 @@ function addTemplate(tmpl, $that, data, notRemove) {
         var buttons = new ButtonItem;
         var add = buttons.returnBtn(ENUM_BTN.add);
         add.appendTo($copy.find('.modal-footer'));
-        $copy.find('.author').get(0).value = $('#logged').text().substring(8);
+        checkLogin(function (text) {
+            $copy.find('.author').get(0).value = text;
+        });
+
         $copy.find('.author').attr('disabled', 'disabled');
     }
 
@@ -377,6 +375,15 @@ function addTemplate(tmpl, $that, data, notRemove) {
     }
     return $($copy)
 }
+function checkLogin(funk) {
+    var islogged = $.ajax({
+        url: "/api/login/logged",
+        type: "GET"
+    });
+    islogged.done(function () {
+        funk(islogged.responseText)
+    });
+}
 
 $(document).ready(function () {
     var buttons = new ButtonItem;
@@ -386,4 +393,19 @@ $(document).ready(function () {
         .insertAfter('div#login');
     var reg = buttons.returnBtn(ENUM_BTN.register)
         .insertAfter(add);
+
+    checkLogin(function (text) {
+        if (text !== '0') {
+            init();
+            $('div#login').remove();
+            var buttons = new ButtonItem;
+            var button = buttons.returnBtn(ENUM_BTN.exit);
+            $('.loginButton').replaceWith(button);
+            $('<div id="logged"></div>').insertBefore('.exitButton');
+            $('#logged').text('Logged  ' + text);
+            var addButton = buttons.returnBtn(ENUM_BTN.addTopic);
+            addButton.insertAfter($('.exitButton'));
+            $('.registerButton').get(0).remove();
+        }
+    })
 });
