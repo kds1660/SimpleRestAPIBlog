@@ -13,7 +13,7 @@ var LocalStrategy =require('./modules/passport').LocalStrategy;
 
 
 var app = express();
-
+app.use(express.static(__dirname + '/public'))
 app.use(session({
     secret:'kds_secret',
     saveUninitialized:true,
