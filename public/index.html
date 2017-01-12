@@ -107,8 +107,8 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" onclick="initAndModal()" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times</span></button>
+                    <button type="button" class="close" onclick="initAndModal()" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times</span></button>
                 </div>
                 <div class="modal-body">
                     <h2 id="textH">{{topic}}</h2>
@@ -121,6 +121,7 @@
                 <div class="modal-footer">
                     <div class="alert alert-danger collapse" role="alert" tabindex="-1"></div>
                     <div class="alert alert-success collapse" role="alert" tabindex="-1">
+                    </div>
                 </div>
             </div>
         </div>
@@ -129,9 +130,9 @@
 
 <script id="mustache_comment" type="text/template">
     <div class="panel panel-default">
-        <div id='mongoId' style="display: none;" >{{_id}}</div>
+        <div id='mongoId' style="display: none;">{{_id}}</div>
         <div class="panel-heading text-left">
-            Writing by {{author}} at   {{date}}
+            Writing by {{author}} at {{date}}
         </div>
         <div class="panel-body text-left">{{{text}}}</div>
         <div class="footer text-left">

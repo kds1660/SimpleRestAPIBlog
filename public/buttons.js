@@ -148,7 +148,7 @@ function ButtonItem() {
             showAllert(false, 'Enter password and user', '.modal-footer');
 
         } else {
-            addUser(newUser, $(this));
+            addUser(newUser);
         }
 
     });

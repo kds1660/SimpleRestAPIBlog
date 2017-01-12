@@ -16,6 +16,17 @@ var ENUM_BTN = {
     saveComment: 'saveComment'
 };
 
+var options = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    weekday: 'long',
+    timezone: 'UTC',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric'
+};
+
 function showAllert(success, message, selector) {
 
     if (success) {
@@ -42,17 +53,6 @@ function showAllert(success, message, selector) {
     }
 }
 
-var options = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    weekday: 'long',
-    timezone: 'UTC',
-    hour: 'numeric',
-    minute: 'numeric',
-    second: 'numeric'
-};
-
 function initAndModal() {
     init();
     $("#myModal").removeClass("in")
@@ -61,72 +61,66 @@ function initAndModal() {
 }
 
 function init() {
-    $.ajax({
+    request1= $.ajax({
         url: "/api/topic",
         type: "GET",
         dataType: "json"
+    });
+    request2= $.ajax({
+        url: "/api/login/logged",
+        type: "GET"
+    });
+
+    $.when(request1, request2).done(function (response1,response2) {
+        var table = addTemplate('table');
+        addTemplate('edit');
+        var tbody = table.find('tbody');
+        $.each(response1[0], function (index) {
+                var tr = $('<tr>')
+                    .appendTo(tbody);
+
+                for (var key in response1[0][index]) {
+                    var th = $('<th>');
+                    th.addClass(key);
+                    th.text(response1[0][index][key]);
+                    if (key === 'comments') th.text(response1[0][index][key] + ' comments');
+                    if (key === 'date') th.text(new Date(response1[0][index][key]).toLocaleString("en-US", options));
+                    th.appendTo(tr);
+                }
+
+                var th = $('<th style="width:300px;">');
+                var buttons = new ButtonItem;
+                var editBtn = buttons.returnBtn(ENUM_BTN.edit);
+                var delBtn = buttons.returnBtn(ENUM_BTN.delete);
+                var viewBtn = buttons.returnBtn(ENUM_BTN.view);
+                editBtn.hide();
+                delBtn.hide();
+                viewBtn.hide();
+
+                if (response2[0] !== response1[0][index]['author']) {
+                    editBtn.remove();
+                    delBtn.remove();
+                } else {
+                    editBtn.show();
+                    delBtn.show();
+                }
+                viewBtn.show();
+
+                editBtn.appendTo(th);
+                delBtn.appendTo(th);
+                viewBtn.appendTo(th);
+                th.appendTo(tr);
+            }
+        );
+        $('#wrapper').text('');
+        table.appendTo('#wrapper');
+        $('#main').DataTable({});
+    });
+    $.when(request1, request2).fail(function (xhr, status) {
+        alert("Sorry, there was a problem!");
+        console.log("Status: " + status);
+        console.log(xhr);
     })
-        .done(function (json) {
-            var table = addTemplate('table');
-            addTemplate('edit');
-            var tbody = table.find('tbody');
-
-            var islogged = $.ajax({
-                url: "/api/login/logged",
-                type: "GET"
-            });
-            islogged.done(function () {
-                $.each(json, function (index) {
-                        var tr = $('<tr>')
-                            .appendTo(tbody);
-
-                        for (var key in json[index]) {
-                            var th = $('<th>');
-                            th.addClass(key);
-                            th.text(json[index][key]);
-                            if (key === 'comments') th.text(json[index][key] + ' comments');
-                            if (key === 'date') th.text(new Date(json[index][key]).toLocaleString("en-US", options));
-                            th.appendTo(tr);
-                        }
-
-                        var th = $('<th style="width:300px;">');
-                        var buttons = new ButtonItem;
-                        var editBtn = buttons.returnBtn(ENUM_BTN.edit);
-                        var delBtn = buttons.returnBtn(ENUM_BTN.delete);
-                        var viewBtn = buttons.returnBtn(ENUM_BTN.view);
-                        editBtn.hide();
-                        delBtn.hide();
-                        viewBtn.hide();
-
-                            if (islogged.responseText !== json[index]['author']) {
-                                editBtn.remove();
-                                delBtn.remove();
-                            } else {
-                                editBtn.show();
-                                delBtn.show();
-                            }
-                            viewBtn.show();
-
-                        editBtn.appendTo(th);
-                        delBtn.appendTo(th);
-                        viewBtn.appendTo(th);
-                        th.appendTo(tr);
-                    }
-                );
-                $('#wrapper').text('');
-                table.appendTo('#wrapper');
-                $('#main').DataTable({});
-            })
-        })
-
-        .fail(function (xhr, status, errorThrown) {
-            alert("Sorry, there was a problem!");
-            console.log("Error: " + errorThrown);
-            console.log("Status: " + status);
-            console.dir(xhr);
-        })
-        .always(function (xhr, status) {
-        });
 }
 
 function returnText(url) {
@@ -191,7 +185,7 @@ function editTopic(url, data) {
     })
 }
 
-function addUser(data, $that) {
+function addUser(data) {
     $.ajax({
         url: "/api/login/",
         type: "PUT",
@@ -203,7 +197,7 @@ function addUser(data, $that) {
             $(".modal-backdrop").remove();
             showAllert(true, 'User registered, try login');
         },
-        error: function (xhr) {
+        error: function () {
             showAllert(false, 'User already exist!', '.modal-footer');
         }
     })
@@ -229,7 +223,7 @@ function login(data) {
 
         $('.registerButton').get(0).remove();
     });
-    result.fail(function (xhr, status, errorThrown) {
+    result.fail(function () {
         showAllert(false, 'Invalid User name or password');
     })
 }
@@ -237,7 +231,7 @@ function login(data) {
 function logout() {
     var result = $.ajax({
         url: "/api/login/logout",
-        type: "GET",
+        type: "GET"
     });
     result.done(function () {
         $('#logged,.exitButton,.addTopicBtn').remove();
@@ -249,7 +243,7 @@ function logout() {
             .insertAfter(add);
         init();
     });
-    result.fail(function (xhr, status, errorThrown) {
+    result.fail(function () {
         showAllert(false, 'Something wrong');
     })
 }
@@ -278,15 +272,15 @@ function viewComments(url) {
 }
 
 function saveComments(url, data) {
-    var result = $.ajax({
+    $.ajax({
         url: "/api/comments/" + url,
         type: "PUT",
         data: data,
         success: function (json) {
-            if (json === 'Created') showAllert(true, 'Comment added', '.modal-footer')
+            if (json === 'Created') showAllert(true, 'Comment added', '.modal-footer');
             else if (json === 'OK') showAllert(true, 'Comment edited', '.modal-footer');
         },
-        error: function (req, err) {
+        error: function () {
             showAllert(false, 'Comment not added', '.modal-footer');
         }
     });
@@ -399,14 +393,14 @@ function checkLogin(funk) {
 
 $(document).ready(function () {
     var buttons = new ButtonItem;
-    init();
+
     addTemplate('login').insertBefore('#wrapper');
-    var add = buttons.returnBtn(ENUM_BTN.login)
+    var login = buttons.returnBtn(ENUM_BTN.login)
         .insertAfter('div#login');
     var reg = buttons.returnBtn(ENUM_BTN.register)
-        .insertAfter(add);
+        .insertAfter(login);
     $('.login').hide();
-    add.hide();
+    login.hide();
     reg.hide();
     checkLogin(function (text) {
         if (text !== '0') {
@@ -421,8 +415,9 @@ $(document).ready(function () {
             addButton.insertAfter($('.exitButton'));
             $('.registerButton').get(0).remove();
         } else {
+            init();
             $('.login').show();
-            add.show();
+            login.show();
             reg.show();
         }
     })
