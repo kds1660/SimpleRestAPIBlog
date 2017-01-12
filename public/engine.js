@@ -88,7 +88,7 @@ function init() {
                     th.appendTo(tr);
                 }
 
-                var th = $('<th style="width:300px;">');
+                var th = $('<th>');
                 var buttons = new ButtonItem;
                 var editBtn = buttons.returnBtn(ENUM_BTN.edit);
                 var delBtn = buttons.returnBtn(ENUM_BTN.delete);
