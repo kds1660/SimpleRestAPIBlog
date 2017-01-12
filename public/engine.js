@@ -93,29 +93,20 @@ function init() {
                 var editBtn = buttons.returnBtn(ENUM_BTN.edit);
                 var delBtn = buttons.returnBtn(ENUM_BTN.delete);
                 var viewBtn = buttons.returnBtn(ENUM_BTN.view);
-                editBtn.hide();
-                delBtn.hide();
-                viewBtn.hide();
 
-                if (response2[0] !== response1[0][index]['author']) {
-                    editBtn.remove();
-                    delBtn.remove();
-                } else {
-                    editBtn.show();
-                    delBtn.show();
+                if (response2[0] === response1[0][index]['author']) {
+                    editBtn.appendTo(th);
+                    delBtn.appendTo(th);
                 }
-                viewBtn.show();
-
-                editBtn.appendTo(th);
-                delBtn.appendTo(th);
                 viewBtn.appendTo(th);
                 th.appendTo(tr);
-            }
-        );
+            });
+
         $('#wrapper').text('');
         table.appendTo('#wrapper');
         $('#main').DataTable({});
     });
+
     $.when(request1, request2).fail(function (xhr, status) {
         alert("Sorry, there was a problem!");
         console.log("Status: " + status);
