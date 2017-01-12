@@ -13,7 +13,7 @@ var LocalStrategy =require('./modules/passport').LocalStrategy;
 
 
 var app = express();
-app.use(express.static(__dirname + '/public'))
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret:'kds_secret',
     saveUninitialized:true,
@@ -24,8 +24,7 @@ app.use(passport.session());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'bootstrap')));
+
 
 app.use('/api/topic', topic);
 app.use('/api/login', login);
