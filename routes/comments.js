@@ -49,7 +49,7 @@ router
                     } else   logger.error(err);
                 });
         } else if (req.body.new){
-            Topic.update({name:req.params.name},{$push:{comments:{author:name,text:text,date:new Date()}}},
+            Topic.update({name:req.params.name},{$push:{comments:{author:req.user.username,text:text,date:new Date()}}},
                 function (err, topic) {
                     if (!err) {
                         res.sendStatus(201);

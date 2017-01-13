@@ -193,7 +193,6 @@ function ButtonItem() {
     saveNewComment.click(function (e) {
         saveComments($(this).closest('.modal-content').find('h2').eq(0).text(), {
             new: 'new',
-            name: $('#logged').text().substring(8),
             text: tinyMCE.activeEditor.getContent({format: 'raw'})
         });
         tinymce.remove();
