@@ -102,7 +102,7 @@ function init() {
                 th.appendTo(tr);
             });
 
-        $('#wrapper').text('');
+       //// $('#wrapper').text('');
         table.appendTo('#wrapper');
         $('#main').DataTable({});
     });
@@ -204,15 +204,15 @@ function login(data) {
     result.done(function () {
         init();
         $('div#login').remove();
+
         var buttons = new ButtonItem;
         var button = buttons.returnBtn(ENUM_BTN.exit);
         $('.loginButton').replaceWith(button);
-        $('<div id="logged"></div>').insertBefore('.exitButton');
-        $('#logged').text('Logged  ' + JSON.parse(result.responseText).username);
+
+        $('#logged h2').text('Logged  ' + JSON.parse(result.responseText).username);
         var addButton = buttons.returnBtn(ENUM_BTN.addTopic);
         addButton.insertAfter($('.exitButton'));
-
-        $('.registerButton').get(0).remove();
+        $('.registerButton').remove();
     });
     result.fail(function () {
         showAllert(false, 'Invalid User name or password');
@@ -225,14 +225,15 @@ function logout() {
         type: "GET"
     });
     result.done(function () {
-        $('#logged,.exitButton,.addTopicBtn').remove();
-        addTemplate('login').insertBefore('#wrapper');
+        $('#login,.exitButton,.addTopicBtn,#logged h2').remove();
+        addTemplate('login').appendTo('#log');
         var buttons = new ButtonItem;
         var add = buttons.returnBtn(ENUM_BTN.login)
-            .insertBefore('#wrapper');
+            .appendTo('#logged');
         var reg = buttons.returnBtn(ENUM_BTN.register)
             .insertAfter(add);
         init();
+
     });
     result.fail(function () {
         showAllert(false, 'Something wrong');
@@ -385,7 +386,7 @@ function checkLogin(funk) {
 $(document).ready(function () {
     var buttons = new ButtonItem;
 
-    addTemplate('login').insertBefore('#wrapper');
+    addTemplate('login').appendTo('#logged');
     var login = buttons.returnBtn(ENUM_BTN.login)
         .insertAfter('div#login');
     var reg = buttons.returnBtn(ENUM_BTN.register)
@@ -400,8 +401,8 @@ $(document).ready(function () {
             var buttons = new ButtonItem;
             var button = buttons.returnBtn(ENUM_BTN.exit);
             $('.loginButton').replaceWith(button);
-            $('<div id="logged"></div>').insertBefore('.exitButton');
-            $('#logged').text('Logged  ' + text);
+            console.log(text)
+            $('#logged h2').text('Logged  ' + text);
             var addButton = buttons.returnBtn(ENUM_BTN.addTopic);
             addButton.insertAfter($('.exitButton'));
             $('.registerButton').get(0).remove();

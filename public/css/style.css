@@ -20,9 +20,6 @@ a {
     margin: 5px;
 }
 
-.login {
-    display: block;
-}
 
 span {
     display: block;
@@ -81,4 +78,3 @@ body > .alert {
     width: 100%;
     text-align: left;
 }
-

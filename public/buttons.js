@@ -107,8 +107,8 @@ function ButtonItem() {
     loginBtn = $('<input class="loginButton btn btn-success" type="button" value="login">');
     loginBtn.click(function (e) {
         var loginUser = {
-            username: $('.login').get(0).value,
-            password: $('.login').get(1).value
+            username: $('.login:input').get(0).value,
+            password: $('.login:input').get(1).value
         };
         login(loginUser);
     });
