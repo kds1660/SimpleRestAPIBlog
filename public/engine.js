@@ -72,39 +72,23 @@ function init() {
     });
 
     $.when(request1, request2).done(function (response1,response2) {
-        var table = addTemplate('table');
-        addTemplate('edit');
-        var tbody = table.find('tbody');
         $.each(response1[0], function (index) {
-                var tr = $('<tr>')
-                    .appendTo(tbody);
-
-                for (var key in response1[0][index]) {
-                    var th = $('<th>');
-                    th.addClass(key);
-                    th.text(response1[0][index][key]);
-                    if (key === 'comments') th.text(response1[0][index][key] + ' comments');
-                    if (key === 'date') th.text(new Date(response1[0][index][key]).toLocaleString("en-US", options));
-                    th.appendTo(tr);
-                }
-
-                var th = $('<th>');
-                var buttons = new ButtonItem;
-                var editBtn = buttons.returnBtn(ENUM_BTN.edit);
-                var delBtn = buttons.returnBtn(ENUM_BTN.delete);
-                var viewBtn = buttons.returnBtn(ENUM_BTN.view);
-
-                if (response2[0] === response1[0][index]['author']) {
-                    editBtn.appendTo(th);
-                    delBtn.appendTo(th);
-                }
-                viewBtn.appendTo(th);
-                th.appendTo(tr);
+                template = $('#mustache_topic').html();
+                data={
+                    name:response1[0][index].name,
+                    date:response1[0][index].date,
+                    author:response1[0][index].author,
+                    text:response1[0][index].text,
+                    img:response1[0][index].img,
+                };
+                console.log(data)
+                var $copy = Mustache.to_html(template, data);
+                $copy = $($copy);
+                console.log($copy)
+               $copy.appendTo('#wrapper');
             });
 
        //// $('#wrapper').text('');
-        table.appendTo('#wrapper');
-        $('#main').DataTable({});
     });
 
     $.when(request1, request2).fail(function (xhr, status) {

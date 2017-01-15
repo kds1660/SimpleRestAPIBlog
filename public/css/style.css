@@ -78,3 +78,7 @@ body > .alert {
     width: 100%;
     text-align: left;
 }
+#wrapper img {
+    float: left;
+    padding: 10px;
+}

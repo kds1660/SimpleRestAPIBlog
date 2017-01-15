@@ -13,11 +13,14 @@ router
             if (topic.length) {
                 logger.info('Topics list GET OK');
                 res.json(topic.map(function (el) {
+                    console.log(el)
                     return {
                         name: el.name,
                         author: el.author,
                         date: el.date,
-                        comments:el.comments.length
+                        comments:el.comments.length,
+                        img:el.img,
+                        text:el.text
                     };
                 }));
             } else {
