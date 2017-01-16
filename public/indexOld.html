@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-    <title>Blog Post - Start Bootstrap Template</title>
-
+    <meta charset="UTF-8">
+    <title>Blog</title>
     <script src="/bower_components/jquery/dist/jquery.js"></script>
     <script src="/bower_components/datatables/media/js/jquery.dataTables.js"></script>
     <script src="/bower_components/datatables/media/js/dataTables.bootstrap4.js"></script>
@@ -12,61 +10,37 @@
     <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="/bower_components/tinymce/tinymce.js"></script>
     <script src="buttons.js"></script>
-    <script src="engine.js"></script>
+  //  <script src="engine.js"></script>
 
     <link rel="stylesheet" type="text/css" href="/css/style.css"/>
     <link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/bower_components/datatables/media/css/jquery.dataTables.css">
 
 </head>
-
 <body>
 
 <div class="alert alert-danger collapse" role="alert">
 </div>
 <div class="alert alert-success collapse" role="alert">
 </div>
-      <!-- Page Content -->
-    <div class="container">
 
-        <div class="row">
+<div id="wrapper"></div>
 
-            <!-- Blog Post Content Column -->
-            <div class="col-lg-8" id="wrapper">
-            </div>
-
-            <div class="col-md-4">
-                <div class="well">
-                    <h4>Blog Search</h4>
-                    <div class="input-group">
-                        <input type="text" class="form-control">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
-                                <span class="glyphicon glyphicon-search"></span>
-                        </button>
-                        </span>
-                    </div>
-                </div>
-                <div class="well" id="logged">
-                </div>
-                <!-- Blog Search Well -->
-
-
-            </div>
-
-        </div>
-
-        <hr>
-        <footer>
-            <div class="row">
-                <div class="col-lg-12">
-                    <p>Copyright Website 2017</p>
-                </div>
-            </div>
-            <!-- /.row -->
-        </footer>
-
-    </div>
+<div id="tableTmpl" style="display: none;">
+    <table id="mainTmp">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Author</th>
+            <th>Date</th>
+            <th>Comments</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
 
 <script id="mustache_edit" type="text/template">
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -99,15 +73,9 @@
 </script>
 
 <script id="mustache_login" type="text/template">
-    <h2>Sign in</h2>
-    <div id="log">
-        <div id="login">
-            <label>Username</label>
-            <input type="text" class="login" name="Username">
-            <label>Password</label>
-            <input type="password" class="login" name="Password">
-            <br /><br />
-        </div>
+    <div id="login">
+        <input type="text" class="login">
+        <input type="password" class="login"></div>
     </div>
 </script>
 
@@ -171,24 +139,6 @@
         </div>
     </div>
 </script>
-<script id="mustache_topic" type="text/template">
-    <div class="topic">
-<hr>
-        <h1>{{name}}</h1>
-        <p class="lead"><span class="glyphicon glyphicon-time"></span> by <span class="author">{{author}}</span> at <span class="date">{{date}}</span></p>
-        <p>
-            <span class="comments">
-                <span class="glyphicon glyphicon-check">
-                    <b>{{comments}} comments</b>
-                    <div class="buttons"></div>
-                </span>
-            </span>
-        </p>
 
-        <img height="100" src="{{img}}" alt="">
-        <div class="textDiv" height="200">{{{text}}}</div>
-    </div>
-</script>
 </body>
-
 </html>

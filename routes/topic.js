@@ -13,14 +13,14 @@ router
             if (topic.length) {
                 logger.info('Topics list GET OK');
                 res.json(topic.map(function (el) {
-                    console.log(el)
+                    if (el.img==='') {el.img='img/no-image.png'}
                     return {
                         name: el.name,
                         author: el.author,
                         date: el.date,
                         comments:el.comments.length,
                         img:el.img,
-                        text:el.text
+                        text:(el.text).substr(0,500) + '...'
                     };
                 }));
             } else {
@@ -29,7 +29,7 @@ router
                 logger.error(err);
                 next(err);
             }
-        });
+        }).sort({date:-1});
     })
 
     .get('/:name/', function (req, res, next) {
@@ -37,6 +37,7 @@ router
             if (err) throw err;
             if (topic.length) {
                 logger.info('Topic get OK '+req.params.name);
+                if (topic[0].img==='') {topic[0].img='img/no-image.png'}
                 res.json(topic[0]);
             }
             else {

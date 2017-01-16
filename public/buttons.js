@@ -1,8 +1,8 @@
 function ButtonItem() {
     delBtn = $('<input class="delButton btn btn-info" type="button" value="Delete">');
     delBtn.click(function () {
-        deleteTopic($(this).closest('tr').find('th').contents().get(0).nodeValue);
-        $(this).closest('tr').remove();
+        deleteTopic($(this).parent().find('h1').text());
+        $(this).parent().remove();
         $('.toggleDiv').remove();
     });
     this.delBtn = delBtn;
@@ -191,7 +191,7 @@ function ButtonItem() {
 
     saveNewComment = $('<input class="saveNCommBtn btn-danger" type="button" value="Save">');
     saveNewComment.click(function (e) {
-        saveComments($(this).closest('.modal-content').find('h2').eq(0).text(), {
+        saveComments($('#textH').text(), {
             new: 'new',
             text: tinyMCE.activeEditor.getContent({format: 'raw'})
         });

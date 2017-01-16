@@ -21,7 +21,6 @@ var options = {
     month: 'long',
     day: 'numeric',
     weekday: 'long',
-    timezone: 'UTC',
     hour: 'numeric',
     minute: 'numeric',
     second: 'numeric'
@@ -58,6 +57,7 @@ function initAndModal() {
     $("#myModal").removeClass("in")
         .hide();
     $(".modal-backdrop").remove();
+    $("body").removeClass("modal-open")
 }
 
 function init() {
@@ -72,23 +72,34 @@ function init() {
     });
 
     $.when(request1, request2).done(function (response1,response2) {
+        $('#wrapper').text('');
         $.each(response1[0], function (index) {
                 template = $('#mustache_topic').html();
                 data={
                     name:response1[0][index].name,
-                    date:response1[0][index].date,
+                    date: new Date(response1[0][index].date).toLocaleString('en-GB',options),
                     author:response1[0][index].author,
                     text:response1[0][index].text,
                     img:response1[0][index].img,
+                    comments:response1[0][index].comments
                 };
-                console.log(data)
                 var $copy = Mustache.to_html(template, data);
                 $copy = $($copy);
-                console.log($copy)
                $copy.appendTo('#wrapper');
+            var buttons = new ButtonItem;
+            var editBtn = buttons.returnBtn(ENUM_BTN.edit);
+            var delBtn = buttons.returnBtn(ENUM_BTN.delete);
+            var viewBtn = buttons.returnBtn(ENUM_BTN.view);
+            viewBtn.appendTo($copy.find('.buttons'));
+            if (response2[0] === response1[0][index].author) {
+                editBtn.insertAfter($copy.find('.buttons'));
+                delBtn.insertAfter($copy.find('.buttons'));
+            }
             });
 
-       //// $('#wrapper').text('');
+
+
+
     });
 
     $.when(request1, request2).fail(function (xhr, status) {
@@ -148,11 +159,12 @@ function editTopic(url, data) {
         data: data,
         success: function () {
             showAllert(true, 'Topic saved');
-            $('.wrapper').text('');
+            $('#wrapper').text('');
             init();
             $("#myModal").removeClass("in")
                 .hide();
             $(".modal-backdrop").remove();
+            $("body").removeClass("modal-open")
         },
         error: function (xhr, status, err) {
             showAllert(false, 'Something wrong ' + err, '.modal-footer');
@@ -230,6 +242,7 @@ function viewComments(url) {
         type: "GET",
         dataType: "json"
     });
+    console.log(url)
     result.done(function (json) {
         checkLogin(function (text) {
             $.each(json, function (index) {
@@ -280,10 +293,10 @@ function addTemplate(tmpl, $that, data, notRemove) {
 
     } else if (tmpl === 'edit' && $that) {
         var data = {
-            topic: $that.closest('tr').find('.name').text(),
-            author: $that.closest('tr').find('.author').text(),
-            date: new Date($that.closest('tr').find('.date').text()).toLocaleString("en-US", options),
-            oldTopic: $that.closest('tr').find('.name').text(),
+            topic: $that.closest('.topic').find('h1').text(),
+            author: $that.closest('.topic').find('.author').text(),
+            date: new Date($that.closest('.topic').find('.date').text()).toLocaleString("en-US", options),
+            oldTopic: $that.closest('.topic').find('h1').text(),
             text: 'Edit Topic'
         };
 
@@ -293,7 +306,7 @@ function addTemplate(tmpl, $that, data, notRemove) {
         var buttons = new ButtonItem;
         var save = buttons.returnBtn(ENUM_BTN.save);
         save.appendTo($copy.find('.modal-footer'));
-        returnText($that.parent().parent().find('.name').text());
+        returnText($that.closest('.topic').find('h1').text());
         $copy.find('.author').attr('disabled', 'disabled');
 
     } else if (tmpl === 'login') {
@@ -332,9 +345,8 @@ function addTemplate(tmpl, $that, data, notRemove) {
 
     else if (tmpl === 'view') {
         var data = {
-            topic: $that.closest('tr').find('.name').text(),
-            author: 'Written by ' + $that.closest('tr').find('.author').text(),
-            date: new Date($that.closest('tr').find('.date').text()).toLocaleString("en-US", options)
+            topic: $that.closest('.topic').find('h1').text(),
+            author: 'Written by ' + $that.closest('.topic').find('.lead').text(),
         };
 
         template = $('#mustache_view').html();
@@ -347,7 +359,7 @@ function addTemplate(tmpl, $that, data, notRemove) {
             commentsAdd.appendTo($copy.find('.modal-footer'));
         }
         comments.appendTo($copy.find('.modal-footer'));
-        returnText($that.closest('tr').find('.name').text());
+        returnText($that.closest('.topic').find('h1').text());
 
     } else if (tmpl === 'commentsView') {
         data.date = new Date(data.date.toLocaleString("en-US", options));
@@ -385,7 +397,6 @@ $(document).ready(function () {
             var buttons = new ButtonItem;
             var button = buttons.returnBtn(ENUM_BTN.exit);
             $('.loginButton').replaceWith(button);
-            console.log(text)
             $('#logged h2').text('Logged  ' + text);
             var addButton = buttons.returnBtn(ENUM_BTN.addTopic);
             addButton.insertAfter($('.exitButton'));
