@@ -20,9 +20,6 @@ a {
     margin: 5px;
 }
 
-
-
-
 #addText {
     float: left;
     font-size: large;
@@ -43,8 +40,6 @@ table.dataTable tbody tr:hover {
     font-size: large;
     margin: 5px;
 }
-
-
 
 #textDiv {
     font-size: 18px;
@@ -90,9 +85,11 @@ body > .alert {
     float: left;
     padding: 10px;
 }
+
 .topic {
     display: block;
 }
+
 .buttons {
     display: inline;
 }

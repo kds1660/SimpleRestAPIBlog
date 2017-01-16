@@ -20,7 +20,7 @@ router
                         date: el.date,
                         comments:el.comments.length,
                         img:el.img,
-                        text:(el.text).substr(0,500) + '...'
+                        text:(el.text).substr(0,400) + '...'
                     };
                 }));
             } else {
