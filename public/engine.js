@@ -71,7 +71,6 @@ function getContent(page,limit,keyworld) {
 
 function init(keyworld) {
     var keyworld=keyworld||'';
-    console.log(keyworld)
     request1= getContent('','',keyworld);
     request2= $.ajax({
         url: "/api/login/logged",
@@ -110,9 +109,7 @@ function init(keyworld) {
     });
 
     $.when(request1, request2).fail(function (xhr, status) {
-        alert("Sorry, there was a problem!");
-        console.log("Status: " + status);
-        console.log(xhr);
+        showAllert(false, 'Not found');
     })
 }
 

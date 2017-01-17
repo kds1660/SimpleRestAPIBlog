@@ -4,7 +4,8 @@ var loading = false;
 
 
 function loadMore(){
-        request1= getContent(page,limit);
+   var  keyworld=keyworld||'';
+        request1= getContent(page,limit,keyworld);
         page++;
         request2= $.ajax({
             url: "/api/login/logged",
