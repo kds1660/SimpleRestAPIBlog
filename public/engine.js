@@ -57,7 +57,7 @@ function initAndModal() {
     $("#myModal").removeClass("in")
         .hide();
     $(".modal-backdrop").remove();
-    $("body").removeClass("modal-open")
+    $("body").removeClass("modal-open");
 }
 function getContent(page,limit,keyworld) {
     request= $.ajax({
@@ -164,12 +164,12 @@ function editTopic(url, data) {
         success: function () {
             showAllert(true, 'Topic saved');
             $('#wrapper').text('');
-            init();
             $("#myModal").removeClass("in")
                 .hide();
             $(".modal-backdrop").remove();
             $("body").removeClass("modal-open");
             $('.form-control').val('');
+            page=1;
             init();
         },
         error: function (xhr, status, err) {
