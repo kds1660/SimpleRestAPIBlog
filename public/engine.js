@@ -361,9 +361,12 @@ function addTemplate(tmpl, $that, data, notRemove) {
         var buttons = new ButtonItem;
         var comments = buttons.returnBtn(ENUM_BTN.viewComments);
         var commentsAdd = buttons.returnBtn(ENUM_BTN.addComments);
-        if ($('#logged').text()) {
-            commentsAdd.appendTo($copy.find('.modal-footer'));
-        }
+        (checkLogin(function(text){
+            if (text !== '0') {commentsAdd.appendTo($copy.find('.modal-footer'));}
+
+        }))
+
+
         comments.appendTo($copy.find('.modal-footer'));
         returnText($that.closest('.topic').find('h1').text());
 
@@ -387,7 +390,6 @@ function checkLogin(funk) {
 
 $(document).ready(function () {
     $(window).scroll(function(){
-        console.log($(document).height(),$(window).scrollTop()+$(window).height()+1);
            if($(document).height()<=$(window).scrollTop()+$(window).height()+1) {
                loadMore($('.form-control').val());
            }
