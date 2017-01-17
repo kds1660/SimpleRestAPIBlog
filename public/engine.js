@@ -59,18 +59,20 @@ function initAndModal() {
     $(".modal-backdrop").remove();
     $("body").removeClass("modal-open")
 }
-function getContent(page,limit) {
+function getContent(page,limit,keyworld) {
     request= $.ajax({
         url: "/api/topic",
         type: "GET",
         dataType: "json",
-        data:{page:page,limit:limit}
+        data:{page:page,limit:limit,keyworld:keyworld}
     });
     return request
 }
 
-function init() {
-    request1= getContent();
+function init(keyworld) {
+    var keyworld=keyworld||'';
+    console.log(keyworld)
+    request1= getContent('','',keyworld);
     request2= $.ajax({
         url: "/api/login/logged",
         type: "GET"
@@ -419,5 +421,8 @@ $(document).ready(function () {
             login.show();
             reg.show();
         }
+    })
+    $('.search').click(function () {
+        init($('.form-control').val())
     })
 });

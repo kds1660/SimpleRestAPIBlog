@@ -10,8 +10,9 @@ router
     .get('/', function (req, res, next) {
         page=+req.query.page||0;
         limit=+req.query.limit||2;
-        console.log(page,limit)
-        Topic.find({}, function (err, topic) {
+       var keyworld=req.query.keyworld||'';
+        console.log('key'+keyworld);
+        Topic.find({name:{$regex:'.*'+keyworld+'.*'}}, function (err, topic) {
             if (err) throw err;
             if (topic.length) {
                 logger.info('Topics list GET OK');
