@@ -168,7 +168,8 @@ function editTopic(url, data) {
             $("#myModal").removeClass("in")
                 .hide();
             $(".modal-backdrop").remove();
-            $("body").removeClass("modal-open")
+            $("body").removeClass("modal-open");
+            $('.form-control').val('');
         },
         error: function (xhr, status, err) {
             showAllert(false, 'Something wrong ' + err, '.modal-footer');
