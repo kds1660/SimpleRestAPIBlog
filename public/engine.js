@@ -170,6 +170,7 @@ function editTopic(url, data) {
             $(".modal-backdrop").remove();
             $("body").removeClass("modal-open");
             $('.form-control').val('');
+            init();
         },
         error: function (xhr, status, err) {
             showAllert(false, 'Something wrong ' + err, '.modal-footer');
@@ -422,6 +423,6 @@ $(document).ready(function () {
     })
     $('.search').click(function () {
         page=1;
-        init($('.form-control').val())
+        init($('.form-control').val());
     })
 });
