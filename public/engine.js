@@ -387,7 +387,7 @@ $(document).ready(function () {
     $(window).scroll(function(){
         console.log($(document).height(),$(window).scrollTop()+$(window).height()+1);
            if($(document).height()<=$(window).scrollTop()+$(window).height()+1) {
-               loadMore();
+               loadMore($('.form-control').val());
            }
     });
 
@@ -420,6 +420,7 @@ $(document).ready(function () {
         }
     })
     $('.search').click(function () {
+        page=1;
         init($('.form-control').val())
     })
 });

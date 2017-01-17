@@ -3,7 +3,7 @@ var limit=2;
 var loading = false;
 
 
-function loadMore(){
+function loadMore(keyworld){
    var  keyworld=keyworld||'';
         request1= getContent(page,limit,keyworld);
         page++;

@@ -11,7 +11,6 @@ router
         page=+req.query.page||0;
         limit=+req.query.limit||2;
        var keyworld=req.query.keyworld||'';
-        console.log('key'+keyworld);
         Topic.find({name:{$regex:'.*'+keyworld+'.*'}}, function (err, topic) {
             if (err) throw err;
             if (topic.length) {
