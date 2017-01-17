@@ -1,5 +1,5 @@
 function ButtonItem() {
-    delBtn = $('<input class="delButton btn btn-info" type="button" value="Delete">');
+    delBtn = $('<input class="delButton btn btn-primary" type="button" value="Delete">');
     delBtn.click(function () {
         deleteTopic($(this).parent().find('h1').text());
         $(this).parent().remove();
@@ -28,7 +28,7 @@ function ButtonItem() {
     });
     this.logoutBtn = logoutBtn;
 
-    editBtn = $('<input class="editButton btn btn-info" type="button" value="Edit">');
+    editBtn = $('<input class="editButton btn btn-primary" type="button" value="Edit">');
     editBtn.click(function (e) {
         e.stopPropagation();
         var modalText = addTemplate('edit', $(this));

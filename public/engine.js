@@ -59,13 +59,18 @@ function initAndModal() {
     $(".modal-backdrop").remove();
     $("body").removeClass("modal-open")
 }
-
-function init() {
-    request1= $.ajax({
+function getContent(page,limit) {
+    request= $.ajax({
         url: "/api/topic",
         type: "GET",
-        dataType: "json"
+        dataType: "json",
+        data:{page:page,limit:limit}
     });
+    return request
+}
+
+function init() {
+    request1= getContent();
     request2= $.ajax({
         url: "/api/login/logged",
         type: "GET"
@@ -380,6 +385,13 @@ function checkLogin(funk) {
 }
 
 $(document).ready(function () {
+    $(window).scroll(function(){
+        console.log($(document).height(),$(window).scrollTop()+$(window).height()+1);
+           if($(document).height()<=$(window).scrollTop()+$(window).height()+1) {
+               loadMore();
+           }
+    });
+
     var buttons = new ButtonItem;
 
     addTemplate('login').appendTo('#logged');

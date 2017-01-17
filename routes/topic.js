@@ -8,6 +8,9 @@ router.use(log4js.connectLogger(logger, { level: log4js.levels.DEBUG, format: 'f
 router
 
     .get('/', function (req, res, next) {
+        page=+req.query.page||0;
+        limit=+req.query.limit||2;
+        console.log(page,limit)
         Topic.find({}, function (err, topic) {
             if (err) throw err;
             if (topic.length) {
@@ -29,7 +32,7 @@ router
                 logger.error(err);
                 next(err);
             }
-        }).sort({date:-1});
+        }).sort({date:-1}).skip(page*limit).limit(limit);
     })
 
     .get('/:name/', function (req, res, next) {
