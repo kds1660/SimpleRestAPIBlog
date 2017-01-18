@@ -71,6 +71,7 @@ function getContent(page,limit,keyworld) {
 
 function init(keyworld) {
     var keyworld=keyworld||'';
+    page=1;
     request1= getContent('','',keyworld);
     request2= $.ajax({
         url: "/api/login/logged",
@@ -169,7 +170,6 @@ function editTopic(url, data) {
             $(".modal-backdrop").remove();
             $("body").removeClass("modal-open");
             $('.form-control').val('');
-            page=1;
             init();
         },
         error: function (xhr, status, err) {
