@@ -64,7 +64,7 @@ function getContent(page,limit,keyworld) {
         url: "/api/topic",
         type: "GET",
         dataType: "json",
-        data:{page:page,limit:limit,keyworld:keyworld}
+        data:{page:page,limit:limit,keyworld:keyworld,findBy:selectN,sortBy:sortN}
     });
     return request
 }
@@ -426,5 +426,21 @@ $(document).ready(function () {
     $('.search').click(function () {
         page=1;
         init($('.form-control').val());
-    })
+    });
+    $('#authorFind').click(function () {
+        selectN='author';
+    });
+    $('#textFind').click(function () {
+        selectN='text';
+    });
+    $('#nameFind').click(function () {
+        selectN='name';
+    });
+    $('#nameSort').click(function () {
+        sortN='name';
+    });
+    $('#dateSort').click(function () {
+        sortN='date';
+    });
+
 });

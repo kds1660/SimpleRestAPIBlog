@@ -23,53 +23,67 @@
 
 <body>
 
+
 <div class="alert alert-danger collapse" tabindex="-1" role="alert">
 </div>
 <div class="alert alert-success collapse" tabindex="-1" role="alert">
 </div>
-      <!-- Page Content -->
-    <div class="container">
 
-        <div class="row">
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8" id="wrapper">
+        </div>
+        <div class="col-md-4">
+            <div class="well">
+                <h2>Blog Search</h2>
+                Selector
+                <ul class="nav nav-tabs">
 
-            <!-- Blog Post Content Column -->
-            <div class="col-lg-8" id="wrapper">
-            </div>
+                    <li class="active" id="nameFind">
+                        <a data-toggle="tab" href="#panel1">Blog name</a>
+                    </li>
+                    <li id='authorFind'>
+                        <a data-toggle="tab" href="#panel2">Athor</a>
+                    </li>
+                    <li id='textFind'>
+                        <a data-toggle="tab" href="#panel2">By text</a>
+                    </li>
+                </ul>
+                Sort
+                <ul class="nav nav-tabs">
 
-            <div class="col-md-4">
-                <div class="well">
-                    <h4>Blog Search</h4>
-                    <div class="input-group">
-                        <input type="text" class="form-control">
-                        <span class="input-group-btn">
+                    <li class="active" id="dateSort">
+                        <a data-toggle="tab" href="#panel1">Date</a>
+                    </li>
+                    <li id='nameSort'>
+                        <a data-toggle="tab" href="#panel2">Blog name</a>
+                    </li>
+                </ul>
+                <div class="input-group">
+                    <input type="text" class="form-control">
+                    <span class="input-group-btn">
                             <button class="btn btn-default search   " type="button">
                                 <span class="glyphicon glyphicon-search"></span>
                         </button>
                         </span>
-                    </div>
                 </div>
-                <div class="well" id="logged">
-                </div>
-                <!-- Blog Search Well -->
-
 
             </div>
-
+            <div class="well" id="logged">
+            </div>
         </div>
-
-        <hr>
-        <footer>
-            <ul class="pagination" total-items="100" items-per-page="10">
-            </ul>
-            <div class="row">
-                <div class="col-lg-12">
-                    <p>Copyright Website 2017</p>
-                </div>
-            </div>
-            <!-- /.row -->
-        </footer>
-
     </div>
+    <hr>
+    <footer>
+        <ul class="pagination" total-items="100" items-per-page="10">
+        </ul>
+        <div class="row">
+            <div class="col-lg-12">
+                <p>Copyright Website 2017</p>
+            </div>
+        </div>
+    </footer>
+</div>
 
 <script id="mustache_edit" type="text/template">
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -109,7 +123,7 @@
             <input type="text" class="login" name="Username">
             <label>Password</label>
             <input type="password" class="login" name="Password">
-            <br /><br />
+            <br/><br/>
         </div>
     </div>
 </script>
@@ -142,7 +156,8 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" onclick="initAndModal()" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" onclick="initAndModal()" data-dismiss="modal"
+                            aria-label="Close">
                         <span aria-hidden="true">&times</span></button>
                 </div>
                 <div class="modal-body">
@@ -176,9 +191,9 @@
 </script>
 <script id="mustache_topic" type="text/template">
     <div class="topic">
-<hr>
         <h1>{{name}}</h1>
-        <p class="lead"><span class="glyphicon glyphicon-time"></span> by <span class="author">{{author}}</span> at <span class="date">{{date}}</span></p>
+        <p class="lead"><span class="glyphicon glyphicon-time"></span> by <span class="author">{{author}}</span> at
+            <span class="date">{{date}}</span></p>
         <p>
             <span class="comments">
                 <span class="glyphicon glyphicon-check">

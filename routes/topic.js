@@ -10,8 +10,17 @@ router
     .get('/', function (req, res, next) {
         page=+req.query.page||0;
         limit=+req.query.limit||2;
-       var keyworld=req.query.keyworld||'';
-        Topic.find({name:{$regex:'.*'+keyworld+'.*'}}, function (err, topic) {
+        keyworld=req.query.keyworld||'';
+        findBy={name:{$regex:'.*'+keyworld+'.*'}};
+        sortBy={date:-1};
+
+        if (req.query.sortBy==='name') sortBy={name:1};
+
+      if (req.query.findBy==='name') {findBy={name:{$regex:'.*'+keyworld+'.*'}}}
+      else if (req.query.findBy==='text') {findBy={text:{$regex:'.*'+keyworld+'.*'}}}
+      else if (req.query.findBy==='author') {findBy={author:{$regex:'.*'+keyworld+'.*'}}};
+      console.log(findBy,sortBy)
+        Topic.find(findBy, function (err, topic) {
             if (err) throw err;
             if (topic.length) {
                 logger.info('Topics list GET OK');
@@ -32,7 +41,7 @@ router
                 logger.error(err);
                 next(err);
             }
-        }).sort({date:-1}).skip(page*limit).limit(limit);
+        }).sort(sortBy).skip(page*limit).limit(limit);
     })
 
     .get('/:name/', function (req, res, next) {

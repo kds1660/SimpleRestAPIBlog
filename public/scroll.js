@@ -1,7 +1,7 @@
 var page=1;
 var limit=2;
-var loading = false;
-
+var selectN='name';
+var sortN='date';
 
 function loadMore(keyworld){
    var  keyworld=keyworld||'';
