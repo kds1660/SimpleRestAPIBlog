@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var Topic= require('.././modules/topicService').topic;
+var Topic= require('.././modules/dbSchema/topic');
 var logger = require('.././modules/logger').logger;
 var log4js = require('.././modules/logger').log4js;
 router.use(log4js.connectLogger(logger, { level: log4js.levels.DEBUG, format: 'format :method :url :status'}));

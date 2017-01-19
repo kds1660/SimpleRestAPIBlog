@@ -4,6 +4,7 @@ function ButtonItem() {
         deleteTopic($(this).parent().find('h1').text());
         $(this).parent().remove();
         $('.toggleDiv').remove();
+        init();
     });
     this.delBtn = delBtn;
 
@@ -171,7 +172,7 @@ function ButtonItem() {
     });
     this.viewCommentsBtn = viewCommentsBtn;
 
-    addCommentsBtn = $('<input class="viewButton btn btn-primary" type="button" value="Add comment">');
+    addCommentsBtn = $('<input class="AddCommentButton btn btn-primary" type="button" value="Add comment">');
     addCommentsBtn.click(function (e) {
         $('.panel-default').remove();
         $('<div id="addCommment">').appendTo(".modal-footer");
@@ -239,7 +240,7 @@ function ButtonItem() {
             name: $('#textH').text(),
             text: tinyMCE.activeEditor.getContent({format: 'raw'})
         });
-        tinymce.remove();
+        console.log($(this).parent().parent().find('.viewButton'))
         $(this).parent().parent().find('.viewButton').click();
         $(e.target).replaceWith(editBtn);
     });

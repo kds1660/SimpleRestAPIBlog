@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var User = require('.././modules/topicService').user;
+var User = require('.././modules/dbSchema/user');
 var passport = require('.././modules/passport').passport;
 var logger = require('.././modules/logger').logger;
 var log4js = require('.././modules/logger').log4js;
@@ -35,7 +35,7 @@ router
         var user = new User({username: req.body.name, password: req.body.password});
         user.save(function (err) {
             if (err) {
-                err = new Error('User exists');
+                err = new Error('User exists1');
                 err.status = 404;
                 logger.error(err);
                 next(err);

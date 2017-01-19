@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var Topic= require('.././modules/topicService').topic;
+var Topic= require('.././modules/dbSchema/topic');
 var logger = require('.././modules/logger').logger;
 var log4js = require('.././modules/logger').log4js;
 router.use(log4js.connectLogger(logger, { level: log4js.levels.DEBUG, format: 'format :method :url :status'}));
@@ -19,7 +19,6 @@ router
       if (req.query.findBy==='name') {findBy={name:{$regex:'.*'+keyworld+'.*'}}}
       else if (req.query.findBy==='text') {findBy={text:{$regex:'.*'+keyworld+'.*'}}}
       else if (req.query.findBy==='author') {findBy={author:{$regex:'.*'+keyworld+'.*'}}};
-      console.log(findBy,sortBy)
         Topic.find(findBy, function (err, topic) {
             if (err) throw err;
             if (topic.length) {

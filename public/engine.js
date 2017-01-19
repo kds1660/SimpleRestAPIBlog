@@ -26,6 +26,23 @@ var options = {
     second: 'numeric'
 };
 
+var ENUM_Queries = {
+    getAllTopics:'getTopicAll',
+    checklogin:'chekLogin',
+    selectOneTopic:'selectOneTopic',
+    delTopic:'deleteTopic',
+    delComm:'deleteComment',
+    editTopic:'editTopic',
+    addUser:'addUser',
+    login:'login',
+    logout:'logout',
+    viewComment:'viewComment',
+    putComment:'putComment'
+};
+
+var selectN='name';
+var sortN='date';
+
 function showAllert(success, message, selector) {
 
     if (success) {
@@ -60,12 +77,8 @@ function initAndModal() {
     $("body").removeClass("modal-open");
 }
 function getContent(page,limit,keyworld) {
-    request= $.ajax({
-        url: "/api/topic",
-        type: "GET",
-        dataType: "json",
-        data:{page:page,limit:limit,keyworld:keyworld,findBy:selectN,sortBy:sortN}
-    });
+    data={page:page,limit:limit,keyworld:keyworld,findBy:selectN,sortBy:sortN}
+    request=requestService(ENUM_Queries.getAllTopics,'',data);
     return request
 }
 
@@ -73,10 +86,7 @@ function init(keyworld) {
     var keyworld=keyworld||'';
     page=1;
     request1= getContent('','',keyworld);
-    request2= $.ajax({
-        url: "/api/login/logged",
-        type: "GET"
-    });
+    request2=requestService(ENUM_Queries.checklogin);
 
     $.when(request1, request2).done(function (response1,response2) {
         $('#wrapper').text('');
@@ -115,11 +125,7 @@ function init(keyworld) {
 }
 
 function returnText(url) {
-    var result = $.ajax({
-        url: "/api/topic/" + url,
-        type: "GET",
-        dataType: "json"
-    });
+    result=requestService(ENUM_Queries.selectOneTopic,url);
     result.done(function () {
         $('textarea.text, #textDiv').html(JSON.parse(result.responseText).text);
         $('#preview, #previewImg').attr('src', JSON.parse(result.responseText).img);
@@ -131,78 +137,53 @@ function returnText(url) {
 }
 
 function deleteTopic(url) {
-    $.ajax({
-        url: "/api/topic/" + url,
-        type: "DELETE",
-        success: function () {
-            showAllert(true, 'Topic deleted');
-        },
-        error: function (xhr, status, err) {
-            showAllert(false, 'Something wrong ' + err, '.modal-footer');
-        }
-    })
+    result=requestService(ENUM_Queries.delTopic,url);
+    result.done(function () {
+        showAllert(true, 'Topic deleted');
+    }).fail(function () {
+        showAllert(false, 'Something wrong ' + err, '.modal-footer');
+    });
 }
 
 function deleteComm(url, data) {
-    $.ajax({
-        url: "/api/comments/" + url,
-        type: "DELETE",
-        data: data,
-        success: function () {
-            showAllert(true, 'Comment deleted', '.modal-footer');
-        },
-        error: function (xhr, status, err) {
+    result=requestService(ENUM_Queries.delComm,url,data);
+    result.done(showAllert(true, 'Comment deleted', '.modal-footer')).fail(
+        function (xhr, status, err) {
             showAllert(false, 'Something wrong ' + err);
-        }
-    })
+        })
 }
 
 function editTopic(url, data) {
-    $.ajax({
-        url: "/api/topic/" + url,
-        type: "PUT",
-        data: data,
-        success: function () {
-            showAllert(true, 'Topic saved');
-            $('#wrapper').text('');
-            $("#myModal").removeClass("in")
-                .hide();
-            $(".modal-backdrop").remove();
-            $("body").removeClass("modal-open");
-            $('.form-control').val('');
-            init();
-        },
-        error: function (xhr, status, err) {
-            showAllert(false, 'Something wrong ' + err, '.modal-footer');
-        }
+    var result=requestService(ENUM_Queries.editTopic,url,data);
+    result.done(function () {
+        showAllert(true, 'Topic saved');
+        $('#wrapper').text('');
+        $("#myModal").removeClass("in")
+            .hide();
+        $(".modal-backdrop").remove();
+        $("body").removeClass("modal-open");
+        $('.form-control').val('');
+        init();
+    }).fail(function (xhr, status, err) {
+        showAllert(false, 'Something wrong ' + err, '.modal-footer');
     })
 }
 
 function addUser(data) {
-    $.ajax({
-        url: "/api/login/",
-        type: "PUT",
-        data: data,
-        success: function () {
-            $('.ui-button').click();
-            $("#myModal").removeClass("in")
-                .hide();
-            $(".modal-backdrop").remove();
-            showAllert(true, 'User registered, try login');
-        },
-        error: function () {
-            showAllert(false, 'User already exist!', '.modal-footer');
-        }
-    })
+    var result=requestService(ENUM_Queries.addUser,'',data);
+    result.done(function () {
+        $('.ui-button').click();
+        $("#myModal").removeClass("in")
+            .hide();
+        $(".modal-backdrop").remove();
+        showAllert(true, 'User registered, try login');
+    }).fail(function () {
+        showAllert(false, 'User already exist!', '.modal-footer')
+    });
 }
 
 function login(data) {
-    var result = $.ajax({
-        url: "/api/login/",
-        type: "POST",
-        data: data,
-        dataType: "json"
-    });
+    var result=requestService(ENUM_Queries.login,'',data);
     result.done(function () {
         init();
         $('div#login').remove();
@@ -218,14 +199,11 @@ function login(data) {
     });
     result.fail(function () {
         showAllert(false, 'Invalid User name or password');
-    })
+    });
 }
 
 function logout() {
-    var result = $.ajax({
-        url: "/api/login/logout",
-        type: "GET"
-    });
+    var result=requestService(ENUM_Queries.logout);
     result.done(function () {
         $('#login,.exitButton,.addTopicBtn,#logged h2').remove();
         addTemplate('login').appendTo('#log');
@@ -235,20 +213,13 @@ function logout() {
         var reg = buttons.returnBtn(ENUM_BTN.register)
             .insertAfter(add);
         init();
-
-    });
-    result.fail(function () {
+    }).fail(function () {
         showAllert(false, 'Something wrong');
     })
 }
 
 function viewComments(url) {
-    var result = $.ajax({
-        url: "/api/comments/" + url,
-        type: "GET",
-        dataType: "json"
-    });
-    console.log(url)
+    var result=requestService(ENUM_Queries.viewComment,url);
     result.done(function (json) {
         checkLogin(function (text) {
             $.each(json, function (index) {
@@ -263,22 +234,19 @@ function viewComments(url) {
                 comment.appendTo(".modal-footer");
             })
         })
+    }).fail(function () {
+        showAllert(false, 'Something wrong');
     })
 }
 
 function saveComments(url, data) {
-    $.ajax({
-        url: "/api/comments/" + url,
-        type: "PUT",
-        data: data,
-        success: function (json) {
-            if (json === 'Created') showAllert(true, 'Comment added', '.modal-footer');
-            else if (json === 'OK') showAllert(true, 'Comment edited', '.modal-footer');
-        },
-        error: function () {
-            showAllert(false, 'Comment not added', '.modal-footer');
-        }
-    });
+    var result=requestService(ENUM_Queries.putComment,url,data);
+    result.done(function (json) {
+        if (json === 'Created') showAllert(true, 'Comment added', '.modal-footer');
+        else if (json === 'OK') showAllert(true, 'Comment edited', '.modal-footer');
+    }).fail(function () {
+        showAllert(false, 'Comment not added', '.modal-footer')
+    })
 }
 
 

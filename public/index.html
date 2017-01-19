@@ -11,9 +11,10 @@
     <script src="/bower_components/mustache.js/mustache.js"></script>
     <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="/bower_components/tinymce/tinymce.js"></script>
-    <script src="buttons.js"></script>
-    <script src="engine.js"></script>
-    <script src="scroll.js"></script>
+    <script src="buttons.js" defer></script>
+    <script src="requestService.js" defer></script>
+    <script src="engine.js" defer></script>
+    <script src="scroll.js" defer></script>
 
     <link rel="stylesheet" type="text/css" href="/css/style.css"/>
     <link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
@@ -36,7 +37,7 @@
         <div class="col-md-4">
             <div class="well">
                 <h2>Blog Search</h2>
-                Selector
+                <span>Selector</span>
                 <ul class="nav nav-tabs">
 
                     <li class="active" id="nameFind">
@@ -49,7 +50,7 @@
                         <a data-toggle="tab" href="#panel2">By text</a>
                     </li>
                 </ul>
-                Sort
+                <span>Sort</span>
                 <ul class="nav nav-tabs">
 
                     <li class="active" id="dateSort">
