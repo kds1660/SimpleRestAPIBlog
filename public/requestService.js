@@ -1,29 +1,49 @@
+var ENUM_Queries = {
+    getAllTopics:'getTopicAll',
+    checklogin:'chekLogin',
+    selectOneTopic:'selectOneTopic',
+    delTopic:'deleteTopic',
+    delComm:'deleteComment',
+    editTopic:'editTopic',
+    addUser:'addUser',
+    login:'login',
+    logout:'logout',
+    viewComment:'viewComment',
+    putComment:'putComment'
+};
+
 function requestService (query,url,data) {
     var custom={};
+
     custom.getTopicAll= {
         url: "/api/topic",
         type: "GET",
         dataType: "json",
         data:data
     };
+
     custom.chekLogin= {
         url: "/api/login/logged",
         type: "GET"
     };
+
     custom.selectOneTopic = {
         url: "/api/topic/" + url,
         type: "GET",
         dataType: "json"
     };
+
     custom.deleteTopic={
         url: "/api/topic/" + url,
         type: "DELETE"
     };
+
     custom.deleteComment= {
         url: "/api/comments/" + url,
         type: "DELETE",
         data: data
     };
+
     custom.editTopic= {
         url: "/api/topic/" + url,
         type: "PUT",
@@ -59,5 +79,6 @@ function requestService (query,url,data) {
         type: "PUT",
         data: data
     };
+
     return $.ajax(custom[query]);
 }

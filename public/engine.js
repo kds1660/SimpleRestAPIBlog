@@ -1,21 +1,3 @@
-var ENUM_BTN = {
-    add: 'saveBtn',
-    delete: 'delBtn',
-    edit: 'editBtn',
-    save: 'saveBtn',
-    login: 'loginBtn',
-    exit: 'logoutBtn',
-    view: 'viewBtn',
-    addTopic: 'addTopicBtn',
-    register: 'registerBtn',
-    addUser: 'addUserBtn',
-    viewComments: 'viewCommentsBtn',
-    addComments: 'addCommentsBtn',
-    deleteComment: 'deleteComment',
-    editComment: 'editComment',
-    saveComment: 'saveComment'
-};
-
 var options = {
     year: 'numeric',
     month: 'long',
@@ -24,20 +6,6 @@ var options = {
     hour: 'numeric',
     minute: 'numeric',
     second: 'numeric'
-};
-
-var ENUM_Queries = {
-    getAllTopics:'getTopicAll',
-    checklogin:'chekLogin',
-    selectOneTopic:'selectOneTopic',
-    delTopic:'deleteTopic',
-    delComm:'deleteComment',
-    editTopic:'editTopic',
-    addUser:'addUser',
-    login:'login',
-    logout:'logout',
-    viewComment:'viewComment',
-    putComment:'putComment'
 };
 
 var selectN='name';
