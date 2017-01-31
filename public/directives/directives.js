@@ -1,10 +1,7 @@
-app.directive("topicPost", function() {
+app.directive("topicPost", function(buttonService) {
     return {
         restrict : "E",
         templateUrl : "templates/topicTemplate.html",
-        link:function ($scope,element) {
-           angular.element(element[0].querySelector('.buttons')).append('<input class="viewButton btn btn-info" type="button" value="View">')
-        }
     };
 });
 
@@ -12,7 +9,8 @@ app.directive("loginLogout",function(buttonService) {
     return {
         scope:false,
         restrict : "E",
-        templateUrl : "templates/loginTemplate.html"
+        templateUrl : "templates/loginTemplate.html",
+
 
     };
 });
@@ -28,7 +26,6 @@ app.directive("whenScrolled", function($window) {
     }
    return function (scope, elm, attr) {
        var raw=elm[0];
-
        angular.element($window).bind('scroll',function () {
            if (getDocHeight() <= $window.pageYOffset+ $window.innerHeight+1) {
             scope.$apply(attr.whenScrolled);

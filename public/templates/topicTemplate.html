@@ -6,7 +6,11 @@
             <span class="comments">
                 <span class="glyphicon glyphicon-check">
                     <b>{{names.comments}} comments</b>
-                    <div class="buttons"></div>
+                    <div class="buttons">
+<input class="viewButton btn btn-info" type="button" value="View">'
+<input class="viewButton btn btn-info" type="button" value="Edit" ng-if="isLogged===names.author">
+<input class="viewButton btn btn-info" type="button" value="Delete" ng-if="isLogged===names.author">
+                    </div>
                 </span>
             </span>
     </p>
