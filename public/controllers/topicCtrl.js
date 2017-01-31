@@ -1,5 +1,4 @@
 app.controller('topicController', function($scope,requestService){
-    console.log($scope.isLogged)
     requestService.getData(ENUM_Queries.getAllTopics).then(function (response) {
         $scope.topic.data=response.data;
     });
@@ -11,6 +10,13 @@ app.controller('topicController', function($scope,requestService){
             $scope.topicAllert=true;
         })
     };
+
+    $scope.deleteTopic=function ($index) {
+        console.log( $scope.topic.data[$index].name);
+        requestService.getData(ENUM_Queries.delTopic,$scope.topic.data[$index].name)
+        $scope.topic.data.splice($index, 1);
+
+    }
 });
 
 

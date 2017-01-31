@@ -9,12 +9,12 @@
                     <div class="buttons">
 <input class="viewButton btn btn-info" type="button" value="View">'
 <input class="viewButton btn btn-info" type="button" value="Edit" ng-if="isLogged===names.author">
-<input class="viewButton btn btn-info" type="button" value="Delete" ng-if="isLogged===names.author">
+<input class="viewButton btn btn-info" type="button" value="Delete" ng-if="isLogged===names.author" ng-click="deleteTopic($index)">
                     </div>
                 </span>
             </span>
     </p>
 
-    <img width="200" src='img/no-image.png' ng-src="{{names.img}}" alt="">
+    <img width="200" ng-src="{{names.img||'img/no-image.png'}}" alt="">
     <div class="textDiv" height="200" ng-bind-html="names.text|to_html"></div>
 </div>

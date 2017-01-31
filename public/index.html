@@ -30,7 +30,7 @@
         <user></user>
         <div>
             <div class="col-lg-8" id="wrapper" ng-controller="topicController as topic" when-scrolled="loadMore()">
-                <div ng-repeat="names in topic.data track by $index"> <topic-post></topic-post></div>
+                 <topic-post ng-repeat="names in topic.data track by $index"></topic-post>
 
                 <div class="alert alert-danger " tabindex="-1" role="alert" ng-show="topicAllert">
                     This is all topics!

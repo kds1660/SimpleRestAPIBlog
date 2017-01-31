@@ -81,11 +81,13 @@ app.factory('requestService', function($http){
 
 
     factory.getData=function (query,url,data) {
+
         /*query=ENUM_Queries[query];*/
         url=url||'';
         data=data||'';
         factory[query].params=data;
         factory[query].url=factory[query].url+url;
+        console.log(factory[query])
         return $http(factory[query])
     };
 
