@@ -24,8 +24,12 @@
 
 <body>
 
-
 <div class="container" ng-controller="mainController">
+    <div class="alert alert-danger " tabindex="-1" role="alert" ng-show="allertFalse">{{alert.text}}
+    </div>
+    <div class="alert alert-success " tabindex="-1" role="alert" ng-show="allertTrue">{{alert.text}}
+    </div>
+
     <div class="row">
         <user></user>
         <div>

@@ -19,7 +19,6 @@ app.controller('loginController',function($scope,$timeout,requestService,buttonS
             $scope.allertFalse=true;
         });
         $timeout(function () {
-            console.log($scope)
             $scope.allertFalse=false;
                 $scope.allertTrue=false;
         },2000)

@@ -12,9 +12,9 @@ app.controller('topicController', function($scope,requestService){
     };
 
     $scope.deleteTopic=function ($index) {
-        console.log( $scope.topic.data[$index].name);
-        requestService.getData(ENUM_Queries.delTopic,$scope.topic.data[$index].name)
+        requestService.getData(ENUM_Queries.delTopic,$scope.topic.data[$index].name);
         $scope.topic.data.splice($index, 1);
+        $scope.setAllert(true,'Topic deleted!')
 
     }
 });
