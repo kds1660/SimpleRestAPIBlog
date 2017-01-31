@@ -1,38 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="BlogApp">
 
 <head>
 
     <title>Blog Post - Start Bootstrap Template</title>
 
-    <script src="/bower_components/jquery/dist/jquery.js"></script>
-    <script src="/bower_components/datatables/media/js/jquery.dataTables.js"></script>
-    <script src="/bower_components/datatables/media/js/dataTables.bootstrap4.js"></script>
     <script src="/bower_components/mustache.js/mustache.js"></script>
-    <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="/bower_components/tinymce/tinymce.js"></script>
-    <script src="buttons.js" defer></script>
-    <script src="requestService.js" defer></script>
-    <script src="engine.js" defer></script>
-    <script src="scroll.js" defer></script>
+    <script src="/bower_components/angular/angular.js"></script>
+
+    <script src="mainApp.js" defer></script>
+
+    <script src="services/services.js" defer></script>
+    <script src="directives/directives.js" defer></script>
+    <script src="controllers/loginController.js" defer></script>
+    <script src="controllers/topicCtrl.js" defer></script>
 
     <link rel="stylesheet" type="text/css" href="/css/style.css"/>
     <link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="/bower_components/datatables/media/css/jquery.dataTables.css">
 
 </head>
 
 <body>
 
 
-<div class="alert alert-danger collapse" tabindex="-1" role="alert">
-</div>
-<div class="alert alert-success collapse" tabindex="-1" role="alert">
-</div>
-
 <div class="container">
     <div class="row">
-        <div class="col-lg-8" id="wrapper">
+        <user></user>
+        <div>
+            <div class="col-lg-8" id="wrapper" ng-controller="topicController as topic" when-scrolled="loadMore()">
+                <div ng-repeat="names in topic.data track by $index"> <topic-post></topic-post></div>
+
+                <div class="alert alert-danger " tabindex="-1" role="alert" ng-show="topicAllert">
+                    This is all topics!
+                </div>
+                <div class="alert alert-success collapse" tabindex="-1" role="alert">
+                </div>
+
+            </div>
+
         </div>
         <div class="col-md-4">
             <div class="well">
@@ -70,14 +76,15 @@
                 </div>
 
             </div>
-            <div class="well" id="logged">
+            <div class="well" id="logged" ng-controller="loginController" >
+                <login-logout
+                        myFunc="myFunc"
+                ></login-logout>
             </div>
         </div>
     </div>
     <hr>
     <footer>
-        <ul class="pagination" total-items="100" items-per-page="10">
-        </ul>
         <div class="row">
             <div class="col-lg-12">
                 <p>Copyright Website 2017</p>
@@ -116,18 +123,6 @@
     </div>
 </script>
 
-<script id="mustache_login" type="text/template">
-    <h2>Sign in</h2>
-    <div id="log">
-        <div id="login">
-            <label>Username</label>
-            <input type="text" class="login" name="Username">
-            <label>Password</label>
-            <input type="password" class="login" name="Password">
-            <br/><br/>
-        </div>
-    </div>
-</script>
 
 <script id="mustache_user" type="text/template">
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"

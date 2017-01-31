@@ -1,0 +1,24 @@
+<div ng-if="isLogged==0">
+    <h2>Sign in</h2>
+    <div id="log">
+        <div id="login">
+            <label>Username</label>
+            <input type="text" class="login" name="Username" ng-model="login.username">
+            <label>Password</label>
+            <input type="password" class="login" name="Password" ng-model="login.password">
+            <br/><br/>
+        </div>
+        <input class="loginButton btn btn-success" type="button" value="login" ng-click="loginBtn()">
+        <input class="registerButton btn btn-success" type="button" value="Register" ng-click="registerBtn()">
+    </div>
+    <div class="alert alert-danger " tabindex="-1" role="alert" ng-show="allertFalse">{{allert.text}}
+    </div>
+</div>
+
+<div ng-if="isLogged!=0">
+    <h2>Logged {{isLogged}}</h2>
+    <input class="exitButton btn btn-danger" type="button" value="Logout" ng-click="logoutBtn()">
+    <input class="addTopicBtn btn btn-info" type="button" value="Add topic" ng-click="addTopicBtn()">
+    <div class="alert alert-success " tabindex="-1" role="alert" ng-show="allertTrue">{{allert.text}}
+    </div>
+</div>

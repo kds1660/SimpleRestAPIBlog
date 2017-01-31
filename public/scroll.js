@@ -9,6 +9,12 @@ function loadMore(keyworld){
             url: "/api/login/logged",
             type: "GET"
         });
+    function getContent(page,limit,keyworld) {
+        data={page:page,limit:limit,keyworld:keyworld,findBy:selectN,sortBy:sortN}
+        request=requestService(ENUM_Queries.getAllTopics,'',data);
+        return request
+    }
+
         $.when(request1, request2).done(function (response1,response2) {
             $.each(response1[0], function (index) {
                 template = $('#mustache_topic').html();

@@ -1,22 +1,22 @@
-var ENUM_BTN = {
-    add: 'saveBtn',
-    delete: 'delBtn',
-    edit: 'editBtn',
-    save: 'saveBtn',
-    login: 'loginBtn',
-    exit: 'logoutBtn',
-    view: 'viewBtn',
-    addTopic: 'addTopicBtn',
-    register: 'registerBtn',
-    addUser: 'addUserBtn',
-    viewComments: 'viewCommentsBtn',
-    addComments: 'addCommentsBtn',
-    deleteComment: 'deleteComment',
-    editComment: 'editComment',
-    saveComment: 'saveComment'
-};
-
 function ButtonItem() {
+    var ENUM_BTN = {
+        add: 'saveBtn',
+        delete: 'delBtn',
+        edit: 'editBtn',
+        save: 'saveBtn',
+        login: 'loginBtn',
+        exit: 'logoutBtn',
+        view: 'viewBtn',
+        addTopic: 'addTopicBtn',
+        register: 'registerBtn',
+        addUser: 'addUserBtn',
+        viewComments: 'viewCommentsBtn',
+        addComments: 'addCommentsBtn',
+        deleteComment: 'deleteComment',
+        editComment: 'editComment',
+        saveComment: 'saveComment'
+    };
+
     delBtn = $('<input class="delButton btn btn-primary" type="button" value="Delete">');
     delBtn.click(function () {
         deleteTopic($(this).parent().find('h1').text());

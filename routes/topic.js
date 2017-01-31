@@ -24,7 +24,6 @@ router
             if (topic.length) {
                 logger.info('Topics list GET OK');
                 res.json(topic.map(function (el) {
-                    if (el.img==='') {el.img='img/no-image.png'}
                     return {
                         name: el.name,
                         author: el.author,
