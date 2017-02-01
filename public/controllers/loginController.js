@@ -5,6 +5,7 @@ app.controller('loginController',function($scope,$timeout,requestService,buttonS
         $scope.isLogged=response.data;
         $scope.setName(response.data);
     });
+    $scope.isAddUser=false;
 
     $scope.loginBtn=function () {
         requestService.getData(ENUM_Queries.login,'',$scope.login).then(function (response) {
@@ -29,5 +30,35 @@ app.controller('loginController',function($scope,$timeout,requestService,buttonS
             $scope.isLogged=0;
             $scope.setName(0);
         })
-    }
+    };
+
+    $scope.registerBtn=function () {
+        $scope.login={username:'',password:''};
+        $scope.isAddUser=true;
+    };
+
+    $scope.addUser=function () {
+       if (!$scope.login.username||!$scope.login.password) {
+           $scope.allert.text='Login or password null'
+           $scope.allertFalse=true;
+       } else {
+           requestService.getData(ENUM_Queries.addUser,'',$scope.login).then (
+               function (response) {
+                   $scope.setAllert(true,'User added, try login!');
+                   $scope.login={username:'',password:''};
+                   $scope.isAddUser=false;
+               }, function (response) {
+                   $scope.allert.text='User exist!';
+                   $scope.allertFalse=true;
+               }
+           )
+       }
+
+        $timeout(function () {
+            $scope.allertFalse=false;
+            $scope.allertTrue=false;
+        },2000);
+
+    };
+
 });

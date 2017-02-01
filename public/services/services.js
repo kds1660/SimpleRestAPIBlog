@@ -54,7 +54,8 @@ app.factory('requestService', function($http){
 
     factory.addUser = {
         url: "/api/login/",
-        method: "PUT"
+        method: "PUT",
+        dataType: "json"
     };
 
     factory.login = {
@@ -85,7 +86,7 @@ app.factory('requestService', function($http){
         /*query=ENUM_Queries[query];*/
         url=url||'';
         data=data||'';
-        factory[query].params=data;
+        factory[query].data=data;
         factory[query].url=factory[query].url+url;
         console.log(factory[query])
         return $http(factory[query])
@@ -116,8 +117,6 @@ app.factory('buttonService', function(requestService){
     factory.viewBtn = angular.element('<input class="viewButton btn btn-info" type="button" value="View">');
     factory.viewBtn.clicked=function () {
       alert('In progress')
-
-
     };
     factory.registerBtn = angular.element('<input class="registerButton btn btn-success" type="button" value="Register">');
     factory.registerBtn.clicked=function () {

@@ -16,9 +16,12 @@ app.controller('topicController', function($scope,requestService){
         $scope.topic.data.splice($index, 1);
         $scope.setAllert(true,'Topic deleted!')
 
+    };
+
+
+
+    $scope.viewTopic=function ($index) {
+        console.log('sf')
     }
 });
-
-
-
 

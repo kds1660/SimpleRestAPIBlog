@@ -32,10 +32,11 @@ router
     })
 
     .put('/', function (req, res, next) {
-        var user = new User({username: req.body.name, password: req.body.password});
+        var user = new User({username: req.body.username, password: req.body.password});
+        console.log(user)
         user.save(function (err) {
             if (err) {
-                err = new Error('User exists1');
+                err = new Error('User existst');
                 err.status = 404;
                 logger.error(err);
                 next(err);
