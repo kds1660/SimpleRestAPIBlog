@@ -11,7 +11,6 @@ var ENUM_Queries = {
     viewComment:'viewComment',
     putComment:'putComment'
 };
-
 var page=0;
 var limit=2;
 
@@ -20,80 +19,79 @@ app.factory('requestService', function($http){
     var factory={};
 
     factory.getTopicAll= {
-        url: "/api/topic",
+        urlT: "/api/topic",
         method: "GET",
         dataType: "json",
         data:{}
     };
 
     factory.chekLogin= {
-        url: "/api/login/logged",
+        urlT: "/api/login/logged",
         method: "GET"
     };
 
     factory.selectOneTopic = {
-        url: "/api/topic/",
+        urlT: "/api/topic/",
         method: "GET",
         dataType: "json"
     };
 
     factory.deleteTopic={
-        url: "/api/topic/",
+        urlT: "/api/topic/",
         method: "DELETE"
     };
 
     factory.deleteComment= {
-        url: "/api/comments/",
+        urlT: "/api/comments/",
         method: "DELETE"
     };
 
     factory.editTopic= {
-        url: "/api/topic/",
+        urlT: "/api/topic/",
         method: "PUT"
     };
 
     factory.addUser = {
-        url: "/api/login/",
+        urlT: "/api/login/",
         method: "PUT",
         dataType: "json"
     };
 
     factory.login = {
-        url: "/api/login/",
+        urlT: "/api/login/",
         method: "POST",
         dataType: "json"
     };
 
     factory.logout = {
-        url: "/api/login/logout",
+        urlT: "/api/login/logout",
         method: "GET"
     };
 
     factory.viewComment = {
-        url: "/api/comments/" ,
+        urlT: "/api/comments/" ,
         method: "GET",
         dataType: "json"
     };
 
     factory.putComment={
-        url: "/api/comments/",
+        urlT: "/api/comments/",
         method: "PUT"
     };
 
 
     factory.getData=function (query,url,data) {
-
-        /*query=ENUM_Queries[query];*/
         url=url||'';
         data=data||'';
         factory[query].data=data;
-        factory[query].url=factory[query].url+url;
-        console.log(factory[query])
+        factory[query].params={page:page,limit:limit};
+        factory[query].url=factory[query].urlT+url;
         return $http(factory[query])
     };
 
     factory.loadMore=function (query,url,data) {
         url=url||'';
+        console.log(page)
         factory[query].params={page:page,limit:limit};
         factory[query].url=factory[query].url+url;
         factory[query].data=data;
@@ -103,34 +101,86 @@ app.factory('requestService', function($http){
     return factory;
 });
 
-app.factory('buttonService', function(requestService){
-    var factory={};
-    var _data;
-    var scope={};
-    factory.setScope=function (insertScope) {
-      //  scope=insertScope;
-    };
+app.factory('topicService', ['requestService', '$q', function(requestService,$q){
+  return {
+      getAlltopics:function (page,limit) {
+          var deferred=$q.defer();
+          requestService.getData(ENUM_Queries.getAllTopics).then(function (data) {
+              deferred.resolve(data);
+          },function (data,status) {
+              deferred.reject(status)
+          });
+          return deferred.promise;
+      },
+      deleteTopic:function (name) {
+          var deferred=$q.defer();
+          requestService.getData(ENUM_Queries.delTopic,name).then(function (data) {
+              deferred.resolve(data);
+          },function (data,status) {
+              deferred.reject(status)
+          });
+          return deferred.promise;
+      },
+      selectOneTopic:function (name) {
+          var deferred=$q.defer();
+          requestService.getData(ENUM_Queries.selectOneTopic,name).then(function (data) {
+              deferred.resolve(data);
+          },function (data,status) {
+              deferred.reject(status)
+          });
+          return deferred.promise;
+      },
+      saveTopic:function (name,topic) {
+        //  requestService.getData(ENUM_Queries.editTopic,$scope.thisTopic.name,$scope.thisTopic)
+          var deferred=$q.defer();
+          requestService.getData(ENUM_Queries.editTopic,name,topic).then(function (data) {
+              deferred.resolve(data);
+          },function (data,status) {
+              deferred.reject(status)
+          });
+          return deferred.promise;
+      }
+  }
+}]);
 
-    factory.getScope=function () {
-        return scope;
-    };
-    factory.viewBtn = angular.element('<input class="viewButton btn btn-info" type="button" value="View">');
-    factory.viewBtn.clicked=function () {
-      alert('In progress')
-    };
-    factory.registerBtn = angular.element('<input class="registerButton btn btn-success" type="button" value="Register">');
-    factory.registerBtn.clicked=function () {
-        alert('not complete')
-    };
-    factory.getButton=function (button) {
-      return factory[button];
+app.factory('loginService', ['requestService', '$q', function(requestService,$q){
+    return {
+        login:function (name) {
+            var deferred=$q.defer();
+            requestService.getData(ENUM_Queries.login,'',name).then(function (data) {
+                deferred.resolve(data);
+            },function (data,status) {
+                deferred.reject(status)
+            });
+            return deferred.promise;
+        },
+        isLogged:function () {
+            var deferred=$q.defer();
+            requestService.getData(ENUM_Queries.checklogin).then(function (data) {
+                deferred.resolve(data);
+            },function (data,status) {
+                deferred.reject(status)
+            });
+            return deferred.promise;
+        },
+        logout:function () {
+            var deferred=$q.defer();
+            requestService.getData(ENUM_Queries.logout).then(function (data) {
+                deferred.resolve(data);
+            },function (data,status) {
+                deferred.reject(status)
+            });
+            return deferred.promise;
+        },
+        addUser:function (login) {
+            var deferred=$q.defer();
+            requestService.getData(ENUM_Queries.addUser,'',login).then(function (data) {
+                deferred.resolve(data);
+            },function (data,status) {
+                deferred.reject(status)
+            });
+            return deferred.promise;
+        }
+
     }
-    /*factory.loginBtn.setData=function (data) {
-    _data=data;
-    };
-    factory.loginBtn.getData=function () {
-        return _data;
-    };*/
-
-    return factory;
-});
+}]);

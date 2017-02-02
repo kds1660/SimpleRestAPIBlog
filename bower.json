@@ -17,8 +17,6 @@
   ],
   "dependencies": {
     "bootstrap": "^3.3.7",
-    "datatables": "^1.10.13",
-    "mustache.js": "mustache#^2.3.0",
     "tinymce": "^4.5.2",
     "angular": "^1.6.1"
   }

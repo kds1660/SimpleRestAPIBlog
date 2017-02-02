@@ -12,7 +12,7 @@ app.controller('mainController', function($scope,$timeout,requestService){
             $scope.alert.text=text;
         };
         if (trueFalse===false) {
-            $scope.allertTrue=true
+            $scope.allertFalse=true
             $scope.alert.text=text;
         };
         $timeout(function () {

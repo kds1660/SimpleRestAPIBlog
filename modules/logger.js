@@ -1,6 +1,7 @@
-var log4js = require('log4js'); // include log4js
+var log4js = require('log4js');
+
 var config=require('.././config/config');
-log4js.configure({ // configure to use all types in different files.
+log4js.configure({
     appenders: [
     {
         type: "console"

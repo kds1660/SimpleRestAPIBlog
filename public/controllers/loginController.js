@@ -1,14 +1,14 @@
-app.controller('loginController',function($scope,$timeout,requestService,buttonService){
+app.controller('loginController',function($scope,$timeout,loginService){
     $scope.allert={};
     $scope.login={username:'',password:''};
-    requestService.getData(ENUM_Queries.checklogin).then(function (response) {
+    loginService.isLogged().then(function (response) {
         $scope.isLogged=response.data;
         $scope.setName(response.data);
     });
     $scope.isAddUser=false;
 
     $scope.loginBtn=function () {
-        requestService.getData(ENUM_Queries.login,'',$scope.login).then(function (response) {
+        loginService.login($scope.login).then(function (response) {
             $scope.isLogged=response.data.username;
             $scope.setName(response.data.username);
                 $scope.login={};
@@ -26,7 +26,7 @@ app.controller('loginController',function($scope,$timeout,requestService,buttonS
 
     };
     $scope.logoutBtn=function () {
-        requestService.getData(ENUM_Queries.logout).then(function (response) {
+        loginService.logout().then(function (response) {
             $scope.isLogged=0;
             $scope.setName(0);
         })
@@ -42,7 +42,7 @@ app.controller('loginController',function($scope,$timeout,requestService,buttonS
            $scope.allert.text='Login or password null'
            $scope.allertFalse=true;
        } else {
-           requestService.getData(ENUM_Queries.addUser,'',$scope.login).then (
+           loginService.addUser($scope.login).then (
                function (response) {
                    $scope.setAllert(true,'User added, try login!');
                    $scope.login={username:'',password:''};
