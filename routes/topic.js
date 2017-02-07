@@ -114,7 +114,6 @@ router
                 res.sendStatus(200);
                 logger.info('Topic delete OK '+name);
             }
-
         });
     });
 

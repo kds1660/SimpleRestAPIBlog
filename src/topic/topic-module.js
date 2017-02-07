@@ -1,0 +1,1 @@
+var topicModule = angular.module('topicModule', ['topicServices']);

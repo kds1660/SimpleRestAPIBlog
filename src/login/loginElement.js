@@ -1,3 +1,4 @@
+var loginElement = angular.module('loginElement', []);
 app.directive("loginLogout",function() {
     return {
         scope:false,

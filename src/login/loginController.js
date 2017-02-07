@@ -1,4 +1,4 @@
-app.controller('loginController',function($scope,$timeout,loginService){
+loginModule.controller('loginController',function($scope,$timeout,loginService){
     $scope.allert={};
     $scope.login={username:'',password:''};
     loginService.isLogged().then(function (response) {

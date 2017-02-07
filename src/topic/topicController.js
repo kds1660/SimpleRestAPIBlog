@@ -1,4 +1,4 @@
-app.controller('topicController', function($scope,$timeout,topicService){
+topicModule.controller('topicController', function($scope,$timeout,topicService){
     function copyObj (obj) {
         var newobj={};
         for (key in obj) {newobj[key]=obj[key]}
