@@ -2,7 +2,6 @@ loginModule.controller('loginController',function($scope,$timeout,loginServices)
     $scope.allert={};
     $scope.login={username:'',password:''};
     loginServices.get({name:'logged'}).$promise.then(function (response) {
-        console.log(response)
         $scope.isLogged=response.data;
         $scope.setName(response.data);
     });
@@ -30,6 +29,7 @@ loginModule.controller('loginController',function($scope,$timeout,loginServices)
         loginServices.get({name:'logout'}).$promise.then(function (response) {
             $scope.isLogged=0;
             $scope.setName(0);
+            $scope.setViewFormat('list');
         })
     };
 
@@ -60,6 +60,23 @@ loginModule.controller('loginController',function($scope,$timeout,loginServices)
             $scope.allertTrue=false;
         },2000);
 
+    };
+
+    $scope.addTopicBtn=function () {
+        $scope.setCurrentTopic('');
+        $scope.thisTopic.date=Date();
+        $scope.setViewFormat('edit');
+
+       setTimeout(function () {
+           tinymce.init({
+               width: "100%",
+               height: "100%",
+               selector: 'textarea',
+               force_br_newlines: false,
+               force_p_newlines: false,
+               forced_root_block: ''
+           })
+       },100)
     };
 
 });

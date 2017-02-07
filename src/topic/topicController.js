@@ -1,18 +1,11 @@
 var page = 0;
 var limit = 2;
 app.controller('topicController', function ($scope, $timeout, topicServices) {
-    function copyObj(obj) {
-        var newobj = {};
-        for (key in obj) {
-            newobj[key] = obj[key]
-        }
-        return newobj;
-    };
 
     $scope.init = function () {
         $scope.topic.data = [];
         page = 0;
-        $scope.viewformat = 'list';
+        $scope.setViewFormat('list');
         topicServices.query({}).$promise.then(
             function (response) {
                 $scope.topic.data = response;
@@ -46,21 +39,21 @@ app.controller('topicController', function ($scope, $timeout, topicServices) {
 
 
     $scope.viewTopic = function ($index) {
-        $scope.thisTopic = copyObj($scope.topic.data[$index]);
-        $scope.viewformat = 'view';
+        $scope.setCurrentTopic($scope.topic.data[$index]);
+        $scope.setViewFormat('view');
         topicServices.get({name: $scope.topic.data[$index].name}).$promise.then(function (response) {
-            $scope.thisTopic.textFull = response.text;
+            $scope.thisTopic.textFull=response.text;
         });
     };
 
     $scope.back = function () {
-        $scope.viewformat = 'list';
+        $scope.setViewFormat('list');
     };
 
     $scope.edit = function ($index) {
-        $scope.viewformat = 'edit';
-        $scope.thisTopic = copyObj($scope.topic.data[$index]);
-        $scope.thisTopic.oldTopic = $scope.thisTopic.name;
+        $scope.setViewFormat('edit');
+        $scope.setCurrentTopic($scope.topic.data[$index]);
+        $scope.thisTopic.oldTopic=$scope.thisTopic.name;
         topicServices.get({name: $scope.thisTopic.name}).$promise.then(function (response) {
             $scope.thisTopic.textFull = response.text;
 
@@ -79,7 +72,7 @@ app.controller('topicController', function ($scope, $timeout, topicServices) {
     };
 
     $scope.SaveTopic = function () {
-
+        console.log( $scope.thisTopic)
         $scope.thisTopic.text = tinyMCE.activeEditor.getContent({format: 'raw'});
         if ($scope.thisTopic.imgnew) $scope.thisTopic.img = $scope.thisTopic.imgnew;
         topicServices.update($scope.thisTopic.name, $scope.thisTopic).$promise.then(function () {
