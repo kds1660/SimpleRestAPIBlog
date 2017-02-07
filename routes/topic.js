@@ -43,6 +43,7 @@ router
     })
 
     .get('/:name/', function (req, res, next) {
+        console.log(req)
         Topic.find({name: req.params.name}, function (err, topic) {
             if (err) throw err;
             if (topic.length) {

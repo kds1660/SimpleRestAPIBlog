@@ -1,16 +1,17 @@
-loginModule.controller('loginController',function($scope,$timeout,loginService){
+loginModule.controller('loginController',function($scope,$timeout,loginServices){
     $scope.allert={};
     $scope.login={username:'',password:''};
-    loginService.isLogged().then(function (response) {
+    loginServices.get({name:'logged'}).$promise.then(function (response) {
+        console.log(response)
         $scope.isLogged=response.data;
         $scope.setName(response.data);
     });
     $scope.isAddUser=false;
 
     $scope.loginBtn=function () {
-        loginService.login($scope.login).then(function (response) {
-            $scope.isLogged=response.data.username;
-            $scope.setName(response.data.username);
+        loginServices.save($scope.login).$promise.then(function (response) {
+            $scope.isLogged=response.username;
+            $scope.setName(response.username);
                 $scope.login={};
             $scope.allert.text='You logged'
             $scope.allertTrue=true;
@@ -26,7 +27,7 @@ loginModule.controller('loginController',function($scope,$timeout,loginService){
 
     };
     $scope.logoutBtn=function () {
-        loginService.logout().then(function (response) {
+        loginServices.get({name:'logout'}).$promise.then(function (response) {
             $scope.isLogged=0;
             $scope.setName(0);
         })
@@ -42,7 +43,7 @@ loginModule.controller('loginController',function($scope,$timeout,loginService){
            $scope.allert.text='Login or password null'
            $scope.allertFalse=true;
        } else {
-           loginService.addUser($scope.login).then (
+           loginServices.update($scope.login).$promise.then (
                function (response) {
                    $scope.setAllert(true,'User added, try login!');
                    $scope.login={username:'',password:''};

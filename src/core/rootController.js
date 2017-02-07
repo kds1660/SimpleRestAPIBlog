@@ -1,4 +1,4 @@
-app.controller('mainController', function($scope,$timeout,requestService){
+app.controller('mainController', function($scope,$timeout){
     $scope.isLogged=0;
     $scope.alert={};
     $scope.alert.text='s';

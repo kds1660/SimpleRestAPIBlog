@@ -7,8 +7,8 @@ var gulp = require('gulp'),
 gulp.task('angular-app-js', function() {
     gulp.src('src/**/*.js')
         .pipe(concat('blog-app.min.js'))
-        .pipe(ngAnnotate())
-        .pipe(minifyJs())
+    //    .pipe(ngAnnotate())
+    //    .pipe(minifyJs())
         .pipe(gulp.dest('public/js/'))
 });
 

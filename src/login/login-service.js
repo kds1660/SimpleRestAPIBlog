@@ -1,6 +1,16 @@
 loginServices=angular.module('loginServices', []);
-loginServices.factory('loginService', ['requestService', '$q', function(requestService,$q){
-    return {
+loginServices.factory('loginServices', ['$resource',function($resource){
+    return $resource('/api/login/:name',{name:'@name'},{
+        'update':{method:'PUT'},
+        'get':{
+            method:'get',
+            transformResponse:function (data) {
+             return {data:data}
+            },
+            'update':{method:'PUT'}
+        }
+    });
+  /*  return {
         login:function (name) {
             var deferred=$q.defer();
             requestService.getData(ENUM_Queries.login,'',name).then(function (data) {
@@ -38,5 +48,5 @@ loginServices.factory('loginService', ['requestService', '$q', function(requestS
             return deferred.promise;
         }
 
-    }
+    }*/
 }]);
