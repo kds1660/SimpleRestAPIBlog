@@ -1,0 +1,1 @@
+var commentModule = angular.module('commentModule', ['commentServices']);

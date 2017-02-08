@@ -25,7 +25,8 @@ router
 
     .delete('/:name', function (req, res, next) {
         var id = req.params.name;
-        name=req.body.name;
+        name=req.query.topicName;
+        console.log(id,name);
         Topic.update({name:name},{$pull:{comments:{_id:id}}},
             function (err, topic) {
             if (!err) {

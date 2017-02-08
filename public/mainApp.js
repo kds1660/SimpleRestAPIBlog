@@ -1,6 +1,7 @@
 var app = angular.module('BlogApp', [
     'loginModule',
     'topicModule',
+    'commentModule',
     'ngResource'
 ],function () {
 });

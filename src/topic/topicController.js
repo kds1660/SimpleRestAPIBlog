@@ -1,23 +1,36 @@
 var page = 0;
 var limit = 2;
-app.controller('topicController', function ($scope, $timeout, topicServices) {
-
+topicModule.controller('topicController', function ($scope, $timeout, topicServices) {
+    page = 0;
     $scope.init = function () {
+        var requestParams={
+            page:0,
+            limit:limit,
+            keyworld:$scope.search,
+            findBy:$scope.tabSelect,
+            sortBy:$scope.tabSort
+        };
         $scope.topic.data = [];
-        page = 0;
         $scope.setViewFormat('list');
-        topicServices.query({}).$promise.then(
+        topicServices.query(requestParams).$promise.then(
             function (response) {
                 $scope.topic.data = response;
             }
         );
     };
-
     $scope.init();
 
     $scope.loadMore = function () {
         page++;
-        topicServices.query({page: page, limit: limit}).$promise.then(
+        var requestParams={
+            page:page,
+            limit:limit,
+            keyworld:$scope.search,
+            findBy:$scope.tabSelect,
+            sortBy:$scope.tabSort
+        };
+        console.log(requestParams)
+        topicServices.query(requestParams).$promise.then(
             function (response) {
                 $scope.topic.data = $scope.topic.data.concat(response);
             }, function (response) {
@@ -39,10 +52,11 @@ app.controller('topicController', function ($scope, $timeout, topicServices) {
 
 
     $scope.viewTopic = function ($index) {
-        $scope.setCurrentTopic($scope.topic.data[$index]);
+        $scope.setCurrentTopic($scope.topic.data[$index],$index);
         $scope.setViewFormat('view');
         topicServices.get({name: $scope.topic.data[$index].name}).$promise.then(function (response) {
             $scope.thisTopic.textFull=response.text;
+            $scope.thisTopic.commentsFull=response.comments;
         });
     };
 
@@ -72,10 +86,10 @@ app.controller('topicController', function ($scope, $timeout, topicServices) {
     };
 
     $scope.SaveTopic = function () {
-        console.log( $scope.thisTopic)
         $scope.thisTopic.text = tinyMCE.activeEditor.getContent({format: 'raw'});
         if ($scope.thisTopic.imgnew) $scope.thisTopic.img = $scope.thisTopic.imgnew;
         topicServices.update($scope.thisTopic.name, $scope.thisTopic).$promise.then(function () {
+            $scope.setDefaultSearchParams();
             $scope.init();
         }, function () {
             alert('error');
@@ -83,4 +97,5 @@ app.controller('topicController', function ($scope, $timeout, topicServices) {
     };
 
 });
+
 

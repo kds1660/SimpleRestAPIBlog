@@ -1,28 +1,37 @@
 app.controller('mainController', function($scope,$timeout){
     $scope.isLogged=0;
     $scope.alert={};
-    $scope.alert.text='s';
+    $scope.alert.text='';
+
+    $scope.setDefaultSearchParams=function () {
+        $scope.tabSelect='name';
+        $scope.tabSort='date';
+        $scope.search='';
+    };
+    $scope.setDefaultSearchParams();
+
+    $scope.setSearchParams=function (select,sort,keyworld) {
+       if (select) $scope.tabSelect=select;
+       if (sort) $scope.tabSort=sort;
+       if (keyworld) $scope.search=keyworld;
+    };
+
     $scope.setName = function(name){
         $scope.isLogged = name;
     };
+
     $scope.setViewFormat= function (format) {
         $scope.viewformat=format;
     };
 
     $scope.setCurrentTopic= function (data) {
-            newobj = {};
-            for (key in data) {
-                newobj[key] = data[key]
-            }
-            $scope.thisTopic=newobj;
-            console.log( $scope.thisTopic)
+            $scope.thisTopic=data;
     };
 
 
 
     $scope.viewformat='';
     $scope.setAllert=function (trueFalse,text) {
-        console.log(trueFalse,text)
         if (trueFalse===true) {
             $scope.allertTrue=true;
             $scope.alert.text=text;

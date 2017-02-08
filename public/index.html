@@ -43,35 +43,36 @@
 
         </div>
         <div class="col-md-4">
-            <div class="well">
+            <div class="well" ng-controller="panelController as panel">
+                {{panel.tab}}
                 <h2>Blog Search</h2>
                 <span>Selector</span>
                 <ul class="nav nav-tabs">
 
-                    <li class="active" id="nameFind">
-                        <a data-toggle="tab" href="#panel1">Blog name</a>
+                    <li id="nameFind" ng-class="{active:isSelectSelector('name')}">
+                        <a data-toggle="tab" ng-click="selectSelector('name')">Blog name</a>
                     </li>
-                    <li id='authorFind'>
-                        <a data-toggle="tab" href="#panel2">Athor</a>
+                    <li id='authorFind' ng-class="{active:isSelectSelector('author')}">
+                        <a data-toggle="tab" ng-click="selectSelector('author')">Athor</a>
                     </li>
-                    <li id='textFind'>
-                        <a data-toggle="tab" href="#panel2">By text</a>
+                    <li id='textFind' ng-class="{active:isSelectSelector('text')}">
+                        <a data-toggle="tab" ng-click="selectSelector('text')">By text</a>
                     </li>
                 </ul>
                 <span>Sort</span>
                 <ul class="nav nav-tabs">
 
-                    <li class="active" id="dateSort">
-                        <a data-toggle="tab" href="#panel1">Date</a>
+                    <li class="active" id="dateSort" ng-class="{active:isSelectSort('date')}">
+                        <a data-toggle="tab" ng-click="selectSort('date')">Date</a>
                     </li>
-                    <li id='nameSort'>
-                        <a data-toggle="tab" href="#panel2">Blog name</a>
+                    <li id='nameSort' ng-class="{active:isSelectSort('name')}">
+                        <a data-toggle="tab" ng-click="selectSort('name')">Blog name</a>
                     </li>
                 </ul>
                 <div class="input-group">
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" ng-model="panel.search">
                     <span class="input-group-btn">
-                            <button class="btn btn-default search   " type="button">
+                            <button class="btn btn-default search   " type="button" ng-click="search()">
                                 <span class="glyphicon glyphicon-search"></span>
                         </button>
                         </span>
@@ -94,38 +95,6 @@
         </div>
     </footer>
 </div>
-
-
-
-<script id="mustache_comment" type="text/template">
-    <div class="panel panel-default">
-        <div id='mongoId' style="display: none;">{{_id}}</div>
-        <div class="panel-heading text-left">
-            Writing by {{author}} at {{date}}
-        </div>
-        <div class="panel-body text-left">{{{text}}}</div>
-        <div class="footer text-left">
-        </div>
-    </div>
-</script>
-<script id="mustache_topic" type="text/template">
-    <div class="topic">
-        <h1>{{name}}</h1>
-        <p class="lead"><span class="glyphicon glyphicon-time"></span> by <span class="author">{{author}}</span> at
-            <span class="date">{{date}}</span></p>
-        <p>
-            <span class="comments">
-                <span class="glyphicon glyphicon-check">
-                    <b>{{comments}} comments</b>
-                    <div class="buttons"></div>
-                </span>
-            </span>
-        </p>
-
-        <img height="200" src="{{img}}" alt="">
-        <div class="textDiv" height="200">{{{text}}}</div>
-    </div>
-</script>
 </body>
 
 </html>

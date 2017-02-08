@@ -2,7 +2,6 @@ loginModule.controller('loginController',function($scope,$timeout,loginServices)
     $scope.allert={};
     $scope.login={username:'',password:''};
     loginServices.get({name:'logged'}).$promise.then(function (response) {
-        $scope.isLogged=response.data;
         $scope.setName(response.data);
     });
     $scope.isAddUser=false;
@@ -63,8 +62,9 @@ loginModule.controller('loginController',function($scope,$timeout,loginServices)
     };
 
     $scope.addTopicBtn=function () {
-        $scope.setCurrentTopic('');
+        $scope.setCurrentTopic({});
         $scope.thisTopic.date=Date();
+        $scope.thisTopic.author=$scope.isLogged;
         $scope.setViewFormat('edit');
 
        setTimeout(function () {
