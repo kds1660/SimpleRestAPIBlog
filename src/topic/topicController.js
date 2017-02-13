@@ -1,33 +1,35 @@
-var page = 0;
-var limit = 2;
+
 topicModule.controller('topicController', function ($scope, $timeout, topicServices) {
-    page = 0;
     $scope.init = function () {
         var requestParams={
             page:0,
             limit:limit,
-            keyworld:$scope.search,
-            findBy:$scope.tabSelect,
-            sortBy:$scope.tabSort
+            keyworld:$scope.setDefaultSearchParams.search,
+            findBy:$scope.setDefaultSearchParams.tabSelect,
+            sortBy:$scope.setDefaultSearchParams.tabSort
         };
+        $scope.setPage(0);
         $scope.topic.data = [];
         $scope.setViewFormat('list');
         topicServices.query(requestParams).$promise.then(
             function (response) {
                 $scope.topic.data = response;
+            },
+            function () {
+                $scope.topic.data = [];
             }
         );
     };
     $scope.init();
 
     $scope.loadMore = function () {
-        page++;
+        $scope.page++;
         var requestParams={
-            page:page,
+            page:$scope.page,
             limit:limit,
-            keyworld:$scope.search,
-            findBy:$scope.tabSelect,
-            sortBy:$scope.tabSort
+            keyworld:$scope.setDefaultSearchParams.search,
+            findBy:$scope.setDefaultSearchParams.tabSelect,
+            sortBy:$scope.setDefaultSearchParams.tabSort
         };
         console.log(requestParams)
         topicServices.query(requestParams).$promise.then(
@@ -45,7 +47,11 @@ topicModule.controller('topicController', function ($scope, $timeout, topicServi
     $scope.deleteTopic = function ($index) {
         topicServices.delete({name: $scope.topic.data[$index].name}).$promise.then(function () {
             $scope.topic.data.splice($index, 1);
-            $scope.setAllert(true, 'Topic deleted!')
+            $scope.setAllert(true, 'Topic deleted!');
+            $timeout(function () {
+                $scope.allertFalse=false;
+                $scope.allertTrue=false;
+            },2000);
             $scope.init();
         });
     };
@@ -89,7 +95,7 @@ topicModule.controller('topicController', function ($scope, $timeout, topicServi
         $scope.thisTopic.text = tinyMCE.activeEditor.getContent({format: 'raw'});
         if ($scope.thisTopic.imgnew) $scope.thisTopic.img = $scope.thisTopic.imgnew;
         topicServices.update($scope.thisTopic.name, $scope.thisTopic).$promise.then(function () {
-            $scope.setDefaultSearchParams();
+            $scope.setSearchParams('name','date','');
             $scope.init();
         }, function () {
             alert('error');

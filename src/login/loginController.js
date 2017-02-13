@@ -1,4 +1,4 @@
-loginModule.controller('loginController',function($scope,$timeout,loginServices){
+loginModule.controller('loginController',function($scope,$timeout,loginServices,$rootScope){
     $scope.allert={};
     $scope.login={username:'',password:''};
     loginServices.get({name:'logged'}).$promise.then(function (response) {
@@ -47,6 +47,10 @@ loginModule.controller('loginController',function($scope,$timeout,loginServices)
                    $scope.setAllert(true,'User added, try login!');
                    $scope.login={username:'',password:''};
                    $scope.isAddUser=false;
+                   $timeout(function () {
+                       $rootScope.allertFalse=false;
+                       $rootScope.allertTrue=false;
+                   },2000);
                }, function (response) {
                    $scope.allert.text='User exist!';
                    $scope.allertFalse=true;

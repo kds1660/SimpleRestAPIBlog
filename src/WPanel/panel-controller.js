@@ -1,25 +1,26 @@
 topicModule.controller('panelController', function ($scope) {
 
     $scope.search=function () {
+        $scope.setPage(0);
         $scope.setSearchParams('','',$scope.panel.search);
-        $scope.$$prevSibling.init();
+        $scope.$$nextSibling.$parent.init();
     };
 
     $scope.selectSelector=function (tab) {
-        $scope.tabSelect=tab;
+        $scope.setDefaultSearchParams.tabSelect=tab;
         $scope.setSearchParams(tab)
     };
 
     $scope.isSelectSelector=function (tab) {
-        return $scope.tabSelect===tab;
+        return $scope.setDefaultSearchParams.tabSelect===tab;
     };
 
     $scope.selectSort=function (tab) {
-        $scope.tabSort=tab;
+        $scope.setDefaultSearchParams.tabSort=tab;
         $scope.setSearchParams('',tab)
     };
 
     $scope.isSelectSort=function (tab) {
-        return $scope.tabSort===tab;
+        return $scope.setDefaultSearchParams.tabSort===tab;
     }
 });
