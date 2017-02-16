@@ -1,5 +1,4 @@
 loginModule.controller('loginController',function($scope,$timeout,loginServices,$rootScope){
-    $scope.allert={};
     $scope.login={username:'',password:''};
     loginServices.get({name:'logged'}).$promise.then(function (response) {
         $scope.setName(response.data);
@@ -7,28 +6,23 @@ loginModule.controller('loginController',function($scope,$timeout,loginServices,
     $scope.isAddUser=false;
 
     $scope.loginBtn=function () {
+        window.scroll(0,0);
         loginServices.save($scope.login).$promise.then(function (response) {
             $scope.isLogged=response.username;
             $scope.setName(response.username);
                 $scope.login={};
-            $scope.allert.text='You logged'
-            $scope.allertTrue=true;
+            $scope.setAllert(true, 'Logged!!')
 
         },function (response) {
-            $scope.allert.text='Check login/password or register'
-            $scope.allertFalse=true;
+            $scope.setAllert(false, 'Check login/password or register')
         });
-        $timeout(function () {
-            $scope.allertFalse=false;
-                $scope.allertTrue=false;
-        },2000)
-
     };
+
     $scope.logoutBtn=function () {
+        window.scroll(0,0);
         loginServices.get({name:'logout'}).$promise.then(function (response) {
             $scope.isLogged=0;
             $scope.setName(0);
-            $scope.setViewFormat('list');
         })
     };
 
@@ -39,8 +33,7 @@ loginModule.controller('loginController',function($scope,$timeout,loginServices,
 
     $scope.addUser=function () {
        if (!$scope.login.username||!$scope.login.password) {
-           $scope.allert.text='Login or password null'
-           $scope.allertFalse=true;
+           $scope.setAllert(false,'Login or password null');
        } else {
            loginServices.update($scope.login).$promise.then (
                function (response) {
@@ -52,17 +45,10 @@ loginModule.controller('loginController',function($scope,$timeout,loginServices,
                        $rootScope.allertTrue=false;
                    },2000);
                }, function (response) {
-                   $scope.allert.text='User exist!';
-                   $scope.allertFalse=true;
+                   $scope.setAllert(false,'User exist!');
                }
            )
        }
-
-        $timeout(function () {
-            $scope.allertFalse=false;
-            $scope.allertTrue=false;
-        },2000);
-
     };
 
     $scope.addTopicBtn=function () {

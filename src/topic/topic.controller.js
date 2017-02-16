@@ -1,14 +1,17 @@
 
 topicModule.controller('topicController', function ($scope, $timeout, topicServices) {
     $scope.init = function () {
+        window.scroll(0,0);
+        $scope.setPage(0);
+        $scope.topic={};
         var requestParams={
-            page:0,
-            limit:limit,
+            page:$scope.page,
+            limit:$scope.limit,
             keyworld:$scope.setDefaultSearchParams.search,
             findBy:$scope.setDefaultSearchParams.tabSelect,
             sortBy:$scope.setDefaultSearchParams.tabSort
         };
-        $scope.setPage(0);
+
         $scope.topic.data = [];
         $scope.setViewFormat('list');
         topicServices.query(requestParams).$promise.then(
@@ -23,15 +26,14 @@ topicModule.controller('topicController', function ($scope, $timeout, topicServi
     $scope.init();
 
     $scope.loadMore = function () {
-        $scope.page++;
+        $scope.setPage($scope.page+1);
         var requestParams={
             page:$scope.page,
-            limit:limit,
+            limit:$scope.limit,
             keyworld:$scope.setDefaultSearchParams.search,
             findBy:$scope.setDefaultSearchParams.tabSelect,
             sortBy:$scope.setDefaultSearchParams.tabSort
         };
-        console.log(requestParams)
         topicServices.query(requestParams).$promise.then(
             function (response) {
                 $scope.topic.data = $scope.topic.data.concat(response);
@@ -65,43 +67,6 @@ topicModule.controller('topicController', function ($scope, $timeout, topicServi
             $scope.thisTopic.commentsFull=response.comments;
         });
     };
-
-    $scope.back = function () {
-        $scope.setViewFormat('list');
-    };
-
-    $scope.edit = function ($index) {
-        $scope.setViewFormat('edit');
-        $scope.setCurrentTopic($scope.topic.data[$index]);
-        $scope.thisTopic.oldTopic=$scope.thisTopic.name;
-        topicServices.get({name: $scope.thisTopic.name}).$promise.then(function (response) {
-            $scope.thisTopic.textFull = response.text;
-
-            tinymce.init({
-                width: "100%",
-                height: "100%",
-                selector: 'textarea',
-                force_br_newlines: false,
-                force_p_newlines: false,
-                forced_root_block: ''
-            });
-            setTimeout(function () {
-                if (tinyMCE.activeEditor) tinyMCE.activeEditor.setContent((response.text));
-            }, 300);
-        });
-    };
-
-    $scope.SaveTopic = function () {
-        $scope.thisTopic.text = tinyMCE.activeEditor.getContent({format: 'raw'});
-        if ($scope.thisTopic.imgnew) $scope.thisTopic.img = $scope.thisTopic.imgnew;
-        topicServices.update($scope.thisTopic.name, $scope.thisTopic).$promise.then(function () {
-            $scope.setSearchParams('name','date','');
-            $scope.init();
-        }, function () {
-            alert('error');
-        })
-    };
-
 });
 
 

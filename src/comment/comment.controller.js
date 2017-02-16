@@ -1,7 +1,18 @@
-var page = 0;
-var limit = 2;
 app.controller('commentController', function ($scope, $timeout, commentServices,topicServices) {
+    tinymce.remove();
+    if (!tinymce.activeEditor){
+        setTimeout(function () {
+            tinymce.init({
+                width: "100%",
+                height: "100%",
+                selector: 'textarea',
+                force_br_newlines: false,
+                force_p_newlines: false,
+                forced_root_block: ''
+            });
 
+        },10);
+    }
     $scope.deleteComment = function ($index) {
         commentServices.delete({
             commentID:$scope.thisTopic.commentsFull[$index]._id},
@@ -35,6 +46,7 @@ app.controller('commentController', function ($scope, $timeout, commentServices,
             name: $scope.thisTopic.name,
             text:tinyMCE.activeEditor.getContent({format: 'raw'})
         }).$promise.then(function () {
+            $scope.setAllert(true, 'Comment edited!');
             angular.element(document.querySelectorAll('.panel-body')[$index]).removeClass('selected');
             $scope.thisTopic.commentsFull[$index].state='view';
             tinymce.remove();
@@ -46,7 +58,6 @@ app.controller('commentController', function ($scope, $timeout, commentServices,
 
     $scope.addNewComment = function ($index,$element) {
         if (!tinymce.activeEditor){
-            $scope.addComment=true;
        setTimeout(function () {
                tinymce.init({
                    width: "100%",

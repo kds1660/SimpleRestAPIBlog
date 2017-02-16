@@ -1,0 +1,23 @@
+<div>
+    <h1>{{thisTopic.name}}</h1>
+    <p class="lead"><span class="glyphicon glyphicon-time"></span> by <span class="author">{{thisTopic.author}}</span> at
+        <span class="date">{{thisTopic.date|date:'MM/dd/yyyy HH:mm:ss'}}</span></p>
+    <p>
+            <span class="comments">
+                <span class="glyphicon glyphicon-check">
+                    <b>{{thisTopic.comments}} comments</b>
+                    <div class="buttons">
+                    </div>
+                </span>
+            </span>
+    </p>
+
+    <img width="200" ng-src="{{thisTopic.img||'../img/no-image.png'}}" alt="">
+    <div class="textDiv" ng-bind-html="thisTopic.textFull|to_html"></div>
+    <a class="viewButton btn btn-info" href="/main>">Back</a>
+    <a class="viewButton btn btn-info" href="/view/{{thisTopic.name}}/comments">View comments</a>
+    <a class="viewButton btn btn-info" href="/view/{{thisTopic.name}}/addComment" ng-if="isLogged!=0" ng-click="addNewComment()">Add Comment</a>
+    <div app-view-segment="1">
+    </div>
+
+</div>

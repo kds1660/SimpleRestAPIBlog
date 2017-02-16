@@ -1,61 +1,71 @@
 var app = angular.module('BlogApp', [
+    'ngRoute',
+    'route-segment',
+    'view-segment',
     'loginModule',
     'topicModule',
     'commentModule',
     'ngResource'
-],function () {
+], function () {
 });
 
-app.filter('to_html',['$sce',function ($sce) {
+app.filter('to_html', ['$sce', function ($sce) {
     return function (text) {
         return $sce.trustAsHtml(text);
     };
 }]);
 
-app.run(['$rootScope',function($rootScope) {
-    $rootScope.isLogged=0;
+app.run(['$rootScope','$timeout', function ($rootScope,$timeout) {
+    $rootScope.isLogged = 0;
     $rootScope.page = 0;
     $rootScope.limit = 2;
-    $rootScope.setDefaultSearchParams={
-        'tabSelect':'name',
-        'tabSort':'date',
-        'search':''
+    $rootScope.setDefaultSearchParams = {
+        'tabSelect': 'name',
+        'tabSort': 'date',
+        'search': ''
     };
 
-    $rootScope.setPage=function (page) {
-        $rootScope.page=page;
+    $rootScope.setPage = function (page) {
+        $rootScope.page = page;
     };
 
-    $rootScope.setSearchParams=function (select,sort,keyworld) {
-        if (select) $rootScope.setDefaultSearchParams.tabSelect=select;
-        if (sort) $rootScope.setDefaultSearchParams.tabSort=sort;
-        if (keyworld||keyworld==='') $rootScope.setDefaultSearchParams.search=keyworld;
+    $rootScope.setSearchParams = function (select, sort, keyworld) {
+        if (select) $rootScope.setDefaultSearchParams.tabSelect = select;
+        if (sort) $rootScope.setDefaultSearchParams.tabSort = sort;
+        if (keyworld || keyworld === '') $rootScope.setDefaultSearchParams.search = keyworld;
     };
 
-    $rootScope.setName = function(name){
+    $rootScope.setName = function (name) {
         $rootScope.isLogged = name;
     };
 
-    $rootScope.setViewFormat= function (format) {
-        $rootScope.viewformat=format;
+    $rootScope.setViewFormat = function (format) {
+        $rootScope.viewformat = format;
     };
 
-    $rootScope.setCurrentTopic= function (data) {
-        $rootScope.thisTopic=data;
+    $rootScope.setCurrentTopic = function (data) {
+        $rootScope.thisTopic = data;
     };
 
-    $rootScope.viewformat='';
-    $rootScope.setAllert=function (trueFalse,text,$timeout) {
-        $rootScope.alert={};
-        if (trueFalse===true) {
-            $rootScope.allertTrue=true;
-            $rootScope.alert.text=text;
-        };
-        if (trueFalse===false) {
-            $rootScope.allertFalse=true
-            $rootScope.alert.text=text;
-        };
+    $rootScope.viewformat = '';
+    $rootScope.setAllert = function (trueFalse, text) {
+        $rootScope.alert = {};
+        if (trueFalse === true) {
+            $rootScope.allertTrue = true;
+            $rootScope.alert.text = text;
+        }
+        ;
+        if (trueFalse === false) {
+            $rootScope.allertFalse = true;
+            $rootScope.alert.text = text;
+        }
+        ;
+        $timeout(function () {
+            $rootScope.allertTrue = false;
+            $rootScope.allertFalse = false;
+        },2000)
     }
+
 }]);
 
 

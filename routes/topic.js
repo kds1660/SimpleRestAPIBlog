@@ -43,12 +43,11 @@ router
     })
 
     .get('/:name/', function (req, res, next) {
-        console.log(req)
         Topic.find({name: req.params.name}, function (err, topic) {
             if (err) throw err;
             if (topic.length) {
                 logger.info('Topic get OK '+req.params.name);
-                if (topic[0].img==='') {topic[0].img='img/no-image.png'}
+                if (topic[0].img==='') {topic[0].img='../img/no-image.png'}
                 res.json(topic[0]);
             }
             else {
@@ -91,8 +90,10 @@ router
                 text: body.text,
                 date: body.date
             });
+            console.log(newTopic);
             newTopic.save(function (err) {
                 if (err) {
+                    console.log(err)
                     err = new Error('Topic exists');
                     err.status = 409;
                     logger.error(err);

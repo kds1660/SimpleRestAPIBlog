@@ -2,8 +2,10 @@ topicModule.controller('panelController', function ($scope) {
 
     $scope.search=function () {
         $scope.setPage(0);
+        console.log($scope.page)
         $scope.setSearchParams('','',$scope.panel.search);
-        $scope.$$nextSibling.$parent.init();
+        $scope.$$nextSibling.$$nextSibling.init();           //very bad solution
+
     };
 
     $scope.selectSelector=function (tab) {

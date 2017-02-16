@@ -4,11 +4,20 @@ var gulp = require('gulp'),
     ngAnnotate = require('gulp-ng-annotate'),
     minifyJs = require('gulp-uglify');
 
+const jsFilesApp = [
+    'src/**/*.module.js',
+    'src/**/*.component.js',
+    'src/**/*.controller.js',
+    'src/**/*.service.js',
+    'src/**/*.element.js',
+    'src/**/*.routes.js'
+];
+
 gulp.task('angular-app-js', function() {
-    gulp.src('src/**/*.js')
+    gulp.src(jsFilesApp)
         .pipe(concat('blog-app.min.js'))
-        .pipe(ngAnnotate())
-        .pipe(minifyJs())
+   //     .pipe(ngAnnotate())
+   //     .pipe(minifyJs())
         .pipe(gulp.dest('public/js/'))
 });
 

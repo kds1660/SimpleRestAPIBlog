@@ -1,3 +1,4 @@
+</div>
 <div id="comment" ng-repeat="viewComment in thisTopic.commentsFull track by $index">
     <div class="panel panel-default">
         <div id='mongoId' style="display: none;">{{viewComment._id}}</div>
@@ -12,6 +13,3 @@
         </div>
     </div>
 </div>
-<input class="viewButton btn btn-info" type="button" value="Add Comment" ng-if="isLogged!=0" ng-click="addNewComment()">
-<textarea ng-if="addComment"></textarea>
-<input class="saveBtn btn-danger" type="button" value="Save" ng-if="addComment" ng-click="saveNewComment()">

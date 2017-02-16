@@ -7,8 +7,9 @@
     <script src="/bower_components/tinymce/tinymce.js"></script>
     <script src="/bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-route-segment/build/angular-route-segment.js"></script>
     <script src="mainApp.js" defer></script>
-
     <script src="js/blog-app.min.js" defer></script>
 
 
@@ -21,6 +22,7 @@
 </head>
 
 <body>
+<div id="contents"></div>
 
 <div class="container">
     <div class="alert alert-danger " tabindex="-1" role="alert" ng-show="allertFalse">{{alert.text}}
@@ -31,13 +33,7 @@
     <div class="row">
         <user></user>
         <div id="wrapper">
-            <div class="col-lg-8" when-scrolled="viewformat=='list'&&loadMore()">
-                 <topic-post ></topic-post>
-                <div class="alert alert-danger " tabindex="-1" role="alert" ng-show="topicAllert">
-                    This is all topics!
-                </div>
-                <div class="alert alert-success collapse" tabindex="-1" role="alert">
-                </div>
+            <div class="col-lg-8" when-scrolled="viewformat=='list'&&loadMore()"  app-view-segment="0">
 
             </div>
 
@@ -79,7 +75,7 @@
                 </div>
 
             </div>
-            <div class="well" id="logged" ng-controller="loginController" >
+            <div class="well" id="logged" ng-controller="loginController">
                 <login-logout
                         myFunc="myFunc"
                 ></login-logout>

@@ -11,16 +11,12 @@
         <input class="loginButton btn btn-success" type="button" value="login" ng-click="loginBtn()">
         <input class="registerButton btn btn-success" type="button" value="Register" ng-click="registerBtn()">
     </div>
-    <div class="alert alert-danger " tabindex="-1" role="alert" ng-show="allertFalse">{{allert.text}}
-    </div>
 </div>
 
 <div ng-if="isLogged!=0&&!isAddUser">
     <h2>Logged {{isLogged}}</h2>
-    <input class="exitButton btn btn-danger" type="button" value="Logout" ng-click="logoutBtn()">
-    <input class="addTopicBtn btn btn-info" type="button" value="Add topic" ng-click="addTopicBtn()">
-    <div class="alert alert-success " tabindex="-1" role="alert" ng-show="allertTrue">{{allert.text}}
-    </div>
+    <a class="exitButton btn btn-danger" href="/main" ng-click="logoutBtn()">Logout</a>
+    <a class="addTopicBtn btn btn-info" href="/add">Add topic</a>
 </div>
 
 <div ng-if="isAddUser">
@@ -34,8 +30,5 @@
             <br/><br/>
         </div>
         <input class="registerButton btn btn-success" type="button" value="Register" ng-click="addUser()">
-    </div>
-    <div class="alert alert-danger " tabindex="-1" role="alert" ng-show="allertFalse">{{allert.text}}
-    </div>
 </div>
 
