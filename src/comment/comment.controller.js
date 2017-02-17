@@ -1,4 +1,4 @@
-app.controller('commentController', function ($scope, $timeout, commentServices,topicServices) {
+app.controller('commentController', function ($scope, $timeout,$location, commentServices,topicServices) {
     tinymce.remove();
     if (!tinymce.activeEditor){
         setTimeout(function () {
@@ -25,9 +25,8 @@ app.controller('commentController', function ($scope, $timeout, commentServices,
     };
 
     $scope.editComment = function ($index,$element) {
-        angular.element(document.querySelectorAll('.panel-body')[$index]).addClass('selected')
-
        if (!tinymce.activeEditor) {
+           angular.element(document.querySelectorAll('.panel-body')[$index]).addClass('selected');
            $scope.thisTopic.commentsFull[$index].state='edit';
             tinymce.init({
                 width: "100%",
@@ -55,23 +54,6 @@ app.controller('commentController', function ($scope, $timeout, commentServices,
         })
     };
 
-
-    $scope.addNewComment = function ($index,$element) {
-        if (!tinymce.activeEditor){
-       setTimeout(function () {
-               tinymce.init({
-                   width: "100%",
-                   height: "100%",
-                   selector: 'textarea',
-                   force_br_newlines: false,
-                   force_p_newlines: false,
-                   forced_root_block: ''
-               });
-
-       },10);
-        }
-    };
-
     $scope.saveNewComment = function ($index,$element) {
         commentServices.update({commentID:$scope.thisTopic.name},{
             new: 'new',
@@ -84,13 +66,12 @@ app.controller('commentController', function ($scope, $timeout, commentServices,
             topicServices.get({name: $scope.thisTopic.name}).$promise.then(function (response) {
                 $scope.thisTopic.commentsFull=response.comments;
             });
+            $location.path('/view/{{thisTopic.name}}');
 
         }, function () {
-            alert('error');
+            $scope.setAllert(true, 'Comment not added!');
         })
 
     };
 });
 
-/*
-*/

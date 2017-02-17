@@ -1,4 +1,4 @@
-<div class="topic" ng-if="viewformat==='list'" ng-repeat="names in topic.data track by $index">
+<div class="topic" ng-repeat="names in topic.data track by $index">
     <h1>{{names.name}}</h1>
     <p class="lead"><span class="glyphicon glyphicon-time"></span> by <span class="author">{{names.author}}</span> at
         <span class="date">{{names.date|date:'dd/MM/yyyy HH:mm:ss'}}</span></p>

@@ -12,6 +12,7 @@
         <div class="alert alert-success collapse" tabindex="-1" role="alert">
         </div>
     </div>
-    <a class="viewButton btn btn-info" ng-click="saveTopic()" href="/main" cancel-href="error">Save</a>
+    {{saveError}}
+    <a class="viewButton btn btn-info" ng-click="saveTopic($event)">Save</a>
     <a class="viewButton btn btn-info" href="/main">Back</a>
 </div>

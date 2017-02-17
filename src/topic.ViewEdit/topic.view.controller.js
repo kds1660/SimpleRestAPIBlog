@@ -1,8 +1,7 @@
-topicModule.controller('viewTopicController', function ($scope, $timeout, topicServices,$routeSegment) {
+topicModule.controller('viewTopicController', function ($scope, $location,$timeout, topicServices,$routeSegment) {
     $scope.thisTopic={};
     topicServices.get({name: $routeSegment.$routeParams.name}).$promise.then(function (response) {
         $scope.thisTopic=response;
-        $scope.thisTopic.commentsFull=response.comments;
         $scope.thisTopic.comments=response.comments.length;
         $scope.thisTopic.textFull=response.text;
 
@@ -29,9 +28,16 @@ topicModule.controller('viewTopicController', function ($scope, $timeout, topicS
         if ($scope.thisTopic.imgnew) $scope.thisTopic.img = $scope.thisTopic.imgnew;
         topicServices.update($scope.thisTopic.name, $scope.thisTopic).$promise.then(function () {
             $scope.setSearchParams('name','date','');
-        }, function () {
-            alert('error');
+            $location.path('/main');
+        }, function (error) {
+            $scope.setAllert(false, 'Error! '+error.statusText);
         })
+    };
+
+    $scope.setComments = function () {
+        topicServices.get({name: $scope.thisTopic.name}).$promise.then(function (response) {
+            $scope.thisTopic.commentsFull=response.comments;
+        });
     };
 });
 

@@ -63,6 +63,7 @@ table.dataTable tbody tr:hover {
     width: 30%;
     height:50px;
     z-index: 1000;
+    opacity: 0.9;
 !important;
 }
 

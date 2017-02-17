@@ -1,4 +1,5 @@
-topicModule.controller('addTopicController', function ($scope, topicServices) {
+topicModule.controller('addTopicController', function ($scope,$location, topicServices) {
+    $scope.name='Add topic';
     $scope.thisTopic={};
     $scope.thisTopic.date=new Date();
     $scope.thisTopic.author=$scope.isLogged;
@@ -12,14 +13,16 @@ topicModule.controller('addTopicController', function ($scope, topicServices) {
             forced_root_block: ''
         });
     }, 0);
-    
-    $scope.saveTopic = function () {
+
+    $scope.saveTopic = function (event) {
         $scope.thisTopic.text = tinyMCE.activeEditor.getContent({format: 'raw'});
         if ($scope.thisTopic.imgnew) $scope.thisTopic.img = $scope.thisTopic.imgnew;
         topicServices.update($scope.thisTopic.name, $scope.thisTopic).$promise.then(function () {
+            $scope.setAllert(true, 'Topic added');
             $scope.setSearchParams('name','date','');
+            $location.path('/main');
         }, function () {
-            $scope.setAllert(true, 'Some error!');
+            $scope.setAllert(false, 'Error! '+error.statusText);
         })
     };
 });

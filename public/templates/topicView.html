@@ -15,8 +15,8 @@
     <img width="200" ng-src="{{thisTopic.img||'../img/no-image.png'}}" alt="">
     <div class="textDiv" ng-bind-html="thisTopic.textFull|to_html"></div>
     <a class="viewButton btn btn-info" href="/main>">Back</a>
-    <a class="viewButton btn btn-info" href="/view/{{thisTopic.name}}/comments">View comments</a>
-    <a class="viewButton btn btn-info" href="/view/{{thisTopic.name}}/addComment" ng-if="isLogged!=0" ng-click="addNewComment()">Add Comment</a>
+    <a class="viewButton btn btn-info" href="/view/{{thisTopic.name}}/comments" ng-click="setComments()">View comments</a>
+    <a class="viewButton btn btn-info" href="/view/{{thisTopic.name}}/addComment" ng-if="isLogged!=0">Add Comment</a>
     <div app-view-segment="1">
     </div>
 

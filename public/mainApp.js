@@ -39,15 +39,11 @@ app.run(['$rootScope','$timeout', function ($rootScope,$timeout) {
         $rootScope.isLogged = name;
     };
 
-    $rootScope.setViewFormat = function (format) {
-        $rootScope.viewformat = format;
-    };
 
     $rootScope.setCurrentTopic = function (data) {
         $rootScope.thisTopic = data;
     };
 
-    $rootScope.viewformat = '';
     $rootScope.setAllert = function (trueFalse, text) {
         $rootScope.alert = {};
         if (trueFalse === true) {

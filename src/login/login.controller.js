@@ -55,7 +55,6 @@ loginModule.controller('loginController',function($scope,$timeout,loginServices,
         $scope.setCurrentTopic({});
         $scope.thisTopic.date=Date();
         $scope.thisTopic.author=$scope.isLogged;
-        $scope.setViewFormat('edit');
 
        setTimeout(function () {
            tinymce.init({

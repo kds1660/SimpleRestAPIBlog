@@ -5,7 +5,7 @@
         <div class="panel-heading text-left">
             Writing by {{viewComment.author}} at {{viewComment.date|date:'dd/MM/yyyy HH:mm:ss'}}
         </div>
-        <div class="panel-body text-left">{{viewComment.text}}</div>
+        <div class="panel-body text-left" ng-bind-html="viewComment.text|to_html"></div>
         <div class="footer text-left">
             <input class="dellBtn btn-danger" type="button" value="Delete" ng-if="isLogged===viewComment.author&&viewComment.state!='edit'" ng-click="deleteComment($index)">
             <input class="editBtn btn-danger" type="button" value="Edit" ng-if="isLogged===viewComment.author&&viewComment.state!='edit'" ng-click="editComment($index)">

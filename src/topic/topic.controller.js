@@ -1,8 +1,8 @@
 
 topicModule.controller('topicController', function ($scope, $timeout, topicServices) {
     $scope.init = function () {
-        window.scroll(0,0);
         $scope.setPage(0);
+        window.scroll(0,0);
         $scope.topic={};
         var requestParams={
             page:$scope.page,
@@ -13,7 +13,6 @@ topicModule.controller('topicController', function ($scope, $timeout, topicServi
         };
 
         $scope.topic.data = [];
-        $scope.setViewFormat('list');
         topicServices.query(requestParams).$promise.then(
             function (response) {
                 $scope.topic.data = response;
@@ -24,7 +23,6 @@ topicModule.controller('topicController', function ($scope, $timeout, topicServi
         );
     };
     $scope.init();
-
     $scope.loadMore = function () {
         $scope.setPage($scope.page+1);
         var requestParams={
