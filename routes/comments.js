@@ -3,6 +3,7 @@ var router = express.Router();
 var Topic= require('.././modules/dbSchema/topic');
 var logger = require('.././modules/logger').logger;
 var log4js = require('.././modules/logger').log4js;
+var authCheck = require('.././modules/authCheck');
 router.use(log4js.connectLogger(logger, { level: log4js.levels.DEBUG, format: 'format :method :url :status'}));
 
 router
@@ -23,7 +24,7 @@ router
         });
     })
 
-    .delete('/:name', function (req, res, next) {
+    .delete('/:name',authCheck, function (req, res, next) {
         var id = req.params.name;
         name=req.query.topicName;
         console.log(id,name);
@@ -36,7 +37,7 @@ router
         });
     })
 
-    .put('/:name/', function (req, res, next) {
+    .put('/:name/', authCheck, function (req, res, next) {
 
         var id = req.params.name;
         name=req.body.name;

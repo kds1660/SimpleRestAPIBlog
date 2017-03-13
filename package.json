@@ -11,6 +11,7 @@
   "author": "me",
   "license": "ISC",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.15.2",
     "bower": "",
     "express": "^4.14.0",
