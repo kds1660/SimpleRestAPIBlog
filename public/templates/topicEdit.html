@@ -1,0 +1,18 @@
+<div>
+    <h2>{{name}}</h2>
+    <input type='text' class='edit name' placeholder="Topic name" value="{{thisTopic.name}}" ng-model="thisTopic.name">
+    <input type='text' class='edit author' placeholder="Author" value="{{thisTopic.author}}" ng-model="thisTopic.author" disabled>
+    <img id="previewImg" height="200" ng-src="{{thisTopic.imgnew||thisTopic.img||'../img/no-image.png'}} " ng-model="thisTopic.imgnew"/>
+    <input class='image' type="file" name="pic[]" accept="image/*" fileread="thisTopic.imgnew">
+    <textarea class='edit text' placeholder="Text there">{{thisTopic.textFull}}</textarea>
+    <input type='text' id="oldTopic" style="display: none;" value="{{thisTopic.oldTopic}}">
+    <div class="modal-footer">
+        <div class="alert alert-danger collapse" tabindex="-1" role="alert">
+        </div>
+        <div class="alert alert-success collapse" tabindex="-1" role="alert">
+        </div>
+    </div>
+    {{saveError}}
+    <a class="viewButton btn btn-info" ng-click="saveTopic($event)">Save</a>
+    <a class="viewButton btn btn-info" href="/main">Back</a>
+</div>

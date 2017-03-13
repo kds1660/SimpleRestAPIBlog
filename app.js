@@ -1,3 +1,6 @@
+process.env.NODE_ENV=process.env.NODE_ENV||'dev'
+var config=require('./config/config');
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
@@ -10,12 +13,16 @@ var log4js = require('./modules/logger').log4js;
 var session=require('express-session');
 var passport = require('./modules/passport').passport;
 var LocalStrategy =require('./modules/passport').LocalStrategy;
+if (process.env.NODE_ENV==='dev') {
+    var test=require('./testing/forTest');
+}
+
 
 
 var app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
-    secret:'kds_secret',
+    secret:config.secret,
     saveUninitialized:true,
     resave:true,
 }));

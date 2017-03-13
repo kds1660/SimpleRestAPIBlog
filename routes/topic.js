@@ -1,14 +1,26 @@
 var express = require('express');
 var router = express.Router();
-var Topic= require('.././modules/topicService').topic;
+var Topic= require('.././modules/dbSchema/topic');
 var logger = require('.././modules/logger').logger;
 var log4js = require('.././modules/logger').log4js;
+var authCheck = require('.././modules/authCheck');
 router.use(log4js.connectLogger(logger, { level: log4js.levels.DEBUG, format: 'format :method :url :status'}));
 
 router
 
     .get('/', function (req, res, next) {
-        Topic.find({}, function (err, topic) {
+        page=+req.query.page||0;
+        limit=+req.query.limit||2;
+        keyworld=req.query.keyworld||'';
+        findBy={name:{$regex:'.*'+keyworld+'.*'}};
+        sortBy={date:-1};
+
+        if (req.query.sortBy==='name') sortBy={name:1};
+
+      if (req.query.findBy==='name') {findBy={name:{$regex:'.*'+keyworld+'.*'}}}
+      else if (req.query.findBy==='text') {findBy={text:{$regex:'.*'+keyworld+'.*'}}}
+      else if (req.query.findBy==='author') {findBy={author:{$regex:'.*'+keyworld+'.*'}}};
+        Topic.find(findBy, function (err, topic) {
             if (err) throw err;
             if (topic.length) {
                 logger.info('Topics list GET OK');
@@ -17,7 +29,9 @@ router
                         name: el.name,
                         author: el.author,
                         date: el.date,
-                        comments:el.comments.length
+                        comments:el.comments.length,
+                        img:el.img,
+                        text:(el.text).substr(0,400) + '...'
                     };
                 }));
             } else {
@@ -26,7 +40,7 @@ router
                 logger.error(err);
                 next(err);
             }
-        });
+        }).sort(sortBy).skip(page*limit).limit(limit);
     })
 
     .get('/:name/', function (req, res, next) {
@@ -34,6 +48,7 @@ router
             if (err) throw err;
             if (topic.length) {
                 logger.info('Topic get OK '+req.params.name);
+                if (topic[0].img==='') {topic[0].img='../img/no-image.png'}
                 res.json(topic[0]);
             }
             else {
@@ -45,7 +60,7 @@ router
         });
     })
 
-    .put('/:name/', function (req, res, next) {
+    .put('/:name/',authCheck, function (req, res, next) {
         var body = req.body;
         var oldname = body.oldTopic;
 
@@ -76,8 +91,10 @@ router
                 text: body.text,
                 date: body.date
             });
+            console.log(newTopic);
             newTopic.save(function (err) {
                 if (err) {
+                    console.log(err)
                     err = new Error('Topic exists');
                     err.status = 409;
                     logger.error(err);
@@ -90,7 +107,7 @@ router
         }
     })
 
-    .delete('/:name', function (req, res, next) {
+    .delete('/:name',authCheck, function (req, res, next) {
         var name = req.params.name;
         Topic.remove({name: name}, function (err) {
             if (err) {
@@ -100,7 +117,6 @@ router
                 res.sendStatus(200);
                 logger.info('Topic delete OK '+name);
             }
-
         });
     });
 

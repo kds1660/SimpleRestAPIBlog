@@ -1,10 +1,5 @@
 body {
-    padding: 50px;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
-
-a {
-    color: #00B7FF;
 }
 
 .first {
@@ -18,14 +13,6 @@ a {
     padding: 5px;
     display: block;
     margin: 5px;
-}
-
-.login {
-    display: block;
-}
-
-span {
-    display: block;
 }
 
 #addText {
@@ -49,18 +36,18 @@ table.dataTable tbody tr:hover {
     margin: 5px;
 }
 
-
-
 #textDiv {
     font-size: 18px;
     padding-bottom: 12px;
     text-align: justify;
+    min-height: 200px;
 }
 
 #preview {
     float: left;
     margin-right: 15px;
 }
+
  #myModal div {
     width: auto;
  !important;
@@ -70,15 +57,43 @@ table.dataTable tbody tr:hover {
     height: 100%;
 }
 
-body > .alert {
-    position: absolute;
-    width: 100%;
+.alert {
+    position: fixed; /* or absolute */
+    top: 0;
+    width: 30%;
+    height:50px;
     z-index: 1000;
-    top: 0px;
+    opacity: 0.9;
+!important;
 }
 
-#myModal .alert {
-    width: 100%;
-    text-align: left;
+.textDiv {
+    padding: 10px;
+    text-align: justify;
+    font-size: 18px;
+    min-height: 200px;
+    border: 1px solid #d0dde5;
+}
+
+.topic img {
+    float: left;
+    padding: 10px;
+}
+
+.topic {
+    display: block;
+    padding-left: 15px;
+}
+
+.buttons {
+    display: inline;
+}
+
+h1 {
+    padding-left: 15px;
+}
+
+.container {
+    margin-top: 50px;
 }
 

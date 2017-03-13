@@ -1,6 +1,6 @@
 var passport = require('passport')
     , LocalStrategy = require('passport-local').Strategy;
-var User= require('.././modules/topicService').user;
+var User= require('.././modules/dbSchema/user');
 var logger = require('.././modules/logger').logger;
 
 passport.use(new LocalStrategy(

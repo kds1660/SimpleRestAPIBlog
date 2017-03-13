@@ -11,10 +11,5 @@ db.once('open', function callback () {
     logger.debug('Connect with DB');
 });
 
-mongoose.connection.collections['users'].drop( function(err) {
-    logger.info('User dropped');
-});
-mongoose.connection.collections['topics'].drop( function(err) {
-    logger.info('Topics dropped');
-});
+
 module.exports = mongoose;

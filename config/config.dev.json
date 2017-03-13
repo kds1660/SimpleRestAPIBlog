@@ -1,0 +1,7 @@
+{
+    "secret":"test",
+  "logger": {
+    "level": "Debug",
+    "pathLog": "./logs/logs.log"
+  }
+}

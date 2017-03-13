@@ -33,6 +33,4 @@ The project is designed to create articles hadware subjects with the possibility
 **BOWER**
 - 
 * bootstrap - front-end framework
-* mustache - web template system
 * tinymce - text editor for editing topics/comments
-* datatables - plug-in for the jQuery for main topic list

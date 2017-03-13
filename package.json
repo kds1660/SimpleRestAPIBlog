@@ -6,11 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "bower install",
-    "start": "node app.js"
+    "start": "set NODE_ENV=dev&&node app.js"
   },
   "author": "me",
   "license": "ISC",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.15.2",
     "bower": "",
     "express": "^4.14.0",
@@ -19,5 +20,12 @@
     "mongoose": "^4.7.5",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-ng-annotate": "^2.0.0",
+    "gulp-uglify": "^2.0.1"
   }
 }
