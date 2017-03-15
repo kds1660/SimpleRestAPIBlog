@@ -1,4 +1,4 @@
-loginModule.controller('loginController',function($scope,$timeout,loginServices,$rootScope){
+loginModule.controller('loginController',function($scope,$timeout,$window,loginServices,$rootScope){
     $scope.login={username:'',password:''};
     loginServices.get({name:'logged'}).$promise.then(function (response) {
         $scope.setName(response.data);
@@ -10,12 +10,16 @@ loginModule.controller('loginController',function($scope,$timeout,loginServices,
         loginServices.save($scope.login).$promise.then(function (response) {
             $scope.isLogged=response.username;
             $scope.setName(response.username);
-                $scope.login={};
+            $scope.login={};
             $scope.setAllert(true, 'Logged!!')
 
         },function (response) {
             $scope.setAllert(false, 'Check login/password or register')
         });
+    };
+
+    $scope.facebookBtn=function () {
+        $window.location = $window.location.protocol + "//" + $window.location.host + "/api/login/facebook";
     };
 
     $scope.logoutBtn=function () {

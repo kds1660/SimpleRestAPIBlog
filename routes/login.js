@@ -14,6 +14,16 @@ router
         } else res.send('0')
     })
 
+    .get('/facebook', function (req, res, next) {
+        passport.authenticate('facebook', function (err, user, info) {
+
+        })(req, res, next);
+    })
+
+ .get('/facebook/callback',
+    passport.authenticate('facebook', { successRedirect: '/',
+        failureRedirect: '/' }))
+
     .post('/', function (req, res, next) {
         passport.authenticate('local', function (err, user, info) {
             if (!user) {
@@ -30,6 +40,10 @@ router
 
         })(req, res, next);
     })
+
+
+
+/*app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));*/
 
     .put('/', function (req, res, next) {
         var user = new User({username: req.body.username, password: req.body.password});

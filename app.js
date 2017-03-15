@@ -12,7 +12,7 @@ var logger = require('./modules/logger').logger;
 var log4js = require('./modules/logger').log4js;
 var session=require('express-session');
 var passport = require('./modules/passport').passport;
-var LocalStrategy =require('./modules/passport').LocalStrategy;
+
 if (process.env.NODE_ENV==='dev') {
     var test=require('./testing/forTest');
 }
@@ -20,6 +20,7 @@ if (process.env.NODE_ENV==='dev') {
 
 
 var app = express();
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret:config.secret,
@@ -32,10 +33,10 @@ app.use(passport.session());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-
 app.use('/api/topic', topic);
 app.use('/api/login', login);
 app.use('/api/comments', comments);
+
 
 app.listen(3000);
 

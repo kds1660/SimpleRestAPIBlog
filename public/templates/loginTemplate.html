@@ -9,12 +9,17 @@
             <br/><br/>
         </div>
         <input class="loginButton btn btn-success" type="button" value="login" ng-click="loginBtn()">
+
         <input class="registerButton btn btn-success" type="button" value="Register" ng-click="registerBtn()">
+        <a class="btn btn-block btn-social btn-facebook" ng-click="facebookBtn()">
+            <span class="fa fa-facebook"></span>
+            Sign in with facebook
+        </a>
     </div>
 </div>
 
 <div ng-if="isLogged!=0&&!isAddUser">
-    <h2>Logged {{isLogged}}</h2>
+    <h2>Logged <br>{{isLogged}}</h2>
     <a class="exitButton btn btn-danger" href="/main" ng-click="logoutBtn()">Logout</a>
     <a class="addTopicBtn btn btn-info" href="/add">Add topic</a>
 </div>
