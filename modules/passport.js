@@ -37,6 +37,7 @@ passport.use(new OdnoklassnikiStrategy(
         clientPublic: okAuth.clientPublic
     },
     function myVerifyCallbackFn(accessToken, refreshToken, profile, done) {
+        console.log(profile)
         User.update({'ok.id': profile.id}, {
             $set: {
                 "ok.id": profile.id,
@@ -65,18 +66,14 @@ passport.use(new VKontakteStrategy(
         profileFields: ['id', 'emails', 'name']
     },
     function myVerifyCallbackFn(accessToken, refreshToken, params, profile, done) {
-        var newUser = new User();
-        newUser.vk.id = profile.id;
-        newUser.vk.token = accessToken;
-        newUser.username = params.email || profile.username;
-        newUser.vk.name = profile.name.givenName + ' ' + profile.name.familyName;
 
         User.update({'vk.id': profile.id}, {
             $set: {
                 "vk.id": profile.id,
                 "vk.token": accessToken,
                 "username": params.email || profile.username,
-                "vk.name": profile.name.givenName + ' ' + profile.name.familyName
+                "vk.name": profile.name.givenName + ' ' + profile.name.familyName,
+                "vk.photo":profile.photos[0].value
             }
         }, {upsert: true}, function (err, user) {
 
@@ -98,7 +95,6 @@ passport.use(new FacebookStrategy({
     callbackURL: facebookAuth.callbackURL,
     profileFields: ['id', 'emails', 'name']
 }, function (accessToken, refreshToken, profile, done) {
-
     process.nextTick(function () {
         User.update({'facebook.id': profile.id}, {
             $set: {

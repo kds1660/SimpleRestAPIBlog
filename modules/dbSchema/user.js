@@ -22,7 +22,8 @@ var UserSchema = new mongoose.Schema({
     vk         : {
         id           : String,
         token        : String,
-        name         : String
+        name         : String,
+        photo        : String
     },
     ok         : {
         id           : String,
