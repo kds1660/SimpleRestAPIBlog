@@ -11,15 +11,27 @@
         <input class="loginButton btn btn-success" type="button" value="login" ng-click="loginBtn()">
 
         <input class="registerButton btn btn-success" type="button" value="Register" ng-click="registerBtn()">
-        <a class="btn btn-block btn-social btn-facebook" ng-click="facebookBtn()">
+
+        <a class="btn btn-block btn-social btn-facebook" ng-click="socialBtn('facebook')">
             <span class="fa fa-facebook"></span>
             Sign in with facebook
+        </a>
+
+        <a class="btn btn-block btn-social btn-vk" ng-click="socialBtn('vk')">
+            <span class="fa fa-vk"></span>
+            Sign in with vk
+        </a>
+
+        <a class="btn btn-block btn-social btn-odnoklassniki" ng-click="socialBtn('ok')">
+            <span class="fa fa-odnoklassniki"></span>
+            Sign in with ok
         </a>
     </div>
 </div>
 
 <div ng-if="isLogged!=0&&!isAddUser">
-    <h2>Logged <br>{{isLogged}}</h2>
+    <h2>Logged <br>{{isLogged["username"]}}</h2>
+    <div>{{isLogged.facebook["name"]||isLogged.vk["name"]}}</div>
     <a class="exitButton btn btn-danger" href="/main" ng-click="logoutBtn()">Logout</a>
     <a class="addTopicBtn btn btn-info" href="/add">Add topic</a>
 </div>

@@ -8,8 +8,8 @@ loginModule.controller('loginController',function($scope,$timeout,$window,loginS
     $scope.loginBtn=function () {
         window.scroll(0,0);
         loginServices.save($scope.login).$promise.then(function (response) {
-            $scope.isLogged=response.username;
-            $scope.setName(response.username);
+            $scope.isLogged=response;
+            $scope.setName(response);
             $scope.login={};
             $scope.setAllert(true, 'Logged!!')
 
@@ -18,8 +18,8 @@ loginModule.controller('loginController',function($scope,$timeout,$window,loginS
         });
     };
 
-    $scope.facebookBtn=function () {
-        $window.location = $window.location.protocol + "//" + $window.location.host + "/api/login/facebook";
+    $scope.socialBtn=function (social) {
+        $window.location = $window.location.protocol + "//" + $window.location.host + "/api/login/"+social;
     };
 
     $scope.logoutBtn=function () {
@@ -56,10 +56,6 @@ loginModule.controller('loginController',function($scope,$timeout,$window,loginS
     };
 
     $scope.addTopicBtn=function () {
-        $scope.setCurrentTopic({});
-        $scope.thisTopic.date=Date();
-        $scope.thisTopic.author=$scope.isLogged;
-
        setTimeout(function () {
            tinymce.init({
                width: "100%",

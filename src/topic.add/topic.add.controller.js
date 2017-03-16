@@ -2,7 +2,7 @@ topicModule.controller('addTopicController', function ($scope,$location, topicSe
     $scope.name='Add topic';
     $scope.thisTopic={};
     $scope.thisTopic.date=new Date();
-    $scope.thisTopic.author=$scope.isLogged;
+    $scope.thisTopic.author=$scope.isLogged.username;
     setTimeout(function () {
         tinymce.init({
             width: "100%",

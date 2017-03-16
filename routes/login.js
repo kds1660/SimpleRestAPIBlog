@@ -10,19 +10,40 @@ router
 
     .get('/logged', function (req, res) {
         if (req.isAuthenticated()) {
-            res.send(req.user.username)
+            console.log(req.user)
+            res.send(req.user)
         } else res.send('0')
     })
 
     .get('/facebook', function (req, res, next) {
-        passport.authenticate('facebook', function (err, user, info) {
+        passport.authenticate('facebook', { scope : 'email' },function (err, user, info) {
 
         })(req, res, next);
     })
 
- .get('/facebook/callback',
-    passport.authenticate('facebook', { successRedirect: '/',
-        failureRedirect: '/' }))
+    .get('/facebook/callback',
+        passport.authenticate('facebook', { successRedirect: '/',
+            failureRedirect: '/' }))
+
+    .get('/vk', function (req, res, next) {
+        passport.authenticate('vkontakte', { scope : 'email' },function (err, user, info) {
+
+        })(req, res, next);
+    })
+
+    .get('/vk/callback',
+        passport.authenticate('vkontakte', { successRedirect: '/',
+            failureRedirect: '/' }))
+
+    .get('/ok', function (req, res, next) {
+        passport.authenticate('odnoklassniki', { scope : 'GET_EMAIL' },function (err, user, info) {
+
+        })(req, res, next);
+    })
+
+    .get('/ok/callback',
+        passport.authenticate('odnoklassniki', { successRedirect: '/',
+            failureRedirect: '/' }))
 
     .post('/', function (req, res, next) {
         passport.authenticate('local', function (err, user, info) {

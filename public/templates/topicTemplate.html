@@ -8,8 +8,8 @@
                     <b>{{names.comments}} comments</b>
                     <div class="buttons">
                         <a class="viewButton btn btn-info"href="/view/{{names.name}}">View</a>
-                        <a ng-if="isLogged===names.author" class="viewButton btn btn-info"href="/edit/{{names.name}}?edit=true">Edit</a>
-<input class="viewButton btn btn-info" type="button" value="Delete" ng-if="isLogged===names.author" ng-click="deleteTopic($index)">
+                        <a ng-if="isLogged.username===names.author" class="viewButton btn btn-info"href="/edit/{{names.name}}?edit=true">Edit</a>
+<input class="viewButton btn btn-info" type="button" value="Delete" ng-if="isLogged.username===names.author" ng-click="deleteTopic($index)">
                     </div>
                 </span>
             </span>

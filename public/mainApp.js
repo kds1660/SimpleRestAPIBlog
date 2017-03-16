@@ -36,7 +36,14 @@ app.run(['$rootScope','$timeout', function ($rootScope,$timeout) {
     };
 
     $rootScope.setName = function (name) {
-        $rootScope.isLogged = name;
+
+     try {
+         $rootScope.isLogged = JSON.parse(name);
+     }
+     catch (e){
+         $rootScope.isLogged = name;
+     }
+
     };
 
 

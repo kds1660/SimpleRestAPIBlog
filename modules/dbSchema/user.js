@@ -16,8 +16,19 @@ var UserSchema = new mongoose.Schema({
     },
     facebook         : {
         id           : String,
-        token        : String
-    }
+        token        : String,
+        name         : String
+    },
+    vk         : {
+        id           : String,
+        token        : String,
+        name         : String
+    },
+    ok         : {
+        id           : String,
+        token        : String,
+        name         : String
+    },
 });
 
 UserSchema.pre('save', function(next) {

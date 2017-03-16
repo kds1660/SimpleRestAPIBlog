@@ -8,5 +8,16 @@
     "clientID"      : "no",
     "clientSecret"  : "no",
     "callbackURL"   : "http://localhost:3000/api/login/facebook/callback"
+  },
+  "vkAuth": {
+    "clientID"      : "no",
+    "clientSecret"  : "no",
+    "callbackURL"   : "http://localhost:3000/api/login/vk/callback"
+  },
+  "okAuth": {
+    "clientID"      : "no",
+    "clientSecret"  : "no",
+    "clientPublic"  :"no",
+    "callbackURL"   : "http://localhost:3000/api/login/ok/callback"
   }
 }
