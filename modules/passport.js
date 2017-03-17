@@ -97,12 +97,12 @@ passport.use(new FacebookStrategy({
 }, function (accessToken, refreshToken, profile, done) {
     console.log(profile)
     process.nextTick(function () {
-        User.update({'username': profile.emails[0].value||profile.id}, {
+        User.update({'username': profile.emails?profile.emails[0].value:profile.id||profile.id}, {
             $set: {
                 "facebook.id": profile.id,
                 "facebook.token": accessToken,
                 "name": profile.name.givenName + ' ' + profile.name.familyName,
-                "username": profile.emails[0].value,
+                "username": profile.emails?profile.emails[0].value:profile.id,
                 "photo": profile.photos[0].value
             }
         }, {upsert: true}, function (err, user) {
