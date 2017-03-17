@@ -37,12 +37,12 @@ passport.use(new OdnoklassnikiStrategy(
         clientPublic: okAuth.clientPublic
     },
     function myVerifyCallbackFn(accessToken, refreshToken, profile, done) {
-        console.log(profile)
-        User.update({'ok.id': profile.id}, {
+        User.update({'username': profile._json.email||profile.id}, {
             $set: {
                 "ok.id": profile.id,
-                "ok.name": profile.name.givenName + ' ' + profile.name.familyName,
-                "username": profile.id
+                "name": profile.name.givenName + ' ' + profile.name.familyName,
+                "username": profile._json.email,
+                "photo":profile.photos[0].value
             }
         }, {upsert: true}, function (err, user) {
 
@@ -67,13 +67,13 @@ passport.use(new VKontakteStrategy(
     },
     function myVerifyCallbackFn(accessToken, refreshToken, params, profile, done) {
 
-        User.update({'vk.id': profile.id}, {
+        User.update({'username': params.email||profile.id}, {
             $set: {
                 "vk.id": profile.id,
                 "vk.token": accessToken,
                 "username": params.email || profile.username,
-                "vk.name": profile.name.givenName + ' ' + profile.name.familyName,
-                "vk.photo":profile.photos[0].value
+                "name": profile.name.givenName + ' ' + profile.name.familyName,
+                "photo":profile.photos[0].value
             }
         }, {upsert: true}, function (err, user) {
 
@@ -93,15 +93,17 @@ passport.use(new FacebookStrategy({
     clientID: facebookAuth.clientID,
     clientSecret: facebookAuth.clientSecret,
     callbackURL: facebookAuth.callbackURL,
-    profileFields: ['id', 'emails', 'name']
+    profileFields: ['id', 'emails', 'name','photos']
 }, function (accessToken, refreshToken, profile, done) {
+    console.log(profile)
     process.nextTick(function () {
-        User.update({'facebook.id': profile.id}, {
+        User.update({'username': profile.emails[0].value||profile.id}, {
             $set: {
                 "facebook.id": profile.id,
                 "facebook.token": accessToken,
-                "facebook.name": profile.name.givenName + ' ' + profile.name.familyName,
-                "username": profile.emails[0].value
+                "name": profile.name.givenName + ' ' + profile.name.familyName,
+                "username": profile.emails[0].value,
+                "photo": profile.photos[0].value
             }
         }, {upsert: true}, function (err, user) {
 

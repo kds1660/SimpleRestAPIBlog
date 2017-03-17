@@ -14,21 +14,25 @@ var UserSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    name: {
+        type: String,
+        required: false
+    },
+    photo:{
+        type: String,
+        required: false
+    },
     facebook         : {
         id           : String,
-        token        : String,
-        name         : String
+        token        : String
     },
     vk         : {
         id           : String,
-        token        : String,
-        name         : String,
-        photo        : String
+        token        : String
     },
     ok         : {
         id           : String,
-        token        : String,
-        name         : String
+        token        : String
     },
 });
 

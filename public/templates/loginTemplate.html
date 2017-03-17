@@ -31,8 +31,8 @@
 
 <div ng-if="isLogged!=0&&!isAddUser">
     <h2>Logged <br>{{isLogged["username"]}}</h2>
-    <img ng-src="{{isLogged.vk.photo}}">
-    <div>{{isLogged.facebook["name"]||isLogged.vk["name"]}}</div>
+    <img ng-src="{{isLogged.photo}}">
+    <div>{{isLogged["name"]}}</div>
     <a class="exitButton btn btn-danger" href="/main" ng-click="logoutBtn()">Logout</a>
     <a class="addTopicBtn btn btn-info" href="/add">Add topic</a>
 </div>
