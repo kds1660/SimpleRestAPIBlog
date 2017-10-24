@@ -2,7 +2,7 @@
 <html lang="en" ng-app="BlogApp">
 
 <head>
-
+    <base href="/">
     <title>Blog Post - Start Bootstrap Template</title>
     <script src="/bower_components/tinymce/tinymce.js"></script>
     <script src="/bower_components/angular/angular.js"></script>
@@ -11,7 +11,6 @@
     <script src="bower_components/angular-route-segment/build/angular-route-segment.js"></script>
     <script src="mainApp.js" defer></script>
     <script src="js/blog-app.min.js" defer></script>
-
 
 
     <link rel="stylesheet" type="text/css" href="/css/style.css"/>
@@ -34,7 +33,7 @@
     <div class="row">
         <user></user>
         <div id="wrapper">
-            <div class="col-lg-8" when-scrolled="loadMore()"  app-view-segment="0">
+            <div class="col-lg-8" when-scrolled="loadMore()" app-view-segment="0">
 
             </div>
 

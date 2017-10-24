@@ -36,7 +36,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api/topic', topic);
 app.use('/api/login', login);
 app.use('/api/comments', comments);
-
+app.use('/view/',function (req,res) {
+    res.sendfile('public/index.html');
+});
+app.use('*',function (req,res) {
+    res.redirect('/');
+});
 
 app.listen(3000);
 
